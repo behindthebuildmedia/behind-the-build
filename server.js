@@ -18,6 +18,10 @@ const allowedOrigins = [
   'https://www.behindthebuild.in'
 ];
 
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
 if (process.env.NODE_ENV !== 'production') {
   allowedOrigins.push('http://localhost:5173');
   allowedOrigins.push('http://localhost:5174');
@@ -418,7 +422,14 @@ app.get('/api/system-status', async (req, res) => {
   });
 });
 
+// GET: Simple health check endpoint
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    status: "ok"
+  });
+});
+
 // Start Express server
-app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server listening on port ${PORT}`);
 });
