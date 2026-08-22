@@ -1,0 +1,16 @@
+{
+  "short_name": "BTB",
+  "name": "Behind the Build",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#FFFFFF",
+  "theme_color": "#C8041C",
+  "display": "standalone",
+  "orientation": "portrait"
+}
