@@ -46,7 +46,7 @@ export default function FinalCTA() {
         <div className="max-w-3xl flex flex-col items-start space-y-6 md:space-y-8">
           {/* Section Accent Label */}
           <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-mono">
-            09 / LET'S CREATE TOGETHER
+            LET'S CREATE TOGETHER
           </p>
 
           {/* Large Typographic Editorial Heading */}

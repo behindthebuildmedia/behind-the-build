@@ -30,7 +30,7 @@ export default function Process() {
         
         {/* Section Header */}
         <ScrollReveal className="text-left max-w-xl mb-16">
-          <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-mono">06 / OUR PROCESS</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-mono">OUR PROCESS</p>
           <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal mt-2">
             OUR PROCESS<span className="text-[#C8041C]">.</span>
           </h2>

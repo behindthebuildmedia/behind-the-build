@@ -410,7 +410,7 @@ export default function FeaturedWork() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-20 text-left">
             <div className="space-y-4">
               <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C]">
-                04 / OUR WORK
+                OUR WORK
               </p>
               <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-none">
                 OUR WORK<span className="text-[#C8041C]">.</span>

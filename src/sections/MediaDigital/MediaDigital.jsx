@@ -50,7 +50,7 @@ export default function MediaDigital() {
           <ScrollReveal className="lg:col-span-5 text-left space-y-6">
             <div className="space-y-3">
               <span className="text-[10px] font-bold tracking-widest text-[#C8041C] uppercase font-mono block">
-                03 / MEDIA × DIGITAL
+                MEDIA × DIGITAL
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-[1.05]">
                 MEDIA THAT GETS <span className="text-[#C8041C]">SEEN.</span>

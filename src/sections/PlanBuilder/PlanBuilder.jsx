@@ -324,7 +324,7 @@ export default function PlanBuilder({ onSuccess }) {
         {/* Header */}
         {step === 1 && (
           <div className="mb-20 space-y-4 max-w-3xl mx-auto text-left">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-mono">05 / SERVICES</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-mono">SERVICES</p>
             <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal font-sans">
               WHAT WE DO<span className="text-[#C8041C]">.</span>
             </h2>

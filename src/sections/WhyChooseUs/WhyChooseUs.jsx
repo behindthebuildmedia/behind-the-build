@@ -60,7 +60,7 @@ export default function WhyChooseUs() {
           <ScrollReveal className="lg:col-span-5 text-left space-y-6 lg:sticky lg:top-[15vh] self-start">
             <div className="space-y-3">
               <span className="text-xs font-bold uppercase tracking-widest text-[#C8041C]">
-                07 / WHY CHOOSE US
+                WHY CHOOSE US
               </span>
               <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-[1.05]">
                 WHY BRANDS

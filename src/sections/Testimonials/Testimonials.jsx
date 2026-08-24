@@ -28,7 +28,7 @@ export default function Testimonials() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-left">
           <div className="space-y-4">
             <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-mono">
-              08 / CLIENT LOVE
+              CLIENT LOVE
             </p>
             <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal">
               CLIENT LOVE<span className="text-[#C8041C]">.</span>
