@@ -5,121 +5,88 @@ import santhoshImg from '../../assets/projects/santhosh.webp';
 const testimonialsData = [
   {
     id: 1,
-    stars: 5,
-    quote: "Behind The Build transformed our ideas into powerful content that actually connects.",
+    quote: "Behind The Build has been a game-changer for Consistency.AI. Their content, consistency, and creativity helped us grow an incredible community and reach millions.",
     avatar: santhoshImg,
     name: "Santosh Kumar Thota",
-    role: "Founder",
-    company: "Consistency AI"
+    role: "Founder, Consistency.AI"
   },
   {
     id: 2,
-    stars: 5,
-    quote: "The level of cinematic detail and strategic positioning Behind The Build brought to our brand was unmatched.",
-    avatar: santhoshImg, // Using santhosh.webp as fallback since no other headshot exists
+    quote: "Their team understands our vision and turns it into powerful content every single time. Professional, reliable, and extremely creative.",
+    avatar: santhoshImg, // Fallback as Ganesh headshot is not in files
     name: "Ganesh",
-    role: "Marketing Head",
-    company: "Delusion AI"
+    role: "Marketing Head, DelusionAI"
   }
 ];
 
-// Quote Icon SVG component
-const QuoteIcon = (props) => (
-  <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" {...props}>
-    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.987z" />
-  </svg>
-);
-
 export default function Testimonials() {
-  const containerVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
-  };
-
   return (
-    <section id="testimonials" className="py-24 bg-white relative overflow-hidden border-t border-brand-charcoal/5 text-center select-none font-sans">
+    <section id="testimonials" className="py-24 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 space-y-16">
         
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center space-y-4 max-w-2xl mx-auto">
-          <ScrollReveal>
-            <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C]">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-left">
+          <div className="space-y-4">
+            <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-mono">
               08 / CLIENT LOVE
             </p>
-          </ScrollReveal>
-          
-          <ScrollReveal delay={0.08}>
-            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight leading-none">
-              <span className="text-[#212121]">REAL STORIES.</span><br />
-              <span className="text-[#C8041C]">REAL IMPACT.</span>
+            <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal">
+              CLIENT LOVE<span className="text-[#C8041C]">.</span>
             </h2>
-          </ScrollReveal>
-          
-          <ScrollReveal delay={0.12}>
-            <p className="text-sm md:text-base text-[#212121]/60 leading-relaxed font-sans font-normal">
-              What our clients say about working with Behind The Build.
-            </p>
-          </ScrollReveal>
+          </div>
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-brand-charcoal/50 select-none">
+              MORE REVIEWS ON REQUEST →
+            </span>
+          </div>
         </div>
 
-        {/* 2-Column Testimonials Layout */}
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto w-full px-4"
-        >
-          {testimonialsData.map((item) => (
-            <div 
+        {/* 2-Column Split Testimonials Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+          {testimonialsData.map((item, idx) => (
+            <ScrollReveal 
               key={item.id}
-              className="bg-white p-8 sm:p-10 rounded-[20px] border border-[#E5E5E5] transition-all duration-250 flex flex-col justify-between text-left min-h-[320px] w-full"
+              delay={idx * 0.08}
+              className="w-full"
             >
-              {/* Quote & Stars */}
-              <div className="space-y-6 flex-grow">
-                <div className="flex items-center justify-between">
-                  <QuoteIcon className="text-[#C8041C] opacity-80" />
-                  <div className="text-xs text-[#C8041C] tracking-widest leading-none select-none">
-                    ★★★★★
-                  </div>
-                </div>
-
-                <p className="text-base sm:text-lg font-medium text-[#212121]/90 leading-relaxed font-sans">
-                  “{item.quote}”
-                </p>
-              </div>
-
-              {/* Divider */}
-              <div className="h-[1px] bg-[#E5E5E5] w-full my-6" />
-
-              {/* Client Profile */}
-              <div className="flex items-center gap-4 shrink-0">
-                <div className="w-14 h-14 rounded-full overflow-hidden border border-[#212121]/5 bg-brand-lightgray shrink-0">
+              <div className="bg-brand-white border border-[#E6E6E6] rounded-none overflow-hidden flex flex-col sm:flex-row items-stretch min-h-[260px] w-full hover:border-brand-charcoal/30 transition-all duration-300">
+                {/* Left Side Client Image */}
+                <div className="w-full sm:w-[35%] min-h-[200px] sm:min-h-0 relative overflow-hidden bg-brand-lightgray shrink-0 border-b sm:border-b-0 sm:border-r border-[#E6E6E6]">
                   <img 
                     src={item.avatar} 
                     alt={item.name} 
-                    width="56"
-                    height="56"
-                    className="w-full h-full object-cover filter grayscale"
+                    width="200"
+                    height="300"
+                    className="absolute inset-0 w-full h-full object-cover filter grayscale"
                     loading="lazy"
                   />
                 </div>
-                <div className="text-left flex flex-col justify-center">
-                  <h4 className="text-base font-bold text-[#212121] leading-tight font-sans">
-                    {item.name}
-                  </h4>
-                  <p className="text-xs text-[#212121]/60 font-sans mt-0.5 leading-none">
-                    {item.role}
-                  </p>
-                  <p className="text-xs font-bold text-[#212121]/45 font-sans mt-1 leading-none">
-                    {item.company}
-                  </p>
+
+                {/* Right Side Quote Content */}
+                <div className="w-full sm:w-[65%] p-8 flex flex-col justify-between text-left space-y-6">
+                  <div className="space-y-4">
+                    {/* Red Quote Mark */}
+                    <span className="text-5xl font-serif font-black text-[#C8041C] leading-none block select-none h-6">
+                      “
+                    </span>
+                    <p className="text-xs sm:text-sm font-medium text-brand-charcoal/70 leading-relaxed font-sans">
+                      {item.quote}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <h4 className="text-xs font-bold text-brand-charcoal uppercase tracking-wider leading-none">
+                      {item.name}
+                    </h4>
+                    <p className="text-[10px] text-brand-charcoal/45 uppercase tracking-wide font-medium block">
+                      {item.role}
+                    </p>
+                  </div>
                 </div>
               </div>
-
-            </div>
+            </ScrollReveal>
           ))}
-        </motion.div>
+        </div>
 
       </div>
     </section>

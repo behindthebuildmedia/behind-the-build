@@ -318,21 +318,18 @@ export default function PlanBuilder({ onSuccess }) {
   };
 
   return (
-    <section id="services" className="pt-12 pb-2 bg-white border-t border-brand-charcoal/5 relative overflow-hidden">
+    <section id="build-plan" className="py-24 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
       <div className="max-w-6xl mx-auto px-6 md:px-12 w-full text-center">
         
         {/* Header */}
         {step === 1 && (
-          <div className="mb-12 space-y-4 max-w-3xl mx-auto">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-sans">04 / SERVICES</p>
+          <div className="mb-20 space-y-4 max-w-3xl mx-auto text-left">
+            <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-mono">05 / SERVICES</p>
             <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal font-sans">
-              OUR SERVICES<span className="text-[#C8041C]">.</span>
+              WHAT WE DO<span className="text-[#C8041C]">.</span>
             </h2>
-            <p className="text-2xl sm:text-3xl font-black text-brand-charcoal uppercase font-sans tracking-wide">
-              "CREATE. EDIT. SHARE."
-            </p>
-            <p className="text-sm sm:text-base text-brand-charcoal/60 leading-relaxed font-sans max-w-md mx-auto">
-              Professional content solutions for modern brands.
+            <p className="text-sm md:text-base text-brand-charcoal/60 leading-relaxed font-normal max-w-xl">
+              From ideation to execution, we offer end-to-end media and digital marketing services tailored to your goals.
             </p>
           </div>
         )}
@@ -346,190 +343,98 @@ export default function PlanBuilder({ onSuccess }) {
               initial="initial"
               animate="animate"
               exit="exit"
-              className="space-y-8 text-left"
+              className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left"
             >
-              {/* Service Navigation Tabs */}
-              <div className="flex flex-row justify-center gap-8 md:gap-16 border-b border-brand-charcoal/10 pb-6 max-w-4xl mx-auto overflow-x-auto scrollbar-none whitespace-nowrap px-4 w-full">
-                {RICH_SERVICES.map((service) => {
-                  const isActive = activeServiceId === service.id;
-                  return (
-                    <button
-                      key={service.id}
-                      onClick={() => handleServiceChange(service.id)}
-                      className="relative py-4 text-xs sm:text-sm font-sans font-bold uppercase tracking-wider cursor-pointer focus:outline-none group shrink-0"
-                    >
-                      <div className={`flex items-center gap-2 transition-colors duration-300 ${
-                        isActive ? 'text-[#C8041C]' : 'text-brand-charcoal/60 hover:text-[#C8041C]'
-                      }`}>
-                        {service.id === 'video-editing' && <Icons.Film className="w-4 h-4 shrink-0" />}
-                        {service.id === 'event-coverage' && <Icons.Camera className="w-4 h-4 shrink-0" />}
-                        {service.id === 'social-media-design' && <Icons.Share2 className="w-4 h-4 shrink-0" />}
-                        <span>{service.name}</span>
-                      </div>
-                      {isActive ? (
-                        <motion.div
-                          layoutId="activeUnderline"
-                          className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#C8041C] origin-center"
-                          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                        />
-                      ) : (
-                        <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-[#C8041C] transition-all duration-300 ease-out group-hover:w-full" />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
+              {RICH_SERVICES.map((service) => {
+                let IconComponent = Icons.Film;
+                if (service.id === 'event-coverage') IconComponent = Icons.Camera;
+                if (service.id === 'social-media-design') IconComponent = Icons.Share2;
 
-              {/* Main Service Hero Section */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start max-w-6xl mx-auto">
-                {/* Left Side: Content & Deliverables */}
-                <div className="lg:col-span-7 space-y-10">
-                  <div className="space-y-4">
-                    <motion.h3 
-                      key={`${activeServiceId}-title`}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4 }}
-                      className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-brand-charcoal font-sans leading-[1.05]"
-                    >
-                      {activeService.title}
-                    </motion.h3>
-                    <p className="text-sm sm:text-base text-brand-charcoal/70 leading-relaxed font-sans max-w-xl">
-                      {activeService.desc}
-                    </p>
-                  </div>
-
-                  {/* "WHAT WE DO" Deliverables */}
-                  <div className="space-y-6 pt-6 border-t border-brand-charcoal/5">
-                    <span className="text-[10px] font-sans font-bold tracking-widest text-[#C8041C] uppercase block">
-                      WHAT WE DO
-                    </span>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
-                      {activeService.deliverables.map((item, idx) => {
-                        const displayNum = String(idx + 1).padStart(2, '0');
-                        return (
-                          <div key={idx} className="flex items-start gap-4 py-2.5 border-b border-brand-charcoal/5">
-                            <span className="text-[10px] font-sans font-bold text-[#C8041C] mt-0.5">
-                              {displayNum}
-                            </span>
-                            <span className="text-xs sm:text-sm font-sans text-brand-charcoal/70 leading-tight">
-                              {item}
-                            </span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {activeService.note && (
-                    <p className="text-[10px] text-brand-charcoal/45 italic leading-relaxed pt-2 font-sans">
-                      * {activeService.note}
-                    </p>
-                  )}
-                </div>
-
-                {/* Right Side: Image */}
-                <div className="lg:col-span-5 relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-brand-charcoal/10">
-                  <motion.img
-                    key={activeService.image}
-                    src={activeService.image}
-                    alt={activeService.name}
-                    initial={{ opacity: 0, scale: 1.03 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.45 }}
-                    className="absolute inset-0 w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-
-              {/* Plans Section */}
-              <div className="space-y-10 pt-10 border-t border-brand-charcoal/5 max-w-6xl mx-auto">
-                <div className="text-center space-y-2">
-                  <h4 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-brand-charcoal font-sans">
-                    CHOOSE YOUR PLAN
-                  </h4>
-                  <p className="text-xs text-brand-charcoal/50 font-sans uppercase tracking-widest">
-                    Transparent, simple pricing retainers
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {activeService.plans.map((plan) => {
-                    const isPlanActive = selectedPlanId === plan.id;
-                    return (
-                      <div
-                        key={plan.id}
-                        className={`relative border bg-brand-white p-8 rounded-2xl transition-all duration-300 flex flex-col justify-between h-[360px] ${
-                          isPlanActive
-                            ? 'border-[#C8041C] shadow-lg shadow-brand-red/5'
-                            : 'border-brand-charcoal/10'
-                        }`}
-                      >
-                        {plan.isPopular && (
-                          <span className="absolute -top-3.5 left-8 px-3 py-1 bg-gradient-to-r from-[#C8041C] to-[#8A0314] text-white text-[8px] font-sans font-bold uppercase tracking-widest rounded-full">
-                            Popular
-                          </span>
-                        )}
-
-                        <div className="space-y-4">
-                          <div>
-                            <h5 className="text-lg font-bold tracking-tight text-brand-charcoal uppercase">
-                              {plan.name}
-                            </h5>
-                            <p className="text-xs text-brand-charcoal/50 font-sans lowercase block mt-0.5">
-                              {plan.desc}
-                            </p>
-                          </div>
-
-                          <div className="pt-2">
-                            <span className="text-3xl font-extrabold text-brand-charcoal tracking-tight leading-none">
-                              {plan.price}
-                            </span>
-                            <span className="text-[10px] text-brand-charcoal/40 font-sans lowercase ml-1">
-                              / {plan.period}
-                            </span>
-                          </div>
-
-                          <ul className="space-y-2 pt-4 border-t border-brand-charcoal/5">
-                            {plan.highlights.map((highlight, hIdx) => (
-                              <li key={hIdx} className="text-xs text-brand-charcoal/70 flex items-center gap-2 font-sans">
-                                <span className="w-1.5 h-1.5 bg-[#C8041C] rounded-full shrink-0" />
-                                <span>{highlight}</span>
-                              </li>
-                            ))}
-                          </ul>
+                return (
+                  <div 
+                    key={service.id}
+                    className="bg-brand-white border border-[#E6E6E6] p-8 rounded-none flex flex-col justify-between min-h-[580px] hover:border-brand-charcoal/30 transition-all duration-300"
+                  >
+                    <div>
+                      {/* Service Card Header */}
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="w-12 h-12 bg-[#C8041C] text-white flex items-center justify-center rounded-none shrink-0">
+                          <IconComponent className="w-5 h-5" />
                         </div>
-
-                        <button
-                          onClick={() => setSelectedPlanId(plan.id)}
-                          className={`w-full py-3 text-[10px] font-sans font-bold uppercase tracking-wider transition-all duration-300 border ${
-                            isPlanActive
-                              ? 'bg-gradient-to-r from-[#C8041C] to-[#8A0314] border-[#C8041C] text-white'
-                              : 'bg-transparent border-brand-charcoal/20 text-brand-charcoal hover:border-brand-charcoal hover:bg-brand-charcoal/5'
-                          }`}
-                        >
-                          {isPlanActive ? 'SELECTED' : 'SELECT PLAN'}
-                        </button>
+                        <div>
+                          <h3 className="text-sm font-black uppercase tracking-wider text-brand-charcoal font-sans leading-none">
+                            {service.name}
+                          </h3>
+                        </div>
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
 
-              {/* Bottom CTA Button */}
-              <div className="flex justify-center w-full pt-0">
-                <button
-                  onClick={handleContinueToForm}
-                  className="w-[290px] h-[44px] bg-white border border-brand-charcoal text-brand-charcoal rounded-[22px] px-6 text-xs font-sans font-bold uppercase tracking-wider transition-all duration-300 ease-out hover:bg-gradient-to-r hover:from-[#C8041C] hover:to-[#8A0314] hover:border-[#C8041C] hover:text-white flex justify-between items-center group cursor-pointer"
-                >
-                  <span>CHOOSE {activeService.name}</span>
-                  <span className="font-sans text-sm transition-transform duration-300 ease-out group-hover:translate-x-1.5">
-                    →
-                  </span>
-                </button>
-              </div>
+                      {/* Description */}
+                      <p className="text-xs text-brand-charcoal/60 leading-relaxed mb-6 font-sans">
+                        {service.desc}
+                      </p>
 
+                      {/* Deliverables List */}
+                      <div className="space-y-3 mb-8">
+                        <span className="text-[9px] font-bold text-[#C8041C] tracking-widest uppercase block font-sans">
+                          WHAT'S INCLUDED
+                        </span>
+                        <ul className="space-y-2">
+                          {service.deliverables.slice(0, 4).map((del, dIdx) => (
+                            <li key={dIdx} className="text-xs text-brand-charcoal/70 flex items-start gap-2 font-sans">
+                              <span className="w-1.5 h-1.5 bg-[#C8041C] rounded-none shrink-0 mt-1.5" />
+                              <span>{del}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Plans Selector Table */}
+                    <div className="space-y-4 pt-6 border-t border-[#E6E6E6]">
+                      <span className="text-[9px] font-bold text-brand-charcoal/40 tracking-widest uppercase block font-sans">
+                        SELECT A PLAN TO BOOK
+                      </span>
+                      <div className="border border-[#E6E6E6] rounded-none divide-y divide-[#E6E6E6] overflow-hidden bg-brand-white">
+                        {service.plans.map((plan) => (
+                          <button
+                            key={plan.id}
+                            onClick={() => {
+                              setActiveServiceId(service.id);
+                              setSelectedPlanId(plan.id);
+                              setDirection(1);
+                              setStep(2);
+                            }}
+                            className="w-full p-4 flex items-center justify-between hover:bg-[#FAF9F9] text-left transition-colors duration-200 group/plan"
+                          >
+                            <div className="space-y-0.5">
+                              <span className="text-xs font-bold text-brand-charcoal uppercase block group-hover/plan:text-[#C8041C] transition-colors duration-200">
+                                {plan.name}
+                              </span>
+                              <span className="text-[9px] text-brand-charcoal/40 lowercase block">
+                                {plan.desc}
+                              </span>
+                            </div>
+                            <div className="text-right flex items-center gap-3">
+                              <div className="space-y-0.5">
+                                <span className="text-xs font-black text-brand-charcoal block leading-none">
+                                  {plan.price}
+                                </span>
+                                <span className="text-[8px] text-brand-charcoal/40 lowercase block">
+                                  / {plan.period}
+                                </span>
+                              </div>
+                              <span className="text-brand-charcoal/30 group-hover/plan:text-[#C8041C] transition-colors duration-200 text-xs font-bold font-mono">
+                                →
+                              </span>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                  </div>
+                );
+              })}
             </motion.div>
           )}
 

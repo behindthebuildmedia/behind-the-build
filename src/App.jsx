@@ -8,15 +8,11 @@ import Hero from './sections/Hero/Hero';
 import FeaturedWork from './sections/FeaturedWork/FeaturedWork';
 
 // Lazy load below-the-fold sections
-const Partners = lazy(() => import('./sections/Partners/Partners'));
-const Impact = lazy(() => import('./sections/Impact/Impact'));
-const BrandStatement = lazy(() => import('./sections/BrandStatement/BrandStatement'));
+const MediaDigital = lazy(() => import('./sections/MediaDigital/MediaDigital'));
 const PlanBuilder = lazy(() => import('./sections/PlanBuilder/PlanBuilder'));
 const Process = lazy(() => import('./sections/Process/Process'));
-const About = lazy(() => import('./sections/About/About'));
 const WhyChooseUs = lazy(() => import('./sections/WhyChooseUs/WhyChooseUs'));
 const Testimonials = lazy(() => import('./sections/Testimonials/Testimonials'));
-const Connect = lazy(() => import('./sections/Connect/Connect'));
 const FinalCTA = lazy(() => import('./sections/FinalCTA/FinalCTA'));
 const Footer = lazy(() => import('./sections/Footer/Footer'));
 
@@ -183,17 +179,13 @@ function App() {
         ) : (
           <>
             <Hero />
-            <FeaturedWork />
             <Suspense fallback={<div className="min-h-[200px]" />}>
-              <Partners />
-              <Impact />
-              <BrandStatement />
+              <MediaDigital />
+              <FeaturedWork />
               <PlanBuilder key={planBuilderKey} onSuccess={(id) => setSubmitted_booking_id(id)} />
               <Process />
-              <About />
               <WhyChooseUs />
               <Testimonials />
-              <Connect />
               <FinalCTA />
             </Suspense>
           </>

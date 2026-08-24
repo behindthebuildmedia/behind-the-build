@@ -269,106 +269,6 @@ const DETAIL_PROJECT_STORIES = {
   }
 };
 
-function ProjectStoryCard({ project, onOpenDetail }) {
-  return (
-    <div
-      onClick={onOpenDetail}
-      className="group cursor-pointer text-left space-y-6"
-    >
-      {/* 1. IMAGE AREA */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-[#212121]/10 bg-brand-lightgray shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-all duration-300">
-        
-        {/* Subtle dark gradient overlay for text visibility */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-85 z-10 pointer-events-none" />
-        
-        <video
-          src={project.videoUrl}
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-[1.02] transition-all duration-500 ease-out"
-        />
-
-        {/* Small Red Accent Line and Service Category label inside image */}
-        <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
-          <span className="w-3 h-[2px] bg-[#C8041C]" />
-          <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-white">
-            {project.servicesDelivered[0]}
-          </span>
-        </div>
-      </div>
-
-      {/* 2. CASE STUDY DETAILS */}
-      <div className="space-y-4">
-        {/* Case Study Label */}
-        <p className="text-[10px] font-sans font-bold uppercase tracking-wider text-[#212121]/45">
-          {project.id === 'consistency-ai' ? 'CASE STUDY 01' : 'CASE STUDY 02'}
-        </p>
-
-        {/* Title and View Case Row */}
-        <div className="flex justify-between items-baseline gap-4">
-          <div>
-            <h3 className="text-2xl font-black uppercase tracking-tight text-[#212121] leading-none font-sans">
-              {project.name}
-            </h3>
-            <p className="text-xs text-[#212121]/60 font-sans mt-1.5">
-              {project.id === 'consistency-ai' ? 'AI Education Platform' : 'Mental Health & Wellness Platform'}
-            </p>
-          </div>
-          <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-[#212121] group-hover:text-[#C8041C] transition-colors shrink-0">
-            VIEW CASE &rarr;
-          </span>
-        </div>
-
-        {/* Divider */}
-        <hr className="border-[#212121]/10" />
-
-        {/* 3. RESULTS (Metrics) */}
-        <div className="grid grid-cols-3 gap-4 py-2">
-          {project.results.map((res, idx) => {
-            const match = res.match(/^([\d.x\u00D7MX+]+)(.*)$/i);
-            const value = match ? match[1].trim() : res;
-            const label = match ? match[2].trim() : '';
-
-            return (
-              <div key={idx} className="space-y-1">
-                <p className="text-2xl sm:text-3xl font-black text-[#C8041C] tracking-tight leading-none font-sans">
-                  {value}
-                </p>
-                <p className="text-[9px] sm:text-[10px] font-sans font-bold uppercase tracking-wider text-[#212121]/50 leading-tight">
-                  {label}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Divider */}
-        <hr className="border-[#212121]/10" />
-
-        {/* 4. DETAILS ROW (Duration, Services, Industry) */}
-        <div className="grid grid-cols-3 gap-4 text-xs font-sans text-[#212121]/60">
-          <div>
-            <p className="font-bold text-[#212121] uppercase text-[9px] tracking-wider mb-1">DURATION</p>
-            <p>{project.duration}</p>
-          </div>
-          <div>
-            <p className="font-bold text-[#212121] uppercase text-[9px] tracking-wider mb-1">SERVICES</p>
-            <p className="line-clamp-1">{project.servicesDelivered.slice(0, 2).join(', ')}</p>
-          </div>
-          <div>
-            <p className="font-bold text-[#212121] uppercase text-[9px] tracking-wider mb-1">INDUSTRY</p>
-            <p className="line-clamp-1">
-              {project.id === 'consistency-ai' ? 'AI Education' : 'Mental Health & Wellness'}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function FeaturedWork() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [activeShowcaseTab, setActiveShowcaseTab] = useState('All');
@@ -380,6 +280,29 @@ export default function FeaturedWork() {
     'consistency-ai': 'result',
     'delusionai': 'result'
   });
+
+  const handleOpenDetail = (project) => {
+    setSelectedProject(project);
+    setActiveShowcaseTab('All');
+    document.body.style.overflow = 'hidden'; // prevent background scrolling
+  };
+
+  const handleCloseDetail = () => {
+    setSelectedProject(null);
+    document.body.style.overflow = ''; // restore scrolling
+  };
+
+  const handleCtaClick = () => {
+    handleCloseDetail();
+    // Scroll to configurator
+    const configurator = document.querySelector('#build-plan');
+    if (configurator) {
+      const headerOffset = 80;
+      const elementPosition = configurator.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    }
+  };
 
   // Dynamic SEO Metadata for Case Study Dialog
   useEffect(() => {
@@ -478,88 +401,148 @@ export default function FeaturedWork() {
 
   }, [selectedProject]);
 
-  const handleOpenDetail = (project) => {
-    setSelectedProject(project);
-    setActiveShowcaseTab('All');
-    document.body.style.overflow = 'hidden'; // prevent background scrolling
-  };
-
-  const handleCloseDetail = () => {
-    setSelectedProject(null);
-    document.body.style.overflow = ''; // restore scrolling
-  };
-
-  const handleCtaClick = () => {
-    handleCloseDetail();
-    // Scroll to configurator
-    const configurator = document.querySelector('#build-plan');
-    if (configurator) {
-      const headerOffset = 60;
-      const elementPosition = configurator.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-    }
-  };
-
-  const cardVariants = {
-    initial: { y: 0 },
-    hover: { 
-      y: -10, 
-      transition: { duration: 0.35, ease: 'easeOut' } 
-    }
-  };
-
-  const arrowVariants = {
-    initial: { x: 0, y: 0 },
-    hover: { x: 3, y: -3, transition: { duration: 0.2, ease: 'easeInOut' } }
-  };
-
-  const lineVariants = {
-    initial: { width: 0 },
-    hover: { width: '100%', transition: { duration: 0.3, ease: 'easeInOut' } }
-  };
-
-  const overlayMaskVariants = {
-    initial: { opacity: 0 },
-    hover: { opacity: 0.15, transition: { duration: 0.3 } }
-  };
-
   return (
-    <section id="work" className="py-20 md:py-24 bg-white relative overflow-hidden border-t border-brand-charcoal/5">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+    <section id="work" className="py-24 bg-brand-white relative overflow-hidden border-t border-brand-charcoal/5">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
         
         {/* Section Header */}
         <ScrollReveal>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end mb-16 text-left">
-            <div className="md:col-span-7 space-y-4">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-20 text-left">
+            <div className="space-y-4">
               <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C]">
-                01 / CASE STUDIES
+                04 / OUR WORK
               </p>
-              <h2 className="text-4xl sm:text-5xl lg:text-[45px] font-black uppercase tracking-tight text-[#212121] leading-none">
-                WORK THAT <span className="text-[#C8041C]">SPEAKS.</span>
+              <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-none">
+                OUR WORK<span className="text-[#C8041C]">.</span>
               </h2>
-              <p className="text-sm sm:text-base font-bold uppercase tracking-wider text-[#212121]/50 font-sans">
-                Real projects. Real execution. Real results.
-              </p>
-            </div>
-            <div className="md:col-span-5 md:pl-6 border-l border-[#212121]/10">
-              <p className="text-sm sm:text-base text-[#212121]/70 leading-relaxed font-sans">
-                We partner with brands and creators to craft visual stories that engage audiences and deliver measurable impact.
+              <p className="text-sm md:text-base text-brand-charcoal/60 leading-relaxed font-sans max-w-xl">
+                A selection of brands, campaigns and stories we've helped bring to life.
               </p>
             </div>
           </div>
         </ScrollReveal>
 
-        {/* 2-Column Portfolio Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-start">
-          {projects.map((project, idx) => (
-            <ScrollReveal key={project.id} delay={shouldReduceMotion ? 0 : idx * 0.08} className="w-full">
-              <ProjectStoryCard
-                project={project}
-                onOpenDetail={() => handleOpenDetail(project)}
-              />
-            </ScrollReveal>
-          ))}
+        {/* Premium Asymmetric Editorial Project Rows */}
+        <div className="space-y-24 lg:space-y-32">
+          {projects.slice(0, 2).map((project, idx) => {
+            const isLeftImage = idx % 2 === 0;
+            const subtitleText = project.id === 'consistency-ai' ? 'AI Education Platform' : 'Mental Health & Wellness';
+            const workLabel = `WORK ${String(idx + 1).padStart(2, '0')}`;
+            const projectDesc = project.id === 'consistency-ai' 
+              ? "We helped Consistency.AI build a powerful digital presence through high-impact content and consistent storytelling that connects, educates, and grows."
+              : "We created meaningful content and digital campaigns that build awareness, spark conversations, and strengthen the brand's online presence.";
+            
+            const servicesList = project.id === 'consistency-ai' 
+              ? ['VIDEO EDITING', 'SOCIAL MEDIA'] 
+              : ['SOCIAL MEDIA', 'CONTENT CREATION'];
+
+            const imageArea = (
+              <div 
+                onClick={() => handleOpenDetail(project)}
+                className="relative aspect-[16/10] w-full overflow-hidden rounded-none border border-[#E6E6E6] bg-brand-lightgray cursor-pointer group"
+              >
+                <div className="absolute inset-0 bg-brand-charcoal/10 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                <video
+                  src={project.videoUrl}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-[1.03] transition-all duration-500 ease-out"
+                />
+                <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
+                  <span className="w-3 h-[2.5px] bg-[#C8041C]" />
+                  <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-white drop-shadow-md">
+                    {project.servicesDelivered[0]}
+                  </span>
+                </div>
+              </div>
+            );
+
+            const infoArea = (
+              <div className="flex flex-col justify-center text-left space-y-6 lg:px-6">
+                <div className="space-y-2">
+                  <span className="text-[10px] font-bold tracking-widest text-[#C8041C] uppercase font-mono block">
+                    {workLabel}
+                  </span>
+                  <h3 
+                    onClick={() => handleOpenDetail(project)}
+                    className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-brand-charcoal cursor-pointer hover:text-[#C8041C] transition-colors duration-300 font-sans"
+                  >
+                    {project.name}
+                  </h3>
+                  <span className="text-xs text-brand-charcoal/50 uppercase tracking-wider font-bold block">
+                    {subtitleText}
+                  </span>
+                </div>
+
+                <p className="text-sm text-brand-charcoal/70 leading-relaxed font-sans font-normal">
+                  {projectDesc}
+                </p>
+
+                {/* Services Tags */}
+                <div className="flex flex-wrap gap-2">
+                  {servicesList.map((srv, sIdx) => (
+                    <span 
+                      key={sIdx} 
+                      className="text-[9px] font-sans font-bold uppercase tracking-wider px-3 py-1.5 bg-[#F3F3F3] text-brand-charcoal/80 border border-[#E6E6E6] rounded-none"
+                    >
+                      {srv}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Metrics */}
+                <div className="grid grid-cols-3 gap-4 pt-4 border-t border-[#E6E6E6]">
+                  {project.results.map((res, rIdx) => {
+                    const match = res.match(/^([\d.x\u00D7MX+]+)(.*)$/i);
+                    const val = match ? match[1].trim() : res;
+                    const lbl = match ? match[2].trim() : '';
+
+                    return (
+                      <div key={rIdx} className="space-y-1">
+                        <span className="text-xl sm:text-2xl font-black text-[#C8041C] tracking-tight leading-none block font-sans">
+                          {val}
+                        </span>
+                        <span className="text-[9px] font-sans font-bold uppercase tracking-wider text-brand-charcoal/40 leading-none block">
+                          {lbl}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* View Project Link */}
+                <div className="pt-4">
+                  <button 
+                    onClick={() => handleOpenDetail(project)}
+                    className="group flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-charcoal hover:text-[#C8041C] transition-colors duration-300 font-sans"
+                  >
+                    <span>VIEW PROJECT</span>
+                    <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+                  </button>
+                </div>
+              </div>
+            );
+
+            return (
+              <ScrollReveal key={project.id} delay={shouldReduceMotion ? 0 : idx * 0.08} className="w-full">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                  {isLeftImage ? (
+                    <>
+                      <div className="lg:col-span-7">{imageArea}</div>
+                      <div className="lg:col-span-5">{infoArea}</div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="lg:col-span-7 order-first lg:order-last">{imageArea}</div>
+                      <div className="lg:col-span-5">{infoArea}</div>
+                    </>
+                  )}
+                </div>
+              </ScrollReveal>
+            );
+          })}
         </div>
 
       </div>
