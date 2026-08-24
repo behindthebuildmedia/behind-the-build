@@ -15,36 +15,43 @@ const allowedOrigins = [
   'https://behindthebuild.co',
   'https://www.behindthebuild.co',
   'https://behindthebuild.in',
-  'https://www.behindthebuild.in'
+  'https://www.behindthebuild.in',
+  'https://behindthebuild-fawn.vercel.app'
 ];
 
 if (process.env.FRONTEND_URL) {
-  allowedOrigins.push(process.env.FRONTEND_URL);
+  const formattedFrontendUrl = process.env.FRONTEND_URL.replace(/\/$/, '');
+  allowedOrigins.push(formattedFrontendUrl);
 }
 
-if (process.env.NODE_ENV !== 'production') {
-  allowedOrigins.push('http://localhost:5173');
-  allowedOrigins.push('http://localhost:5174');
-  allowedOrigins.push('http://localhost:5000');
-}
+// Regex to safely allow Vercel previews over HTTPS (e.g. https://*.vercel.app)
+const vercelPreviewRegex = /^https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/;
+// Regex to allow localhost in development
+const localhostRegex = /^http:\/\/localhost:\d+$/;
 
 app.use(cors({
   origin: (origin, callback) => {
     // Allow non-browser requests (e.g. tools, backend calls)
     if (!origin) return callback(null, true);
-    
-    // In development, dynamically allow any localhost origin port
-    if (process.env.NODE_ENV !== 'production' && /^http:\/\/localhost:\d+$/.test(origin)) {
+
+    const cleanedOrigin = origin.replace(/\/$/, '');
+
+    if (allowedOrigins.indexOf(cleanedOrigin) !== -1) {
       return callback(null, true);
     }
 
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (vercelPreviewRegex.test(cleanedOrigin)) {
       return callback(null, true);
-    } else {
-      return callback(new Error('Blocked by CORS policy'));
     }
+
+    if (localhostRegex.test(cleanedOrigin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error('Blocked by CORS policy'));
   },
-  credentials: true
+  credentials: true,
+  optionsSuccessStatus: 200
 }));
 
 app.use(express.json());
