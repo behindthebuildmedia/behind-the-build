@@ -9,6 +9,7 @@ import FeaturedWork from './sections/FeaturedWork/FeaturedWork';
 
 // Lazy load below-the-fold sections
 const MediaDigital = lazy(() => import('./sections/MediaDigital/MediaDigital'));
+const Clients = lazy(() => import('./sections/Clients/Clients'));
 const PlanBuilder = lazy(() => import('./sections/PlanBuilder/PlanBuilder'));
 const Process = lazy(() => import('./sections/Process/Process'));
 const WhyChooseUs = lazy(() => import('./sections/WhyChooseUs/WhyChooseUs'));
@@ -181,6 +182,7 @@ function App() {
             <Hero />
             <Suspense fallback={<div className="min-h-[200px]" />}>
               <MediaDigital />
+              <Clients />
               <FeaturedWork />
               <PlanBuilder key={planBuilderKey} onSuccess={(id) => setSubmitted_booking_id(id)} />
               <Process />
