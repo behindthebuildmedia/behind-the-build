@@ -352,10 +352,20 @@ const DETAIL_PROJECT_STORIES = {
   }
 };
 
-export default function FeaturedWork() {
+export default function FeaturedWork({ initialProjectId }) {
   const [selectedProject, setSelectedProject] = useState(null);
   const [activeLightboxVideo, setActiveLightboxVideo] = useState(null);
   const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (initialProjectId) {
+      const project = projects.find(p => p.id === initialProjectId);
+      if (project) {
+        setSelectedProject(project);
+        document.body.style.overflow = 'hidden';
+      }
+    }
+  }, [initialProjectId]);
 
   const clipRevealVariants = {
     initial: { clipPath: 'inset(0 100% 0 0)' },

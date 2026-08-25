@@ -146,7 +146,13 @@ export default function Header({ onHomeRedirect }) {
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              if (window.location.pathname !== '/') {
+                if (onHomeRedirect) {
+                  onHomeRedirect();
+                }
+              } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
             }}
             className="flex items-center pl-2 sm:pl-4"
             aria-label="Behind the Build Home"

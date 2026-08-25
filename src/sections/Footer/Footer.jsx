@@ -50,6 +50,13 @@ export default function Footer() {
     }
   };
 
+  const handleSpaClick = (e, path) => {
+    e.preventDefault();
+    window.history.pushState(null, '', path);
+    window.dispatchEvent(new Event('popstate'));
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
   return (
     <footer 
       id="footer" 
@@ -221,6 +228,7 @@ export default function Footer() {
                 <li key={idx}>
                   <a 
                     href={item.path} 
+                    onClick={(e) => handleSpaClick(e, item.path)}
                     className="relative group text-[15px] font-bold text-[#212121] hover:text-[#C8041C] transition-colors duration-300 font-sans inline-block py-0.5"
                   >
                     <span>{item.label}</span>

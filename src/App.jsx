@@ -3,6 +3,8 @@ import { AnimatePresence } from 'framer-motion';
 import Header from './components/Header/Header';
 import Loader from './components/Loader/Loader';
 import Confirmation from './sections/Confirmation/Confirmation';
+import Privacy from './sections/Legal/Privacy';
+import Terms from './sections/Legal/Terms';
 
 import Hero from './sections/Hero/Hero';
 import FeaturedWork from './sections/FeaturedWork/FeaturedWork';
@@ -21,6 +23,33 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [submitted_booking_id, setSubmitted_booking_id] = useState(null);
   const [planBuilderKey, setPlanBuilderKey] = useState(0);
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+
+  // Monitor location changes
+  useEffect(() => {
+    const handleUrlChange = () => {
+      if (currentPath !== window.location.pathname) {
+        setCurrentPath(window.location.pathname);
+      }
+    };
+    const interval = setInterval(handleUrlChange, 100);
+    window.addEventListener('popstate', handleUrlChange);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('popstate', handleUrlChange);
+    };
+  }, [currentPath]);
+
+  const handleHomeRedirect = () => {
+    setSubmitted_booking_id(null);
+    if (window.location.pathname !== '/') {
+      window.history.pushState(null, '', '/');
+      setCurrentPath('/');
+    }
+  };
+
+  const caseStudyMatch = currentPath.match(/^\/case-studies\/([a-zA-Z0-9-]+)/);
+  const initialProjectId = caseStudyMatch ? caseStudyMatch[1] : null;
   
   // Custom scroll progress state
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -51,15 +80,25 @@ function App() {
   useEffect(() => {
     if (isLoading) return;
 
-    // 1. Define updates based on booking confirmation status
+    // 1. Define updates based on current path and booking confirmation status
     let title = "Behind the Build";
     let desc = "Behind the Build helps businesses, brands, and creators turn ideas into powerful visual stories through videography, photography, content creation, and custom remote video editing.";
-    let path = "/";
+    let path = currentPath;
 
-    if (submitted_booking_id) {
+    if (currentPath === '/privacy') {
+      title = "Privacy Policy | Behind the Build";
+      desc = "Behind The Build Privacy Policy. Learn how we collect, store, safeguard, and use your data when you visit our website or engage our creative media and marketing services.";
+    } else if (currentPath === '/terms') {
+      title = "Terms & Conditions | Behind the Build";
+      desc = "Behind The Build Terms & Conditions. Read our service agreements, project requests, intellectual property transfer rights, deliverables, and payment terms.";
+    } else if (submitted_booking_id) {
       title = "Booking Confirmed | Behind the Build";
       desc = `Thank you for choosing Behind the Build. Your project request (ID: ${submitted_booking_id}) has been received. Our creative team will contact you in 60 minutes.`;
       path = "/confirmation";
+    } else if (window.location.pathname.startsWith('/case-studies/')) {
+      path = window.location.pathname;
+    } else {
+      path = "/";
     }
 
     const canonicalUrl = `https://behindthebuild.in${path}`;
@@ -166,7 +205,7 @@ function App() {
       if (breadcrumbScript) breadcrumbScript.remove();
     }
 
-  }, [isLoading, submitted_booking_id]);
+  }, [isLoading, submitted_booking_id, currentPath]);
 
   return (
     <div className="relative min-h-screen bg-brand-offwhite text-brand-charcoal selection:bg-brand-red selection:text-brand-white">
@@ -184,11 +223,15 @@ function App() {
       </AnimatePresence>
 
       {/* Fixed top navigation */}
-      <Header onHomeRedirect={() => setSubmitted_booking_id(null)} />
+      <Header onHomeRedirect={handleHomeRedirect} />
 
       {/* Main page layout flow */}
       <main>
-        {submitted_booking_id ? (
+        {currentPath === '/privacy' ? (
+          <Privacy />
+        ) : currentPath === '/terms' ? (
+          <Terms />
+        ) : submitted_booking_id ? (
           <Confirmation 
             booking_id={submitted_booking_id}
             onBack={() => setSubmitted_booking_id(null)}
@@ -203,7 +246,7 @@ function App() {
             <Suspense fallback={<div className="min-h-[200px]" />}>
               <MediaDigital />
               <Clients />
-              <FeaturedWork />
+              <FeaturedWork initialProjectId={initialProjectId} />
               <PlanBuilder key={planBuilderKey} onSuccess={(id) => setSubmitted_booking_id(id)} />
               <Process />
               <WhyChooseUs />
