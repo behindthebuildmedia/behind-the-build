@@ -38,7 +38,7 @@ export default function Footer() {
     }
   };
 
-  const linkClass = "group flex items-center gap-1.5 text-brand-charcoal hover:text-[#C8041C] font-bold text-sm transition-all duration-300 transform hover:translate-x-1";
+  const linkClass = "group flex items-center gap-1.5 text-brand-charcoal/85 hover:text-[#C8041C] font-semibold text-sm transition-all duration-300 transform hover:translate-x-1 font-sans";
 
   const hoverDot = (
     <span className="w-1.5 h-1.5 bg-[#C8041C] rounded-none scale-0 group-hover:scale-100 transition-transform duration-300 shrink-0" />
@@ -49,13 +49,13 @@ export default function Footer() {
       id="footer" 
       className="bg-brand-white text-brand-charcoal pt-20 pb-8 relative overflow-hidden z-10 text-left font-sans border-t border-[#E5E5E5]"
     >
-      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 space-y-16">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 space-y-12">
         
-        {/* Main Grid: Left Column Brand + Right Columns Links */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        {/* Main Grid: 5 columns on desktop, 2 columns on tablet, single column stack on mobile */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1.2fr_1fr] gap-10 md:gap-12 items-start w-full">
           
-          {/* Brand Info */}
-          <ScrollReveal className="lg:col-span-5 space-y-6">
+          {/* Brand Info (spans across 2 columns on tablet, 1 column on desktop) */}
+          <ScrollReveal className="sm:col-span-2 lg:col-span-1 space-y-6">
             <img
               src={logoUrl}
               alt="Behind the Build Logo"
@@ -81,7 +81,7 @@ export default function Footer() {
             {/* Social Icons row */}
             <div className="flex gap-6 pt-2">
               {[
-                { icon: InstagramIcon, href: 'https://instagram.com/behindthebuild', label: 'Instagram' },
+                { icon: InstagramIcon, href: 'https://instagram.com/behindthebuild.co', label: 'Instagram' },
                 { icon: LinkedinIcon, href: 'https://linkedin.com/company/behindthebuild', label: 'LinkedIn' },
                 { icon: YoutubeIcon, href: 'https://youtube.com/@behindthebuild', label: 'YouTube' }
               ].map((social) => {
@@ -92,7 +92,7 @@ export default function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-brand-charcoal hover:text-[#C8041C] transition-all duration-300 hover:scale-110"
+                    className="text-brand-charcoal hover:text-[#C8041C] transform transition-all duration-300 hover:-translate-y-0.5"
                     aria-label={social.label}
                   >
                     <IconComponent />
@@ -102,122 +102,117 @@ export default function Footer() {
             </div>
           </ScrollReveal>
 
-          {/* Links Column Wrapper */}
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 lg:gap-6 xl:gap-8 w-full">
-            
-            {/* Services Links */}
-            <ScrollReveal delay={0.08} className="space-y-4">
-              <h4 className="text-xs font-bold text-[#C8041C] tracking-widest uppercase font-sans">
-                SERVICES
-              </h4>
-              <ul className="space-y-3">
-                {[
-                  { label: 'Video Editing', id: '#build-plan' },
-                  { label: 'Event Coverage', id: '#build-plan' },
-                  { label: 'Social Media & Design', id: '#build-plan' }
-                ].map((item, idx) => (
-                  <li key={idx}>
-                    <a 
-                      href={item.id} 
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleNavClick(item.id);
-                      }}
-                      className={linkClass}
-                    >
-                      {hoverDot}
-                      <span>{item.label}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </ScrollReveal>
-
-            {/* Company Links */}
-            <ScrollReveal delay={0.16} className="space-y-4">
-              <h4 className="text-xs font-bold text-[#C8041C] tracking-widest uppercase font-sans">
-                COMPANY
-              </h4>
-              <ul className="space-y-3">
-                {[
-                  { label: 'About Us', id: '#about' },
-                  { label: 'Our Process', id: '#process' },
-                  { label: 'Our Work', id: '#work' }
-                ].map((item, idx) => (
-                  <li key={idx}>
-                    <a 
-                      href={item.id} 
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleNavClick(item.id);
-                      }}
-                      className={linkClass}
-                    >
-                      {hoverDot}
-                      <span>{item.label}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </ScrollReveal>
-
-            {/* Contact Info */}
-            <ScrollReveal delay={0.24} className="space-y-4">
-              <h4 className="text-xs font-bold text-[#C8041C] tracking-widest uppercase font-sans">
-                CONTACT
-              </h4>
-              <ul className="space-y-3">
-                <li>
+          {/* Services Links */}
+          <ScrollReveal delay={0.08} className="space-y-4">
+            <h4 className="text-xs font-semibold text-[#C8041C] tracking-widest uppercase font-sans">
+              SERVICES
+            </h4>
+            <ul className="space-y-3">
+              {[
+                { label: 'Video Editing', id: '#build-plan' },
+                { label: 'Event Coverage', id: '#build-plan' },
+                { label: 'Social Media & Design', id: '#build-plan' }
+              ].map((item, idx) => (
+                <li key={idx}>
                   <a 
-                    href="mailto:admin@behindthebuild.in" 
-                    className="text-brand-charcoal hover:text-[#C8041C] font-bold text-sm lg:text-[13px] xl:text-sm lg:whitespace-nowrap transition-colors duration-300 break-words lg:break-normal block"
-                  >
-                    admin@behindthebuild.in
-                  </a>
-                </li>
-                <li className="text-brand-charcoal/70 font-medium text-sm">
-                  Hyderabad, India
-                </li>
-              </ul>
-            </ScrollReveal>
-
-            {/* Legal Links */}
-            <ScrollReveal delay={0.32} className="space-y-4">
-              <h4 className="text-xs font-bold text-[#C8041C] tracking-widest uppercase font-sans">
-                LEGAL
-              </h4>
-              <ul className="space-y-3">
-                <li>
-                  <a 
-                    href="/privacy" 
+                    href={item.id} 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick(item.id);
+                    }}
                     className={linkClass}
                   >
                     {hoverDot}
-                    <span>Privacy Policy</span>
+                    <span>{item.label}</span>
                   </a>
                 </li>
-                <li>
+              ))}
+            </ul>
+          </ScrollReveal>
+
+          {/* Company Links */}
+          <ScrollReveal delay={0.16} className="space-y-4">
+            <h4 className="text-xs font-semibold text-[#C8041C] tracking-widest uppercase font-sans">
+              COMPANY
+            </h4>
+            <ul className="space-y-3">
+              {[
+                { label: 'About Us', id: '#about' },
+                { label: 'Our Process', id: '#process' },
+                { label: 'Our Work', id: '#work' }
+              ].map((item, idx) => (
+                <li key={idx}>
                   <a 
-                    href="/terms" 
+                    href={item.id} 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick(item.id);
+                    }}
                     className={linkClass}
                   >
                     {hoverDot}
-                    <span>Terms & Conditions</span>
+                    <span>{item.label}</span>
                   </a>
                 </li>
-              </ul>
-            </ScrollReveal>
+              ))}
+            </ul>
+          </ScrollReveal>
 
-          </div>
+          {/* Contact Info */}
+          <ScrollReveal delay={0.24} className="space-y-4">
+            <h4 className="text-xs font-semibold text-[#C8041C] tracking-widest uppercase font-sans">
+              CONTACT
+            </h4>
+            <ul className="space-y-3">
+              <li>
+                <a 
+                  href="mailto:admin@behindthebuild.in" 
+                  className="text-brand-charcoal hover:text-[#C8041C] font-semibold text-sm lg:whitespace-nowrap transition-colors duration-300 block"
+                >
+                  admin@behindthebuild.in
+                </a>
+              </li>
+              <li className="text-brand-charcoal/70 font-medium text-sm font-sans">
+                Hyderabad, India
+              </li>
+            </ul>
+          </ScrollReveal>
+
+          {/* Legal Links */}
+          <ScrollReveal delay={0.32} className="space-y-4">
+            <h4 className="text-xs font-semibold text-[#C8041C] tracking-widest uppercase font-sans">
+              LEGAL
+            </h4>
+            <ul className="space-y-3">
+              <li>
+                <a 
+                  href="/privacy" 
+                  className={linkClass}
+                >
+                  {hoverDot}
+                  <span>Privacy Policy</span>
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="/terms" 
+                  className={linkClass}
+                >
+                  {hoverDot}
+                  <span>Terms & Conditions</span>
+                </a>
+              </li>
+            </ul>
+          </ScrollReveal>
 
         </div>
 
         {/* Divider */}
-        <hr className="border-[#E5E5E5] w-full" />
+        <hr className="border-[#E5E5E5] w-full mt-8" />
 
         {/* Bottom Copyright & Legal links alignment */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs font-sans text-brand-charcoal/60 leading-none">
-          <p className="font-medium">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs font-sans text-brand-charcoal/60 leading-none pt-2">
+          <p className="font-semibold">
             &copy; 2026 Behind The Build. All rights reserved.
           </p>
           <div className="hidden md:flex gap-6 items-center">

@@ -457,7 +457,6 @@ export default function FeaturedWork() {
               <div 
                 onClick={() => handleOpenDetail(project)}
                 className="relative aspect-[16/10] w-full overflow-hidden rounded-none border border-[#E6E6E6] bg-brand-lightgray cursor-pointer"
-                data-cursor="VIEW PROJECT"
               >
                 <div className="absolute inset-0 bg-brand-charcoal/5 group-hover:bg-transparent transition-colors duration-500 z-10" />
                 <video

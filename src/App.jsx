@@ -24,12 +24,6 @@ function App() {
   
   // Custom scroll progress state
   const [scrollProgress, setScrollProgress] = useState(0);
-  
-  // Custom cursor states for desktop pointer devices
-  const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
-  const [cursorHovered, setCursorHovered] = useState(false);
-  const [cursorText, setCursorText] = useState('');
-  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,42 +35,6 @@ function App() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  useEffect(() => {
-    // Check if device pointer matches desktop (fine hover capabilities)
-    const mediaQuery = window.matchMedia('(pointer: fine)');
-    setIsDesktop(mediaQuery.matches);
-
-    const handleMouseMove = (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-
-    if (mediaQuery.matches) {
-      window.addEventListener('mousemove', handleMouseMove);
-    }
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!isDesktop) return;
-
-    const handleMouseOver = (e) => {
-      const target = e.target.closest('[data-cursor], a, button, [role="button"]');
-      if (target) {
-        setCursorHovered(true);
-        const text = target.getAttribute('data-cursor');
-        setCursorText(text || '');
-      } else {
-        setCursorHovered(false);
-        setCursorText('');
-      }
-    };
-
-    window.addEventListener('mouseover', handleMouseOver);
-    return () => window.removeEventListener('mouseover', handleMouseOver);
-  }, [isDesktop]);
 
   useEffect(() => {
     if (isLoading) {
@@ -211,32 +169,12 @@ function App() {
   }, [isLoading, submitted_booking_id]);
 
   return (
-    <div className={`relative min-h-screen bg-brand-offwhite text-brand-charcoal selection:bg-brand-red selection:text-brand-white ${isDesktop && cursorHovered ? 'cursor-none' : ''}`}>
+    <div className="relative min-h-screen bg-brand-offwhite text-brand-charcoal selection:bg-brand-red selection:text-brand-white">
       {/* Scroll Progress Indicator */}
       <div 
         className="fixed top-0 left-0 h-[2px] bg-[#C8041C] z-[9999] transition-all duration-100 ease-out pointer-events-none" 
         style={{ width: `${scrollProgress}%` }}
       />
-
-      {/* Desktop Custom Cursor */}
-      {isDesktop && (
-        <div 
-          className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full flex items-center justify-center font-bold text-[8px] uppercase tracking-widest text-white transition-all duration-200 ease-out -translate-x-1/2 -translate-y-1/2 ${
-            cursorHovered 
-              ? 'w-16 h-16 bg-[#C8041C] border border-[#C8041C] scale-100' 
-              : 'w-4 h-4 bg-transparent border border-brand-charcoal/30 scale-100'
-          }`}
-          style={{
-            left: `${mousePos.x}px`,
-            top: `${mousePos.y}px`,
-            transitionProperty: 'width, height, background-color, border-color, transform'
-          }}
-        >
-          {cursorHovered && cursorText && (
-            <span className="text-center px-2 font-sans font-black tracking-widest leading-none text-white whitespace-nowrap">{cursorText}</span>
-          )}
-        </div>
-      )}
 
       {/* Loading Screen */}
       <AnimatePresence>
