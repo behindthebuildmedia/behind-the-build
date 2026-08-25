@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Menu, ArrowRight } from 'lucide-react';
 import logoUrl from '../../assets/images/btb logo.webp';
 import MobileMenu from '../MobileMenu/MobileMenu';
 
 export default function Header({ onHomeRedirect }) {
+  const shouldReduceMotion = useReducedMotion();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
@@ -121,7 +124,12 @@ export default function Header({ onHomeRedirect }) {
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full z-50 pointer-events-none flex justify-center">
+      <motion.header 
+        initial={shouldReduceMotion ? {} : { y: -25, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+        className="fixed top-0 left-0 w-full z-50 pointer-events-none flex justify-center"
+      >
         <div 
           style={{
             height: isScrolled ? '64px' : '72px',
@@ -210,7 +218,7 @@ export default function Header({ onHomeRedirect }) {
             </button>
           </div>
         </div>
-      </header>
+      </motion.header>
 
       <MobileMenu
         isOpen={isMobileMenuOpen}

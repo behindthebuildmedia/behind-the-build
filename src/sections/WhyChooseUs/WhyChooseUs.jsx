@@ -79,15 +79,15 @@ export default function WhyChooseUs() {
                 <ScrollReveal
                   key={feature.id}
                   delay={idx * 0.06}
-                  className="bg-brand-white p-8 border border-[#E6E6E6] rounded-none transition-all duration-300 flex flex-col items-start select-none relative group hover:border-brand-charcoal/40"
+                  className="bg-brand-white p-8 border border-[#E6E6E6] rounded-none flex flex-col items-start select-none relative group hover:border-[#C8041C]/35 hover:-translate-y-1 transition-all duration-300 cursor-default"
                 >
                   {/* Icon Box */}
-                  <div className="w-10 h-10 bg-[#FAF9F9] border border-[#E6E6E6] flex items-center justify-center rounded-none shrink-0 group-hover:scale-105 transition-transform duration-300">
-                    <Icon className="w-4 h-4 text-[#C8041C]" />
+                  <div className="w-10 h-10 bg-[#FAF9F9] border border-[#E6E6E6] flex items-center justify-center rounded-none shrink-0 transition-all duration-300 group-hover:bg-brand-white group-hover:border-[#C8041C]/20">
+                    <Icon className="w-4 h-4 text-brand-charcoal group-hover:text-[#C8041C] transform transition-all duration-300 group-hover:-translate-y-0.5" />
                   </div>
 
                   {/* Title & Description */}
-                  <h4 className="text-sm font-black text-brand-charcoal font-sans uppercase tracking-wider mt-6">
+                  <h4 className="text-sm font-black text-brand-charcoal font-sans uppercase tracking-wider mt-6 transform transition-all duration-300 group-hover:translate-x-1">
                     {feature.title}
                   </h4>
                   <p className="text-xs text-brand-charcoal/50 leading-relaxed font-sans font-normal mt-3">

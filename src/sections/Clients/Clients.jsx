@@ -12,6 +12,14 @@ export default function Clients() {
     }
   };
 
+  const cardHoverVariants = {
+    rest: { y: 0 },
+    hover: { 
+      y: -3,
+      transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] }
+    }
+  };
+
   return (
     <section id="clients" className="py-16 sm:py-20 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans flex items-center justify-center min-h-[420px] lg:min-h-[480px] lg:max-h-[520px]">
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 w-full text-center flex flex-col justify-center items-center">
@@ -53,6 +61,7 @@ export default function Clients() {
               initial="rest"
               whileHover="hover"
               animate="rest"
+              variants={cardHoverVariants}
               className="flex flex-col items-center justify-center cursor-default relative py-4 px-4 w-full max-w-[280px]"
             >
               <div className="h-20 flex items-center justify-center w-full">
@@ -82,6 +91,7 @@ export default function Clients() {
               initial="rest"
               whileHover="hover"
               animate="rest"
+              variants={cardHoverVariants}
               className="flex flex-col items-center justify-center cursor-default relative py-4 px-4 w-full max-w-[280px]"
             >
               <div className="h-20 flex items-center justify-center w-full">

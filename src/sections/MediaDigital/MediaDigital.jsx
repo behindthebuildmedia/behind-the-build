@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
 
 export default function MediaDigital() {
+  const [hoveredCard, setHoveredCard] = useState(null);
+
   const mediaItems = [
     'Video Production',
     'Video Editing',
@@ -23,15 +26,15 @@ export default function MediaDigital() {
     hover: { 
       borderLeftWidth: 4, 
       borderLeftColor: '#C8041C',
-      transition: { duration: 0.25, ease: 'easeOut' }
+      transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] }
     }
   };
 
   const itemVariants = {
     rest: { x: 0 },
     hover: { 
-      x: 3,
-      transition: { duration: 0.25, ease: 'easeOut' }
+      x: 4,
+      transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] }
     }
   };
 
@@ -74,11 +77,17 @@ export default function MediaDigital() {
                 whileHover="hover"
                 animate="rest"
                 variants={cardVariants}
-                className="bg-brand-white border border-[#E6E6E6] p-8 rounded-none flex flex-col justify-between h-[360px] cursor-default"
+                onMouseEnter={() => setHoveredCard('media')}
+                onMouseLeave={() => setHoveredCard(null)}
+                className={`bg-brand-white border border-[#E6E6E6] p-8 rounded-none flex flex-col justify-between h-[360px] cursor-default transition-all duration-300 ${
+                  hoveredCard && hoveredCard !== 'media' ? 'opacity-40' : 'opacity-100'
+                } ${hoveredCard === 'media' ? 'bg-[#FAF9F9] border-[#C8041C]/20' : ''}`}
               >
                 <div className="space-y-6">
                   <div className="flex justify-between items-start">
-                    <h3 className="text-xl font-bold tracking-tight text-brand-charcoal uppercase">
+                    <h3 className={`text-xl font-bold tracking-tight uppercase transition-colors duration-300 ${
+                      hoveredCard === 'media' ? 'text-[#C8041C]' : 'text-brand-charcoal'
+                    }`}>
                       MEDIA
                     </h3>
                     <span className="text-3xl font-black text-[#E6E6E6] leading-none select-none font-mono">
@@ -109,11 +118,17 @@ export default function MediaDigital() {
                 whileHover="hover"
                 animate="rest"
                 variants={cardVariants}
-                className="bg-brand-white border border-[#E6E6E6] p-8 rounded-none flex flex-col justify-between h-[360px] cursor-default"
+                onMouseEnter={() => setHoveredCard('digital')}
+                onMouseLeave={() => setHoveredCard(null)}
+                className={`bg-brand-white border border-[#E6E6E6] p-8 rounded-none flex flex-col justify-between h-[360px] cursor-default transition-all duration-300 ${
+                  hoveredCard && hoveredCard !== 'digital' ? 'opacity-40' : 'opacity-100'
+                } ${hoveredCard === 'digital' ? 'bg-[#FAF9F9] border-[#C8041C]/20' : ''}`}
               >
                 <div className="space-y-6">
                   <div className="flex justify-between items-start">
-                    <h3 className="text-xl font-bold tracking-tight text-brand-charcoal uppercase">
+                    <h3 className={`text-xl font-bold tracking-tight uppercase transition-colors duration-300 ${
+                      hoveredCard === 'digital' ? 'text-[#C8041C]' : 'text-brand-charcoal'
+                    }`}>
                       DIGITAL
                     </h3>
                     <span className="text-3xl font-black text-[#E6E6E6] leading-none select-none font-mono">

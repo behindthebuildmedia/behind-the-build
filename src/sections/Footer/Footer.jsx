@@ -1,4 +1,5 @@
 import logoUrl from '../../assets/images/btb logo.webp';
+import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
 
 // Custom inline SVG icons to prevent lucide-react version export errors
 const InstagramIcon = (props) => (
@@ -54,7 +55,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
           {/* Brand Info */}
-          <div className="lg:col-span-5 space-y-6">
+          <ScrollReveal className="lg:col-span-5 space-y-6">
             <img
               src={logoUrl}
               alt="Behind the Build Logo"
@@ -99,13 +100,13 @@ export default function Footer() {
                 );
               })}
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Links Column Wrapper */}
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 lg:gap-6 xl:gap-8 w-full">
             
             {/* Services Links */}
-            <div className="space-y-4">
+            <ScrollReveal delay={0.08} className="space-y-4">
               <h4 className="text-xs font-bold text-[#C8041C] tracking-widest uppercase font-sans">
                 SERVICES
               </h4>
@@ -130,10 +131,10 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </ScrollReveal>
 
             {/* Company Links */}
-            <div className="space-y-4">
+            <ScrollReveal delay={0.16} className="space-y-4">
               <h4 className="text-xs font-bold text-[#C8041C] tracking-widest uppercase font-sans">
                 COMPANY
               </h4>
@@ -158,10 +159,10 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </ScrollReveal>
 
             {/* Contact Info */}
-            <div className="space-y-4">
+            <ScrollReveal delay={0.24} className="space-y-4">
               <h4 className="text-xs font-bold text-[#C8041C] tracking-widest uppercase font-sans">
                 CONTACT
               </h4>
@@ -178,10 +179,10 @@ export default function Footer() {
                   Hyderabad, India
                 </li>
               </ul>
-            </div>
+            </ScrollReveal>
 
             {/* Legal Links */}
-            <div className="space-y-4">
+            <ScrollReveal delay={0.32} className="space-y-4">
               <h4 className="text-xs font-bold text-[#C8041C] tracking-widest uppercase font-sans">
                 LEGAL
               </h4>
@@ -205,7 +206,7 @@ export default function Footer() {
                   </a>
                 </li>
               </ul>
-            </div>
+            </ScrollReveal>
 
           </div>
 

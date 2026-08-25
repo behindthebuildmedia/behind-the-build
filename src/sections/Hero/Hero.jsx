@@ -57,7 +57,7 @@ export default function Hero() {
     initial: { y: '105%' },
     animate: {
       y: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 },
     },
   };
 
@@ -65,7 +65,7 @@ export default function Hero() {
     initial: { y: '105%' },
     animate: {
       y: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 },
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 },
     },
   };
 
@@ -73,26 +73,24 @@ export default function Hero() {
     initial: { y: '105%' },
     animate: {
       y: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 },
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 },
     },
   };
 
   const fadeUpVariants = {
-    initial: { opacity: 0, y: 25 },
+    initial: { opacity: 0, y: 20 },
     animate: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.45 },
     },
   };
 
-  const imageVariants = {
-    initial: { opacity: 0, scale: 0.96, y: 15 },
+  const videoRevealVariants = {
+    initial: { clipPath: 'inset(0 100% 0 0)' },
     animate: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 },
+      clipPath: 'inset(0 0 0 0)',
+      transition: { duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.5 },
     },
   };
 
@@ -101,6 +99,9 @@ export default function Hero() {
       
       {/* Background Video with motion parallax & premium light gradient mask */}
       <motion.div
+        variants={videoRevealVariants}
+        initial={shouldReduceMotion ? "animate" : "initial"}
+        animate="animate"
         style={{
           x: !isTouch ? bgParallaxX : 0,
           y: !isTouch ? bgParallaxY : 0,

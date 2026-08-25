@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
 import santhoshImg from '../../assets/projects/santhosh.webp';
 
+import { useReducedMotion } from '../../hooks/useReducedMotion';
+
 const testimonialsData = [
   {
     id: 1,
@@ -20,6 +22,26 @@ const testimonialsData = [
 ];
 
 export default function Testimonials() {
+  const shouldReduceMotion = useReducedMotion();
+
+  const imageRevealVariants = {
+    initial: { opacity: 0, x: -12 },
+    animate: (idx) => ({
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: idx * 0.1 + 0.1 }
+    })
+  };
+
+  const textRevealVariants = {
+    initial: { opacity: 0, y: 15 },
+    animate: (idx) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: idx * 0.1 + 0.22 }
+    })
+  };
+
   return (
     <section id="testimonials" className="py-24 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 space-y-16">
@@ -46,24 +68,39 @@ export default function Testimonials() {
           {testimonialsData.map((item, idx) => (
             <ScrollReveal 
               key={item.id}
-              delay={idx * 0.08}
               className="w-full"
             >
-              <div className="bg-brand-white border border-[#E6E6E6] rounded-none overflow-hidden flex flex-col sm:flex-row items-stretch min-h-[260px] w-full hover:border-brand-charcoal/30 transition-all duration-300">
+              <motion.div 
+                initial="initial"
+                whileInView="animate"
+                whileHover="hover"
+                animate="rest"
+                viewport={{ once: true, amount: 0.15 }}
+                custom={idx}
+                className="bg-brand-white border border-[#E6E6E6] rounded-none overflow-hidden flex flex-col sm:flex-row items-stretch min-h-[260px] w-full hover:border-brand-charcoal/30 transition-all duration-300 relative group cursor-default"
+              >
                 {/* Left Side Client Image */}
-                <div className="w-full sm:w-[35%] min-h-[200px] sm:min-h-0 relative overflow-hidden bg-brand-lightgray shrink-0 border-b sm:border-b-0 sm:border-r border-[#E6E6E6]">
+                <motion.div 
+                  custom={idx}
+                  variants={shouldReduceMotion ? {} : imageRevealVariants}
+                  className="w-full sm:w-[35%] min-h-[200px] sm:min-h-0 relative overflow-hidden bg-brand-lightgray shrink-0 border-b sm:border-b-0 sm:border-r border-[#E6E6E6]"
+                >
                   <img 
                     src={item.avatar} 
                     alt={item.name} 
                     width="200"
                     height="300"
-                    className="absolute inset-0 w-full h-full object-cover filter grayscale"
+                    className="absolute inset-0 w-full h-full object-cover filter grayscale transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                     loading="lazy"
                   />
-                </div>
+                </motion.div>
 
                 {/* Right Side Quote Content */}
-                <div className="w-full sm:w-[65%] p-8 flex flex-col justify-between text-left space-y-6">
+                <motion.div 
+                  custom={idx}
+                  variants={shouldReduceMotion ? {} : textRevealVariants}
+                  className="w-full sm:w-[65%] p-8 flex flex-col justify-between text-left space-y-6"
+                >
                   <div className="space-y-4">
                     {/* Red Quote Mark */}
                     <span className="text-5xl font-serif font-black text-[#C8041C] leading-none block select-none h-6">
@@ -82,8 +119,17 @@ export default function Testimonials() {
                       {item.role}
                     </p>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+
+                {/* Bottom Red Accent Line */}
+                <motion.div 
+                  variants={{
+                    rest: { scaleX: 0 },
+                    hover: { scaleX: 1, transition: { duration: 0.3, ease: 'easeOut' } }
+                  }}
+                  className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#C8041C] origin-left"
+                />
+              </motion.div>
             </ScrollReveal>
           ))}
         </div>

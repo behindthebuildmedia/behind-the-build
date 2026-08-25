@@ -351,18 +351,36 @@ export default function PlanBuilder({ onSuccess }) {
                 if (service.id === 'social-media-design') IconComponent = Icons.Share2;
 
                 return (
-                  <div 
+                  <motion.div 
                     key={service.id}
-                    className="bg-brand-white border border-[#E6E6E6] p-8 rounded-none flex flex-col justify-between min-h-[580px] hover:border-brand-charcoal/30 transition-all duration-300"
+                    initial="rest"
+                    whileHover="hover"
+                    animate="rest"
+                    className="bg-brand-white border border-[#E6E6E6] p-8 rounded-none flex flex-col justify-between min-h-[580px] hover:border-brand-charcoal/30 hover:shadow-sm transition-all duration-300 relative group cursor-default"
                   >
+                    {/* Top Thin Red Accent Line Reveal */}
+                    <motion.div 
+                      variants={{
+                        rest: { scaleX: 0 },
+                        hover: { scaleX: 1, transition: { duration: 0.3, ease: 'easeOut' } }
+                      }}
+                      className="absolute top-0 left-0 right-0 h-[3px] bg-[#C8041C] origin-center"
+                    />
+
                     <div>
                       {/* Service Card Header */}
                       <div className="flex items-center gap-4 mb-6">
-                        <div className="w-12 h-12 bg-[#C8041C] text-white flex items-center justify-center rounded-none shrink-0">
+                        <motion.div 
+                          variants={{
+                            rest: { scale: 1 },
+                            hover: { scale: 1.05, transition: { duration: 0.3, ease: 'easeOut' } }
+                          }}
+                          className="w-12 h-12 bg-[#C8041C] text-white flex items-center justify-center rounded-none shrink-0"
+                        >
                           <IconComponent className="w-5 h-5" />
-                        </div>
+                        </motion.div>
                         <div>
-                          <h3 className="text-sm font-black uppercase tracking-wider text-brand-charcoal font-sans leading-none">
+                          <h3 className="text-sm font-black uppercase tracking-wider text-brand-charcoal font-sans leading-none transition-colors duration-300 group-hover:text-[#C8041C]">
                             {service.name}
                           </h3>
                         </div>
@@ -381,7 +399,7 @@ export default function PlanBuilder({ onSuccess }) {
                         <ul className="space-y-2">
                           {service.deliverables.slice(0, 4).map((del, dIdx) => (
                             <li key={dIdx} className="text-xs text-brand-charcoal/70 flex items-start gap-2 font-sans">
-                              <span className="w-1.5 h-1.5 bg-[#C8041C] rounded-none shrink-0 mt-1.5" />
+                              <span className="w-1.5 h-1.5 bg-[#C8041C] rounded-none shrink-0 mt-1.5 animate-pulse" />
                               <span>{del}</span>
                             </li>
                           ))}
@@ -423,7 +441,7 @@ export default function PlanBuilder({ onSuccess }) {
                                   / {plan.period}
                                 </span>
                               </div>
-                              <span className="text-brand-charcoal/30 group-hover/plan:text-[#C8041C] transition-colors duration-200 text-xs font-bold font-mono">
+                              <span className="text-brand-charcoal/30 group-hover/plan:text-[#C8041C] transform transition-all duration-300 group-hover/plan:translate-x-1.5 text-xs font-bold font-mono">
                                 →
                               </span>
                             </div>
@@ -432,7 +450,7 @@ export default function PlanBuilder({ onSuccess }) {
                       </div>
                     </div>
 
-                  </div>
+                  </motion.div>
                 );
               })}
             </motion.div>

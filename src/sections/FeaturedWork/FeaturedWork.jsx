@@ -281,6 +281,23 @@ export default function FeaturedWork() {
     'delusionai': 'result'
   });
 
+  const clipRevealVariants = {
+    initial: { clipPath: 'inset(0 100% 0 0)' },
+    animate: {
+      clipPath: 'inset(0 0 0 0)',
+      transition: { duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.1 }
+    }
+  };
+
+  const infoRevealVariants = {
+    initial: { opacity: 0, y: 15 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.25 }
+    }
+  };
+
   const handleOpenDetail = (project) => {
     setSelectedProject(project);
     setActiveShowcaseTab('All');
@@ -439,20 +456,21 @@ export default function FeaturedWork() {
             const imageArea = (
               <div 
                 onClick={() => handleOpenDetail(project)}
-                className="relative aspect-[16/10] w-full overflow-hidden rounded-none border border-[#E6E6E6] bg-brand-lightgray cursor-pointer group"
+                className="relative aspect-[16/10] w-full overflow-hidden rounded-none border border-[#E6E6E6] bg-brand-lightgray cursor-pointer"
+                data-cursor="VIEW PROJECT"
               >
-                <div className="absolute inset-0 bg-brand-charcoal/10 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                <div className="absolute inset-0 bg-brand-charcoal/5 group-hover:bg-transparent transition-colors duration-500 z-10" />
                 <video
                   src={project.videoUrl}
                   autoPlay
                   muted
                   loop
                   playsInline
-                  className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-[1.03] transition-all duration-500 ease-out"
+                  className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:contrast-[1.08] group-hover:scale-[1.03] transition-all duration-500 ease-out"
                 />
                 <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
-                  <span className="w-3 h-[2.5px] bg-[#C8041C]" />
-                  <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-white drop-shadow-md">
+                  <span className="w-3 group-hover:w-8 h-[2.5px] bg-[#C8041C] transition-all duration-300" />
+                  <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-white drop-shadow-md opacity-70 group-hover:opacity-100 transition-all duration-300">
                     {project.servicesDelivered[0]}
                   </span>
                 </div>
@@ -467,7 +485,7 @@ export default function FeaturedWork() {
                   </span>
                   <h3 
                     onClick={() => handleOpenDetail(project)}
-                    className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-brand-charcoal cursor-pointer hover:text-[#C8041C] transition-colors duration-300 font-sans"
+                    className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-brand-charcoal cursor-pointer group-hover:text-[#C8041C] group-hover:translate-x-1.5 transition-all duration-300 font-sans"
                   >
                     {project.name}
                   </h3>
@@ -516,7 +534,7 @@ export default function FeaturedWork() {
                 <div className="pt-4">
                   <button 
                     onClick={() => handleOpenDetail(project)}
-                    className="group flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-charcoal hover:text-[#C8041C] transition-colors duration-300 font-sans"
+                    className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-charcoal group-hover:text-[#C8041C] group-hover:translate-x-1 transition-all duration-300 font-sans"
                   >
                     <span>VIEW PROJECT</span>
                     <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
@@ -526,20 +544,25 @@ export default function FeaturedWork() {
             );
 
             return (
-              <ScrollReveal key={project.id} delay={shouldReduceMotion ? 0 : idx * 0.08} className="w-full">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+              <ScrollReveal key={project.id} className="w-full">
+                <motion.div 
+                  initial="initial"
+                  whileInView="animate"
+                  viewport={{ once: true, amount: 0.15 }}
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center group cursor-default"
+                >
                   {isLeftImage ? (
                     <>
-                      <div className="lg:col-span-7">{imageArea}</div>
-                      <div className="lg:col-span-5">{infoArea}</div>
+                      <motion.div variants={shouldReduceMotion ? {} : clipRevealVariants} className="lg:col-span-7">{imageArea}</motion.div>
+                      <motion.div variants={shouldReduceMotion ? {} : infoRevealVariants} className="lg:col-span-5">{infoArea}</motion.div>
                     </>
                   ) : (
                     <>
-                      <div className="lg:col-span-7 order-first lg:order-last">{imageArea}</div>
-                      <div className="lg:col-span-5">{infoArea}</div>
+                      <motion.div variants={shouldReduceMotion ? {} : clipRevealVariants} className="lg:col-span-7 order-first lg:order-last">{imageArea}</motion.div>
+                      <motion.div variants={shouldReduceMotion ? {} : infoRevealVariants} className="lg:col-span-5">{infoArea}</motion.div>
                     </>
                   )}
-                </div>
+                </motion.div>
               </ScrollReveal>
             );
           })}
