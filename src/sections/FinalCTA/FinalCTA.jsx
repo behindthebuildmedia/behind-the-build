@@ -28,18 +28,18 @@ export default function FinalCTA() {
   };
 
   const lineRevealVariants1 = {
-    initial: { y: '105%' },
-    animate: { y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 } }
+    initial: { y: 45, opacity: 0 },
+    animate: { y: 0, opacity: 1, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 } }
   };
 
   const lineRevealVariants2 = {
-    initial: { y: '105%' },
-    animate: { y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.22 } }
+    initial: { y: 45, opacity: 0 },
+    animate: { y: 0, opacity: 1, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.25 } }
   };
 
   const lineRevealVariants3 = {
-    initial: { y: '105%' },
-    animate: { y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.34 } }
+    initial: { y: 45, opacity: 0 },
+    animate: { y: 0, opacity: 1, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.40 } }
   };
 
   return (
@@ -122,7 +122,7 @@ export default function FinalCTA() {
           <motion.p 
             variants={shouldReduceMotion ? {} : {
               initial: { opacity: 0, y: 15 },
-              animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.5 } }
+              animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.6 } }
             }}
             className="text-sm sm:text-base text-brand-charcoal/70 leading-relaxed font-sans font-bold max-w-[600px] leading-none"
           >
@@ -133,7 +133,7 @@ export default function FinalCTA() {
           <motion.div 
             variants={shouldReduceMotion ? {} : {
               initial: { opacity: 0, y: 15 },
-              animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.6 } }
+              animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.8 } }
             }}
             className="flex flex-wrap gap-4 pt-2"
           >

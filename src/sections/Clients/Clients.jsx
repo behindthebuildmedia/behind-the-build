@@ -25,35 +25,38 @@ export default function Clients() {
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 w-full text-center flex flex-col justify-center items-center">
         
         {/* Section Label */}
-        <ScrollReveal className="w-full">
+        <ScrollReveal yOffset={10} duration={0.45} delay={0} className="w-full">
           <span className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-mono block mb-3">
             OUR CLIENTS
           </span>
         </ScrollReveal>
 
         {/* Main Heading */}
-        <ScrollReveal delay={0.05} className="w-full">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-[1.1] mb-6">
-            TRUSTED BY BRANDS
-            <br />
-            BUILDING WHAT'S <span className="text-[#C8041C]">NEXT.</span>
+        <div className="w-full mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-[1.1]">
+            <ScrollReveal delay={0.1} yOffset={35} duration={0.8} className="block overflow-hidden pb-1">
+              TRUSTED BY BRANDS
+            </ScrollReveal>
+            <ScrollReveal delay={0.22} yOffset={35} duration={0.8} className="block overflow-hidden">
+              BUILDING WHAT'S <span className="text-[#C8041C]">NEXT.</span>
+            </ScrollReveal>
           </h2>
-        </ScrollReveal>
+        </div>
 
         {/* Supporting Text */}
-        <ScrollReveal delay={0.1} className="w-full max-w-4xl">
+        <ScrollReveal yOffset={20} duration={0.7} delay={0.35} className="w-full max-w-4xl">
           <p className="text-sm md:text-base text-brand-charcoal/80 leading-relaxed font-normal lg:whitespace-nowrap mb-6 px-4">
             "From AI platforms to emerging brands, we work with teams that care about how their story is seen."
           </p>
         </ScrollReveal>
 
         {/* Subtle Horizontal Divider */}
-        <ScrollReveal delay={0.15} className="w-full max-w-2xl mb-8">
+        <ScrollReveal delay={0.45} className="w-full max-w-2xl mb-8">
           <hr className="border-[#E5E5E5] w-full" />
         </ScrollReveal>
 
         {/* Logo Row */}
-        <ScrollReveal delay={0.2} className="w-full">
+        <ScrollReveal yOffset={15} duration={0.7} delay={0.5} className="w-full">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16 md:gap-24 w-full">
             
             {/* Consistency.AI Logo */}

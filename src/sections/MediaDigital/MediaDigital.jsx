@@ -50,28 +50,35 @@ export default function MediaDigital() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
           
           {/* Left Column - Positioning Info */}
-          <ScrollReveal className="lg:col-span-5 text-left space-y-6">
+          <div className="lg:col-span-5 text-left space-y-6">
             <div className="space-y-3">
-              <span className="text-[10px] font-bold tracking-widest text-[#C8041C] uppercase font-mono block">
-                MEDIA × DIGITAL
-              </span>
+              <ScrollReveal yOffset={10} duration={0.45} delay={0}>
+                <span className="text-[10px] font-bold tracking-widest text-[#C8041C] uppercase font-mono block">
+                  MEDIA × DIGITAL
+                </span>
+              </ScrollReveal>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-[1.05]">
-                MEDIA THAT GETS <span className="text-[#C8041C]">SEEN.</span>
-                <br />
-                DIGITAL THAT MAKES IT <span className="text-[#C8041C]">MATTER.</span>
+                <ScrollReveal delay={0.1} yOffset={35} duration={0.8} className="block overflow-hidden pb-1">
+                  MEDIA THAT GETS <span className="text-[#C8041C]">SEEN.</span>
+                </ScrollReveal>
+                <ScrollReveal delay={0.22} yOffset={35} duration={0.8} className="block overflow-hidden">
+                  DIGITAL THAT MAKES IT <span className="text-[#C8041C]">MATTER.</span>
+                </ScrollReveal>
               </h2>
             </div>
             
-            <p className="text-sm md:text-base text-brand-charcoal/60 leading-relaxed font-normal">
-              Behind The Build combines media production and digital marketing to help brands create attention, build presence, and stay relevant.
-            </p>
-          </ScrollReveal>
+            <ScrollReveal yOffset={20} duration={0.7} delay={0.35}>
+              <p className="text-sm md:text-base text-brand-charcoal/60 leading-relaxed font-normal">
+                Behind The Build combines media production and digital marketing to help brands create attention, build presence, and stay relevant.
+              </p>
+            </ScrollReveal>
+          </div>
 
           {/* Right Column - Cards */}
           <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6 w-full text-left">
             
             {/* Media Card */}
-            <ScrollReveal delay={0.08}>
+            <ScrollReveal delay={0.5}>
               <motion.div 
                 initial="rest"
                 whileHover="hover"
@@ -112,7 +119,7 @@ export default function MediaDigital() {
             </ScrollReveal>
 
             {/* Digital Card */}
-            <ScrollReveal delay={0.16}>
+            <ScrollReveal delay={0.6}>
               <motion.div 
                 initial="rest"
                 whileHover="hover"

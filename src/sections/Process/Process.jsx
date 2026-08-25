@@ -28,29 +28,39 @@ export default function Process() {
   ];
 
   const numberVariants = {
-    initial: { opacity: 0.05, scale: 0.92 },
+    initial: { opacity: 0, y: 15 },
     animate: (custom) => ({
-      opacity: 0.22, // Prominent active highlight state
-      scale: 1,
-      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: custom * 0.15 }
+      opacity: 0.22,
+      y: 0,
+      transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: custom * 0.18 + 0.1 }
     })
   };
 
   const iconRevealVariants = {
-    initial: { scale: 0.8, opacity: 0 },
+    initial: { scale: 0.8, opacity: 0, y: 10 },
     animate: (custom) => ({
       scale: 1,
       opacity: 1,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: custom * 0.15 + 0.1 }
+      y: 0,
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: custom * 0.18 + 0.18 }
     })
   };
 
-  const textRevealVariants = {
-    initial: { opacity: 0, y: 10 },
+  const titleRevealVariants = {
+    initial: { opacity: 0, y: 20 },
     animate: (custom) => ({
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: custom * 0.15 + 0.2 }
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: custom * 0.18 + 0.26 }
+    })
+  };
+
+  const descRevealVariants = {
+    initial: { opacity: 0, y: 15 },
+    animate: (custom) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1], delay: custom * 0.18 + 0.36 }
     })
   };
 
@@ -59,12 +69,16 @@ export default function Process() {
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
         
         {/* Section Header */}
-        <ScrollReveal className="text-left max-w-xl mb-16">
-          <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-mono">OUR PROCESS</p>
-          <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal mt-2">
-            OUR PROCESS<span className="text-[#C8041C]">.</span>
-          </h2>
-        </ScrollReveal>
+        <div className="text-left max-w-xl mb-16 space-y-2">
+          <ScrollReveal yOffset={10} duration={0.45} delay={0}>
+            <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-mono">OUR PROCESS</p>
+          </ScrollReveal>
+          <ScrollReveal yOffset={35} duration={0.8} delay={0.1}>
+            <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal">
+              OUR PROCESS<span className="text-[#C8041C]">.</span>
+            </h2>
+          </ScrollReveal>
+        </div>
 
         {/* Horizontal Editorial Steps Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 relative">
@@ -109,7 +123,7 @@ export default function Process() {
                       <motion.div 
                         variants={{
                           initial: { scaleX: 0 },
-                          animate: { scaleX: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: idx * 0.15 + 0.35 } }
+                          animate: { scaleX: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: idx * 0.18 + 0.35 } }
                         }}
                         className="w-full h-full bg-[#C8041C] origin-left"
                       />
@@ -118,18 +132,22 @@ export default function Process() {
                 </div>
 
                 {/* Text Details */}
-                <motion.div 
-                  custom={idx}
-                  variants={shouldReduceMotion ? {} : textRevealVariants}
-                  className="space-y-2 relative z-10 pt-2"
-                >
-                  <h3 className="text-base font-bold uppercase tracking-tight text-brand-charcoal font-sans">
+                <div className="space-y-2 relative z-10 pt-2">
+                  <motion.h3 
+                    custom={idx}
+                    variants={shouldReduceMotion ? {} : titleRevealVariants}
+                    className="text-base font-bold uppercase tracking-tight text-brand-charcoal font-sans"
+                  >
                     {step.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-brand-charcoal/60 leading-relaxed font-sans font-normal max-w-[280px]">
+                  </motion.h3>
+                  <motion.p 
+                    custom={idx}
+                    variants={shouldReduceMotion ? {} : descRevealVariants}
+                    className="text-xs sm:text-sm text-brand-charcoal/60 leading-relaxed font-sans font-normal max-w-[280px]"
+                  >
                     {step.desc}
-                  </p>
-                </motion.div>
+                  </motion.p>
+                </div>
 
               </motion.div>
             );

@@ -421,23 +421,26 @@ export default function FeaturedWork() {
   return (
     <section id="work" className="py-24 bg-brand-white relative overflow-hidden border-t border-brand-charcoal/5">
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
-        
-        {/* Section Header */}
-        <ScrollReveal>
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-20 text-left">
-            <div className="space-y-4">
+         {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-20 text-left">
+          <div className="space-y-4">
+            <ScrollReveal yOffset={10} duration={0.45} delay={0}>
               <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C]">
                 OUR WORK
               </p>
+            </ScrollReveal>
+            <ScrollReveal yOffset={35} duration={0.8} delay={0.1}>
               <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-none">
                 OUR WORK<span className="text-[#C8041C]">.</span>
               </h2>
+            </ScrollReveal>
+            <ScrollReveal yOffset={20} duration={0.7} delay={0.25}>
               <p className="text-sm md:text-base text-brand-charcoal/60 leading-relaxed font-sans max-w-xl">
                 A selection of brands, campaigns and stories we've helped bring to life.
               </p>
-            </div>
+            </ScrollReveal>
           </div>
-        </ScrollReveal>
+        </div>
 
         {/* Premium Asymmetric Editorial Project Rows */}
         <div className="space-y-24 lg:space-y-32">
@@ -479,71 +482,83 @@ export default function FeaturedWork() {
             const infoArea = (
               <div className="flex flex-col justify-center text-left space-y-6 lg:px-6">
                 <div className="space-y-2">
-                  <span className="text-[10px] font-bold tracking-widest text-[#C8041C] uppercase font-mono block">
-                    {workLabel}
-                  </span>
-                  <h3 
-                    onClick={() => handleOpenDetail(project)}
-                    className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-brand-charcoal cursor-pointer group-hover:text-[#C8041C] group-hover:translate-x-1.5 transition-all duration-300 font-sans"
-                  >
-                    {project.name}
-                  </h3>
-                  <span className="text-xs text-brand-charcoal/50 uppercase tracking-wider font-bold block">
-                    {subtitleText}
-                  </span>
+                  <ScrollReveal yOffset={10} duration={0.45} delay={0.05} viewportAmount={0.15}>
+                    <span className="text-[10px] font-bold tracking-widest text-[#C8041C] uppercase font-mono block">
+                      {workLabel}
+                    </span>
+                  </ScrollReveal>
+                  <ScrollReveal yOffset={35} duration={0.8} delay={0.15} viewportAmount={0.15}>
+                    <h3 
+                      onClick={() => handleOpenDetail(project)}
+                      className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-brand-charcoal cursor-pointer group-hover:text-[#C8041C] group-hover:translate-x-1.5 transition-all duration-300 font-sans"
+                    >
+                      {project.name}
+                    </h3>
+                    <span className="text-xs text-brand-charcoal/50 uppercase tracking-wider font-bold block mt-2">
+                      {subtitleText}
+                    </span>
+                  </ScrollReveal>
                 </div>
 
-                <p className="text-sm text-brand-charcoal/70 leading-relaxed font-sans font-normal">
-                  {projectDesc}
-                </p>
+                <ScrollReveal yOffset={20} duration={0.7} delay={0.3} viewportAmount={0.15}>
+                  <p className="text-sm text-brand-charcoal/70 leading-relaxed font-sans font-normal">
+                    {projectDesc}
+                  </p>
+                </ScrollReveal>
 
                 {/* Services Tags */}
-                <div className="flex flex-wrap gap-2">
-                  {servicesList.map((srv, sIdx) => (
-                    <span 
-                      key={sIdx} 
-                      className="text-[9px] font-sans font-bold uppercase tracking-wider px-3 py-1.5 bg-[#F3F3F3] text-brand-charcoal/80 border border-[#E6E6E6] rounded-none"
-                    >
-                      {srv}
-                    </span>
-                  ))}
-                </div>
+                <ScrollReveal yOffset={15} duration={0.6} delay={0.42} viewportAmount={0.15}>
+                  <div className="flex flex-wrap gap-2">
+                    {servicesList.map((srv, sIdx) => (
+                      <span 
+                        key={sIdx} 
+                        className="text-[9px] font-sans font-bold uppercase tracking-wider px-3 py-1.5 bg-[#F3F3F3] text-brand-charcoal/80 border border-[#E6E6E6] rounded-none"
+                      >
+                        {srv}
+                      </span>
+                    ))}
+                  </div>
+                </ScrollReveal>
 
                 {/* Metrics */}
-                <div className="grid grid-cols-3 gap-4 pt-4 border-t border-[#E6E6E6]">
-                  {project.results.map((res, rIdx) => {
-                    const match = res.match(/^([\d.x\u00D7MX+]+)(.*)$/i);
-                    const val = match ? match[1].trim() : res;
-                    const lbl = match ? match[2].trim() : '';
+                <ScrollReveal yOffset={30} duration={0.75} delay={0.52} viewportAmount={0.15}>
+                  <div className="grid grid-cols-3 gap-4 pt-4 border-t border-[#E6E6E6]">
+                    {project.results.map((res, rIdx) => {
+                      const match = res.match(/^([\d.x\u00D7MX+]+)(.*)$/i);
+                      const val = match ? match[1].trim() : res;
+                      const lbl = match ? match[2].trim() : '';
 
-                    return (
-                      <div key={rIdx} className="space-y-1">
-                        <span className="text-xl sm:text-2xl font-black text-[#C8041C] tracking-tight leading-none block font-sans">
-                          {val}
-                        </span>
-                        <span className="text-[9px] font-sans font-bold uppercase tracking-wider text-brand-charcoal/40 leading-none block">
-                          {lbl}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
+                      return (
+                        <div key={rIdx} className="space-y-1">
+                          <span className="text-xl sm:text-2xl font-black text-[#C8041C] tracking-tight leading-none block font-sans">
+                            {val}
+                          </span>
+                          <span className="text-[9px] font-sans font-bold uppercase tracking-wider text-brand-charcoal/40 leading-none block">
+                            {lbl}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </ScrollReveal>
 
                 {/* View Project Link */}
-                <div className="pt-4">
-                  <button 
-                    onClick={() => handleOpenDetail(project)}
-                    className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-charcoal group-hover:text-[#C8041C] group-hover:translate-x-1 transition-all duration-300 font-sans"
-                  >
-                    <span>VIEW PROJECT</span>
-                    <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
-                  </button>
-                </div>
+                <ScrollReveal yOffset={15} duration={0.6} delay={0.62} viewportAmount={0.15}>
+                  <div className="pt-4">
+                    <button 
+                      onClick={() => handleOpenDetail(project)}
+                      className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-charcoal group-hover:text-[#C8041C] group-hover:translate-x-1 transition-all duration-300 font-sans"
+                    >
+                      <span>VIEW PROJECT</span>
+                      <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+                    </button>
+                  </div>
+                </ScrollReveal>
               </div>
             );
 
             return (
-              <ScrollReveal key={project.id} className="w-full">
+              <div key={project.id} className="w-full">
                 <motion.div 
                   initial="initial"
                   whileInView="animate"
@@ -553,16 +568,16 @@ export default function FeaturedWork() {
                   {isLeftImage ? (
                     <>
                       <motion.div variants={shouldReduceMotion ? {} : clipRevealVariants} className="lg:col-span-7">{imageArea}</motion.div>
-                      <motion.div variants={shouldReduceMotion ? {} : infoRevealVariants} className="lg:col-span-5">{infoArea}</motion.div>
+                      <div className="lg:col-span-5">{infoArea}</div>
                     </>
                   ) : (
                     <>
                       <motion.div variants={shouldReduceMotion ? {} : clipRevealVariants} className="lg:col-span-7 order-first lg:order-last">{imageArea}</motion.div>
-                      <motion.div variants={shouldReduceMotion ? {} : infoRevealVariants} className="lg:col-span-5">{infoArea}</motion.div>
+                      <div className="lg:col-span-5">{infoArea}</div>
                     </>
                   )}
                 </motion.div>
-              </ScrollReveal>
+              </div>
             );
           })}
         </div>

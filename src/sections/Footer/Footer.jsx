@@ -55,55 +55,63 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1.2fr_1fr] gap-10 md:gap-12 items-start w-full">
           
           {/* Brand Info (spans across 2 columns on tablet, 1 column on desktop) */}
-          <ScrollReveal className="sm:col-span-2 lg:col-span-1 space-y-6">
-            <img
-              src={logoUrl}
-              alt="Behind the Build Logo"
-              width="140"
-              height="52"
-              className="h-9 w-auto object-contain"
-              loading="lazy"
-            />
+          <div className="sm:col-span-2 lg:col-span-1 space-y-6">
+            <ScrollReveal delay={0} yOffset={10}>
+              <img
+                src={logoUrl}
+                alt="Behind the Build Logo"
+                width="140"
+                height="52"
+                className="h-9 w-auto object-contain"
+                loading="lazy"
+              />
+            </ScrollReveal>
             
-            <div className="space-y-1">
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-none">
-                YOUR STORY.
-              </h3>
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-[#C8041C] leading-none">
-                BUILT TO BE SEEN.
-              </h3>
-            </div>
+            <ScrollReveal delay={0.1} yOffset={35}>
+              <div className="space-y-1">
+                <h3 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-none">
+                  YOUR STORY.
+                </h3>
+                <h3 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-[#C8041C] leading-none">
+                  BUILT TO BE SEEN.
+                </h3>
+              </div>
+            </ScrollReveal>
 
-            <p className="text-sm text-brand-charcoal/80 leading-relaxed font-normal max-w-[500px]">
-              Behind The Build helps creators, brands, and businesses craft high-retention digital media assets. We build flexible creative services around exactly what you need.
-            </p>
+            <ScrollReveal delay={0.25} yOffset={20}>
+              <p className="text-sm text-brand-charcoal/80 leading-relaxed font-normal max-w-[500px]">
+                Behind The Build helps creators, brands, and businesses craft high-retention digital media assets. We build flexible creative services around exactly what you need.
+              </p>
+            </ScrollReveal>
 
             {/* Social Icons row */}
-            <div className="flex gap-6 pt-2">
-              {[
-                { icon: InstagramIcon, href: 'https://instagram.com/behindthebuild.co', label: 'Instagram' },
-                { icon: LinkedinIcon, href: 'https://linkedin.com/company/behindthebuild', label: 'LinkedIn' },
-                { icon: YoutubeIcon, href: 'https://youtube.com/@behindthebuild', label: 'YouTube' }
-              ].map((social) => {
-                const IconComponent = social.icon;
-                return (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-brand-charcoal hover:text-[#C8041C] transform transition-all duration-300 hover:-translate-y-0.5"
-                    aria-label={social.label}
-                  >
-                    <IconComponent />
-                  </a>
-                );
-              })}
-            </div>
-          </ScrollReveal>
+            <ScrollReveal delay={0.35} yOffset={15}>
+              <div className="flex gap-6 pt-2">
+                {[
+                  { icon: InstagramIcon, href: 'https://instagram.com/behindthebuild.co', label: 'Instagram' },
+                  { icon: LinkedinIcon, href: 'https://linkedin.com/company/behindthebuild', label: 'LinkedIn' },
+                  { icon: YoutubeIcon, href: 'https://youtube.com/@behindthebuild', label: 'YouTube' }
+                ].map((social) => {
+                  const IconComponent = social.icon;
+                  return (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-brand-charcoal hover:text-[#C8041C] transform transition-all duration-300 hover:-translate-y-0.5"
+                      aria-label={social.label}
+                    >
+                      <IconComponent />
+                    </a>
+                  );
+                })}
+              </div>
+            </ScrollReveal>
+          </div>
 
           {/* Services Links */}
-          <ScrollReveal delay={0.08} className="space-y-4">
+          <ScrollReveal delay={0.42} className="space-y-4">
             <h4 className="text-xs font-semibold text-[#C8041C] tracking-widest uppercase font-sans">
               SERVICES
             </h4>
@@ -131,7 +139,7 @@ export default function Footer() {
           </ScrollReveal>
 
           {/* Company Links */}
-          <ScrollReveal delay={0.16} className="space-y-4">
+          <ScrollReveal delay={0.5} className="space-y-4">
             <h4 className="text-xs font-semibold text-[#C8041C] tracking-widest uppercase font-sans">
               COMPANY
             </h4>
@@ -159,7 +167,7 @@ export default function Footer() {
           </ScrollReveal>
 
           {/* Contact Info */}
-          <ScrollReveal delay={0.24} className="space-y-4">
+          <ScrollReveal delay={0.58} className="space-y-4">
             <h4 className="text-xs font-semibold text-[#C8041C] tracking-widest uppercase font-sans">
               CONTACT
             </h4>
@@ -179,7 +187,7 @@ export default function Footer() {
           </ScrollReveal>
 
           {/* Legal Links */}
-          <ScrollReveal delay={0.32} className="space-y-4">
+          <ScrollReveal delay={0.66} className="space-y-4">
             <h4 className="text-xs font-semibold text-[#C8041C] tracking-widest uppercase font-sans">
               LEGAL
             </h4>

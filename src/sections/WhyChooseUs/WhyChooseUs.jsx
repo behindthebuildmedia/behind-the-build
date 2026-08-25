@@ -57,18 +57,22 @@ export default function WhyChooseUs() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           
           {/* Left Column - Headline */}
-          <ScrollReveal className="lg:col-span-5 text-left space-y-6 lg:sticky lg:top-[15vh] self-start">
+          <div className="lg:col-span-5 text-left space-y-6 lg:sticky lg:top-[15vh] self-start">
             <div className="space-y-3">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#C8041C]">
-                WHY CHOOSE US
-              </span>
-              <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-[1.05]">
-                WHY BRANDS
-                <br />
-                CHOOSE <span className="text-[#C8041C]">US.</span>
-              </h2>
+              <ScrollReveal yOffset={10} duration={0.45} delay={0}>
+                <span className="text-xs font-bold uppercase tracking-widest text-[#C8041C]">
+                  WHY CHOOSE US
+                </span>
+              </ScrollReveal>
+              <ScrollReveal yOffset={35} duration={0.8} delay={0.1}>
+                <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-[1.05]">
+                  WHY BRANDS
+                  <br />
+                  CHOOSE <span className="text-[#C8041C]">US.</span>
+                </h2>
+              </ScrollReveal>
             </div>
-          </ScrollReveal>
+          </div>
 
           {/* Right Column - 2x3 Grid */}
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full text-left">
@@ -78,7 +82,7 @@ export default function WhyChooseUs() {
               return (
                 <ScrollReveal
                   key={feature.id}
-                  delay={idx * 0.06}
+                  delay={0.25 + idx * 0.1}
                   className="bg-brand-white p-8 border border-[#E6E6E6] rounded-none flex flex-col items-start select-none relative group hover:border-[#C8041C]/35 hover:-translate-y-1 transition-all duration-300 cursor-default"
                 >
                   {/* Icon Box */}

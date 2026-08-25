@@ -169,6 +169,28 @@ export default function PlanBuilder({ onSuccess }) {
   const { isMobile } = useResponsive();
   const shouldReduceMotion = useReducedMotion();
 
+  const childRevealVariants = {
+    initial: { opacity: 0, y: 15 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+    }
+  };
+
+  const cardStaggerVariants = {
+    initial: { opacity: 0, y: 30 },
+    animate: (idx) => ({
+      opacity: 1,
+      y: 0,
+      transition: { 
+        duration: 0.8, 
+        ease: [0.22, 1, 0.36, 1],
+        delay: idx * 0.12 + 0.35
+      }
+    })
+  };
+
   // Derived active service and active plan
   const activeService = RICH_SERVICES.find(s => s.id === activeServiceId) || RICH_SERVICES[0];
   const activePlan = activeService.plans.find(p => p.id === selectedPlanId) || activeService.plans[1] || activeService.plans[0];
@@ -324,13 +346,19 @@ export default function PlanBuilder({ onSuccess }) {
         {/* Header */}
         {step === 1 && (
           <div className="mb-20 space-y-4 max-w-3xl mx-auto text-left">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-mono">SERVICES</p>
-            <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal font-sans">
-              WHAT WE DO<span className="text-[#C8041C]">.</span>
-            </h2>
-            <p className="text-sm md:text-base text-brand-charcoal/60 leading-relaxed font-normal max-w-xl">
-              From ideation to execution, we offer end-to-end media and digital marketing services tailored to your goals.
-            </p>
+            <ScrollReveal yOffset={10} duration={0.45} delay={0}>
+              <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-mono">SERVICES</p>
+            </ScrollReveal>
+            <ScrollReveal yOffset={35} duration={0.8} delay={0.1}>
+              <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal font-sans">
+                WHAT WE DO<span className="text-[#C8041C]">.</span>
+              </h2>
+            </ScrollReveal>
+            <ScrollReveal yOffset={20} duration={0.7} delay={0.25}>
+              <p className="text-sm md:text-base text-brand-charcoal/60 leading-relaxed font-normal max-w-xl">
+                From ideation to execution, we offer end-to-end media and digital marketing services tailored to your goals.
+              </p>
+            </ScrollReveal>
           </div>
         )}
 
@@ -345,7 +373,7 @@ export default function PlanBuilder({ onSuccess }) {
               exit="exit"
               className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left"
             >
-              {RICH_SERVICES.map((service) => {
+              {RICH_SERVICES.map((service, idx) => {
                 let IconComponent = Icons.Film;
                 if (service.id === 'event-coverage') IconComponent = Icons.Camera;
                 if (service.id === 'social-media-design') IconComponent = Icons.Share2;
@@ -353,9 +381,12 @@ export default function PlanBuilder({ onSuccess }) {
                 return (
                   <motion.div 
                     key={service.id}
-                    initial="rest"
+                    custom={idx}
+                    initial="initial"
+                    whileInView="animate"
+                    viewport={{ once: true, amount: 0.15 }}
+                    variants={shouldReduceMotion ? {} : cardStaggerVariants}
                     whileHover="hover"
-                    animate="rest"
                     className="bg-brand-white border border-[#E6E6E6] p-8 rounded-none flex flex-col justify-between min-h-[580px] hover:border-brand-charcoal/30 hover:shadow-sm transition-all duration-300 relative group cursor-default"
                   >
                     {/* Top Thin Red Accent Line Reveal */}
@@ -369,7 +400,7 @@ export default function PlanBuilder({ onSuccess }) {
 
                     <div>
                       {/* Service Card Header */}
-                      <div className="flex items-center gap-4 mb-6">
+                      <motion.div variants={shouldReduceMotion ? {} : childRevealVariants} className="flex items-center gap-4 mb-6">
                         <motion.div 
                           variants={{
                             rest: { scale: 1 },
@@ -384,15 +415,15 @@ export default function PlanBuilder({ onSuccess }) {
                             {service.name}
                           </h3>
                         </div>
-                      </div>
+                      </motion.div>
 
                       {/* Description */}
-                      <p className="text-xs text-brand-charcoal/60 leading-relaxed mb-6 font-sans">
+                      <motion.p variants={shouldReduceMotion ? {} : childRevealVariants} className="text-xs text-brand-charcoal/60 leading-relaxed mb-6 font-sans">
                         {service.desc}
-                      </p>
+                      </motion.p>
 
                       {/* Deliverables List */}
-                      <div className="space-y-3 mb-8">
+                      <motion.div variants={shouldReduceMotion ? {} : childRevealVariants} className="space-y-3 mb-8">
                         <span className="text-[9px] font-bold text-[#C8041C] tracking-widest uppercase block font-sans">
                           WHAT'S INCLUDED
                         </span>
@@ -404,11 +435,11 @@ export default function PlanBuilder({ onSuccess }) {
                             </li>
                           ))}
                         </ul>
-                      </div>
+                      </motion.div>
                     </div>
 
                     {/* Plans Selector Table */}
-                    <div className="space-y-4 pt-6 border-t border-[#E6E6E6]">
+                    <motion.div variants={shouldReduceMotion ? {} : childRevealVariants} className="space-y-4 pt-6 border-t border-[#E6E6E6]">
                       <span className="text-[9px] font-bold text-brand-charcoal/40 tracking-widest uppercase block font-sans">
                         SELECT A PLAN TO BOOK
                       </span>
@@ -448,7 +479,7 @@ export default function PlanBuilder({ onSuccess }) {
                           </button>
                         ))}
                       </div>
-                    </div>
+                    </motion.div>
 
                   </motion.div>
                 );

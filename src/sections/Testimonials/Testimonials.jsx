@@ -29,17 +29,36 @@ export default function Testimonials() {
     animate: (idx) => ({
       opacity: 1,
       x: 0,
-      transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: idx * 0.1 + 0.1 }
+      transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: idx * 0.12 + 0.1 }
     })
   };
 
-  const textRevealVariants = {
-    initial: { opacity: 0, y: 15 },
+  const rightContentVariants = {
+    initial: {},
     animate: (idx) => ({
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: idx * 0.12 + 0.22
+      }
+    })
+  };
+
+  const quoteRevealVariants = {
+    initial: { opacity: 0, y: 10 },
+    animate: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: idx * 0.1 + 0.22 }
-    })
+      transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] }
+    }
+  };
+
+  const nameRevealVariants = {
+    initial: { opacity: 0, y: 15 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] }
+    }
   };
 
   return (
@@ -49,24 +68,30 @@ export default function Testimonials() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-left">
           <div className="space-y-4">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-mono">
-              CLIENT LOVE
-            </p>
-            <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal">
-              CLIENT LOVE<span className="text-[#C8041C]">.</span>
-            </h2>
+            <ScrollReveal yOffset={10} duration={0.45} delay={0}>
+              <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-mono">
+                CLIENT LOVE
+              </p>
+            </ScrollReveal>
+            <ScrollReveal yOffset={35} duration={0.8} delay={0.1}>
+              <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal">
+                CLIENT LOVE<span className="text-[#C8041C]">.</span>
+              </h2>
+            </ScrollReveal>
           </div>
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-brand-charcoal/50 select-none">
-              MORE REVIEWS ON REQUEST →
-            </span>
+            <ScrollReveal yOffset={10} duration={0.45} delay={0.2}>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-brand-charcoal/50 select-none block md:pb-1">
+                MORE REVIEWS ON REQUEST →
+              </span>
+            </ScrollReveal>
           </div>
         </div>
 
         {/* 2-Column Split Testimonials Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
           {testimonialsData.map((item, idx) => (
-            <ScrollReveal 
+            <div 
               key={item.id}
               className="w-full"
             >
@@ -98,10 +123,10 @@ export default function Testimonials() {
                 {/* Right Side Quote Content */}
                 <motion.div 
                   custom={idx}
-                  variants={shouldReduceMotion ? {} : textRevealVariants}
+                  variants={shouldReduceMotion ? {} : rightContentVariants}
                   className="w-full sm:w-[65%] p-8 flex flex-col justify-between text-left space-y-6"
                 >
-                  <div className="space-y-4">
+                  <motion.div variants={shouldReduceMotion ? {} : quoteRevealVariants} className="space-y-4">
                     {/* Red Quote Mark */}
                     <span className="text-5xl font-serif font-black text-[#C8041C] leading-none block select-none h-6">
                       “
@@ -109,16 +134,16 @@ export default function Testimonials() {
                     <p className="text-xs sm:text-sm font-medium text-brand-charcoal/70 leading-relaxed font-sans">
                       {item.quote}
                     </p>
-                  </div>
+                  </motion.div>
 
-                  <div className="space-y-1">
+                  <motion.div variants={shouldReduceMotion ? {} : nameRevealVariants} className="space-y-1">
                     <h4 className="text-xs font-bold text-brand-charcoal uppercase tracking-wider leading-none">
                       {item.name}
                     </h4>
                     <p className="text-[10px] text-brand-charcoal/45 uppercase tracking-wide font-medium block">
                       {item.role}
                     </p>
-                  </div>
+                  </motion.div>
                 </motion.div>
 
                 {/* Bottom Red Accent Line */}
@@ -130,7 +155,7 @@ export default function Testimonials() {
                   className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#C8041C] origin-left"
                 />
               </motion.div>
-            </ScrollReveal>
+            </div>
           ))}
         </div>
 
