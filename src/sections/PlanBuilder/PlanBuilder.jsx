@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import * as Icons from 'lucide-react';
 import { useResponsive } from '../../hooks/useResponsive';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
+import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
 
 import editingImg from '../../assets/images/services/editing.webp';
 import eventsImg from '../../assets/images/services/events.webp';
