@@ -102,7 +102,7 @@ export default function Footer() {
           </div>
 
           {/* Links Column Wrapper */}
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 w-full">
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 lg:gap-6 xl:gap-8 w-full">
             
             {/* Services Links */}
             <div className="space-y-4">
@@ -169,17 +169,9 @@ export default function Footer() {
                 <li>
                   <a 
                     href="mailto:admin@behindthebuild.in" 
-                    className="text-brand-charcoal hover:text-[#C8041C] font-bold text-sm transition-colors duration-300 break-words block"
+                    className="text-brand-charcoal hover:text-[#C8041C] font-bold text-sm lg:text-[13px] xl:text-sm lg:whitespace-nowrap transition-colors duration-300 break-words lg:break-normal block"
                   >
                     admin@behindthebuild.in
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="tel:+916302026012" 
-                    className="text-brand-charcoal hover:text-[#C8041C] font-bold text-sm transition-colors duration-300 block"
-                  >
-                    +91 63020 26012
                   </a>
                 </li>
                 <li className="text-brand-charcoal/70 font-medium text-sm">
