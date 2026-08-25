@@ -1,8 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, X, Play, Check, Compass, Camera, Sliders, TrendingUp, Share2, Quote } from 'lucide-react';
+import { ArrowUpRight, X } from 'lucide-react';
 import { projects } from '../../data/projects';
-import { useResponsive } from '../../hooks/useResponsive';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
 
@@ -59,26 +58,7 @@ function AnimatedCounter({ value, duration = 1.5 }) {
   );
 }
 
-// Sparkline SVG graph sub-component
-function MiniSparkline({ color = '#C8041C' }) {
-  const points = "0,15 15,25 30,5 45,30 60,10 75,20 90,8 105,25 120,5";
-  return (
-    <div className="w-full h-8 mt-4 overflow-hidden opacity-50 hover:opacity-100 transition-opacity">
-      <svg className="w-full h-full" viewBox="0 0 120 30" preserveAspectRatio="none">
-        <motion.polyline
-          fill="none"
-          stroke={color}
-          strokeWidth="2"
-          points={points}
-          initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: 'easeOut' }}
-        />
-      </svg>
-    </div>
-  );
-}
+
 
 const GALLERY_MEDIA = {
   'consistency-ai': [
@@ -148,6 +128,57 @@ const MOCK_PROJECTS = {
   }
 };
 
+// Case Study Custom Outline SVG Icons
+const UsersIcon = (props) => (
+  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+    <circle cx="9" cy="7" r="4"></circle>
+    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+  </svg>
+);
+
+const FilmIcon = (props) => (
+  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect x="2" y="2" width="20" height="20" rx="2" ry="2"></rect>
+    <line x1="12" y1="2" x2="12" y2="22"></line>
+    <line x1="2" y1="12" x2="22" y2="12"></line>
+    <line x1="12" y1="7" x2="22" y2="7"></line>
+    <line x1="12" y1="17" x2="22" y2="17"></line>
+    <line x1="2" y1="7" x2="12" y2="7"></line>
+    <line x1="2" y1="17" x2="12" y2="17"></line>
+  </svg>
+);
+
+const TargetIcon = (props) => (
+  <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10"></circle>
+    <circle cx="12" cy="12" r="6"></circle>
+    <circle cx="12" cy="12" r="2"></circle>
+  </svg>
+);
+
+const EyeIcon = (props) => (
+  <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+    <circle cx="12" cy="12" r="3"></circle>
+  </svg>
+);
+
+const GrowthIcon = (props) => (
+  <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+    <polyline points="17 6 23 6 23 12"></polyline>
+  </svg>
+);
+
+const PlayIcon = (props) => (
+  <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10"></circle>
+    <polygon points="10 8 16 12 10 16 10 8"></polygon>
+  </svg>
+);
+
 const DETAIL_PROJECT_STORIES = {
   'consistency-ai': {
     name: 'Consistency.AI',
@@ -177,7 +208,20 @@ const DETAIL_PROJECT_STORIES = {
       { name: 'Content Production', desc: 'On-set production grids, mirrorless cinema camera shoots, and lighting.' },
       { name: 'Social Media Content', desc: 'Optimized reels, hooks scripting, and short-form visual aesthetics.' },
       { name: 'Creative Strategy', desc: 'Audience analytics tracking, editorial calendars, and brand positioning.' }
-    ]
+    ],
+    // Redesign properties
+    servicesListText: 'Video Editing, Content Production, Creative Strategy',
+    industry: 'AI Education Platform',
+    duration: '4 Weeks',
+    year: '2024',
+    projectOverviewText: 'Consistency.AI is an online AI learning platform dedicated to making technology and programming accessible to students worldwide. We designed and captured a complete visual curriculum, combining mirrorless camera capturing with high-retention vertical editing.',
+    challengeCards: [
+      { title: 'Educational Hooks', desc: 'Make complex coding principles immediately engaging within the first three seconds.' },
+      { title: 'Structured Formats', desc: 'Develop recurring series templates that build audience habits and high return rates.' },
+      { title: 'Visual Retention', desc: 'Integrate precise pacing, typography maps, and code animation styles that hold attention.' }
+    ],
+    servicesDeliveredList: ['VIDEO EDITING', 'CONTENT PRODUCTION', 'SOCIAL MEDIA CONTENT', 'CREATIVE STRATEGY', 'VISUAL STORYTELLING', 'MOTION GRAPHICS'],
+    impactText: 'We established Consistency.AI as a leading authority in online technical education, transforming theoretical lectures into viral programming narratives that students choose to watch.'
   },
   'delusionai': {
     name: 'DelusionAI',
@@ -188,7 +232,7 @@ const DETAIL_PROJECT_STORIES = {
       { value: '78%', label: 'Watch Retention' }
     ],
     challengeHeading: 'Transforming clinical research into stories that actually enjoy and connect.',
-    challengeParagraph: 'DelusionAI wanted to make mental health conversations more accessible through engaging visual storytelling while building trust and growing a strong online community. Navigating sensitive topics with emotional resonance was the core challenge.',
+    challengeParagraph: 'We partnered with DelusionAI to craft emotionally resonant visual narratives that bring mental health conversations to life through cinematic storytelling, strong editing, and intentional visual language.',
     goalList: ['Educate & connect', 'Build deep trust', 'Increase retention'],
     outcomeMetrics: [
       { value: '30K+', label: 'Views in 30 Days' },
@@ -207,7 +251,20 @@ const DETAIL_PROJECT_STORIES = {
       { name: 'Motion Graphics', desc: 'Visual models, typography maps, and animated abstract backgrounds.' },
       { name: 'Social Media Content', desc: 'High-hook edits, reels cuts, and title design guides.' },
       { name: 'Brand Storytelling', desc: 'Narrative arcs building, audience profile fits, and visual guidelines.' }
-    ]
+    ],
+    // Redesign properties
+    servicesListText: 'Video Editing, Color Grading, Sound Design',
+    industry: 'Health Tech / Mental Health',
+    duration: '3 Weeks',
+    year: '2024',
+    projectOverviewText: 'DelusionAI is a mental health platform using technology and storytelling to create awareness and empathy. Our goal was to craft a cinematic visual identity that feels authentic, sensitive, and deeply human.',
+    challengeCards: [
+      { title: 'Sensitive Storytelling', desc: 'Convey complex emotions with respect, authenticity, and visual subtlety.' },
+      { title: 'Engaging Visuals', desc: 'Create content that captures attention while maintaining empathy and trust.' },
+      { title: 'Strong Retention', desc: 'Improve watch time and connection through pacing, structure, and emotional storytelling.' }
+    ],
+    servicesDeliveredList: ['VIDEO EDITING', 'COLOR GRADING', 'SOUND DESIGN', 'CONTENT STRATEGY', 'VISUAL STORYTELLING', 'SOCIAL MEDIA CONTENT'],
+    impactText: 'Through cinematic visual narratives and careful editing pacing, we enabled DelusionAI to communicate complex emotional themes with deep visual authority, driving record audience engagement and community trust.'
   },
   'campus-insight': {
     name: 'Campus Insight',
@@ -236,7 +293,20 @@ const DETAIL_PROJECT_STORIES = {
       { name: 'Video Editing', desc: 'Seamless pacing, audio mixing, and multi-camera assembly.' },
       { name: 'Content Production', desc: 'Cinematic drone shots, architectural tours, and interview setups.' },
       { name: 'Creative Strategy', desc: 'Campaign timelines, messaging guidelines, and student targeting.' }
-    ]
+    ],
+    // Redesign properties
+    servicesListText: 'Video Editing, Content Production, Creative Strategy',
+    industry: 'EdTech / Higher Education',
+    duration: '6 Weeks',
+    year: '2024',
+    projectOverviewText: 'Campus Insight required an immersive visual directory to showcase modern campus environments and ease the student transition into academic programs. We produced high-end cinematic drone guides and structural interview templates.',
+    challengeCards: [
+      { title: 'Immersive Guiding', desc: 'Showcase physical spaces in an engaging, cinematic, and modern perspective.' },
+      { title: 'Authentic Reviews', desc: 'Incorporate real student stories and professor reviews without feeling staged or corporate.' },
+      { title: 'Hybrid Conversions', desc: 'Bridge the gap between online video tours and active program enrollments through targeted CTAs.' }
+    ],
+    servicesDeliveredList: ['VIDEO EDITING', 'CONTENT PRODUCTION', 'CREATIVE STRATEGY', 'DRONE VIDEOGRAPHY', 'VISUAL STORYTELLING', 'STUDENT ONBOARDING'],
+    impactText: 'The cinematic tour experience repositioned the university registration funnel, providing prospective students with an authentic, high-quality window into campus culture that boosted active enrollments.'
   },
   'hackverse': {
     name: 'HackVerse',
@@ -265,21 +335,27 @@ const DETAIL_PROJECT_STORIES = {
       { name: 'Motion Graphics', desc: 'Abstract code grids, particle overlays, and animated title designs.' },
       { name: 'Video Editing', desc: 'Fast-paced edits, sound effects layering, and social teasers.' },
       { name: 'Creative Strategy', desc: 'Developer marketing angles, viral assets distribution, and timelines.' }
-    ]
+    ],
+    // Redesign properties
+    servicesListText: 'Video Editing, Motion Graphics, Event Coverage',
+    industry: 'Developer Ecosystem',
+    duration: '6 Weeks',
+    year: '2024',
+    projectOverviewText: 'Behind The Build crafted a premium tech campaign for HackVerse, utilizing motion design, fast-paced editing, and high-energy developer aesthetics.',
+    challengeCards: [
+      { title: 'Developer Resonance', desc: 'Create high-energy trailer cuts that appeal directly to top-tier software builders.' },
+      { title: 'Event Clarity', desc: 'Structure information maps, schedule grids, and event tracks into rapid content clips.' },
+      { title: 'Retention in Tech', desc: 'Retain audience focus using dynamic sound design, code flashes, and cinematic pacing.' }
+    ],
+    servicesDeliveredList: ['VIDEO EDITING', 'MOTION GRAPHICS', 'EVENT COVERAGE', 'CONTENT STRATEGY', 'DEVELOPER MARKETING', 'SOUND DESIGN'],
+    impactText: 'The HackVerse hybrid campaign generated record dev impressions and filled hackathon tracks ahead of schedule, setting a new benchmark for developer ecosystem event marketing.'
   }
 };
 
 export default function FeaturedWork() {
   const [selectedProject, setSelectedProject] = useState(null);
-  const [activeShowcaseTab, setActiveShowcaseTab] = useState('All');
   const [activeLightboxVideo, setActiveLightboxVideo] = useState(null);
-  const { isMobile, isTouch } = useResponsive();
   const shouldReduceMotion = useReducedMotion();
-  
-  const [activeStoryTabs, setActiveStoryTabs] = useState({
-    'consistency-ai': 'result',
-    'delusionai': 'result'
-  });
 
   const clipRevealVariants = {
     initial: { clipPath: 'inset(0 100% 0 0)' },
@@ -289,18 +365,8 @@ export default function FeaturedWork() {
     }
   };
 
-  const infoRevealVariants = {
-    initial: { opacity: 0, y: 15 },
-    animate: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.25 }
-    }
-  };
-
   const handleOpenDetail = (project) => {
     setSelectedProject(project);
-    setActiveShowcaseTab('All');
     document.body.style.overflow = 'hidden'; // prevent background scrolling
   };
 
@@ -590,405 +656,509 @@ export default function FeaturedWork() {
           const story = DETAIL_PROJECT_STORIES[selectedProject.id] || DETAIL_PROJECT_STORIES['consistency-ai'];
           
           const moreProjects = [
-            { id: 'consistency-ai', name: 'Consistency.AI', industry: 'AI Education Platform', image: projects.find(p => p.id === 'consistency-ai')?.image || consistencyThumbnail },
-            { id: 'delusionai', name: 'DelusionAI', industry: 'Mental Health & Wellness', image: projects.find(p => p.id === 'delusionai')?.image || delusionaiThumbnail },
+            { id: 'consistency-ai', name: 'Consistency.AI', industry: 'AI Education Platform', image: projects.find(p => p.id === 'consistency-ai')?.image || hackverseImage },
+            { id: 'delusionai', name: 'DelusionAI', industry: 'Mental Health & Wellness', image: projects.find(p => p.id === 'delusionai')?.image || hackverseImage },
             { id: 'campus-insight', name: 'Campus Insight', industry: 'EdTech Platform', image: campusInsightImage },
             { id: 'hackverse', name: 'HackVerse', industry: 'Developer Ecosystem', image: hackverseImage }
           ].filter(p => p.id !== selectedProject.id).slice(0, 3);
 
+          const renderProjectTitle = (name) => {
+            if (name.toLowerCase().endsWith('ai')) {
+              const base = name.slice(0, -2);
+              return (
+                <>
+                  {base}<span className="text-[#C8041C]">AI</span>
+                </>
+              );
+            }
+            const words = name.split(' ');
+            if (words.length > 1) {
+              const lastWord = words.pop();
+              return (
+                <>
+                  {words.join(' ')} <span className="text-[#C8041C]">{lastWord}</span>
+                </>
+              );
+            }
+            return name;
+          };
+
+          const challengeIcons = [UsersIcon, FilmIcon, TargetIcon];
+          const metricIcons = [EyeIcon, GrowthIcon, PlayIcon];
+          const galleryItems = GALLERY_MEDIA[selectedProject.id] || [];
+
           return (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className="fixed inset-0 bg-brand-white z-[999] overflow-y-auto font-sans"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 40 }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed inset-0 bg-brand-white z-[999] overflow-y-auto font-sans text-[#212121]"
               role="dialog"
               aria-modal="true"
             >
-              {/* Sticky Top Header */}
-              <div className="w-full border-b border-brand-charcoal/10 py-5 px-6 md:px-12 flex justify-between items-center bg-brand-white/80 backdrop-blur-md sticky top-0 z-[1001]">
-                <div className="flex items-center gap-3">
+              {/* HEADER */}
+              <div className="w-full border-b border-brand-charcoal/10 py-5 px-6 md:px-12 flex justify-between items-center bg-brand-white/80 backdrop-blur-md sticky top-0 z-[1001] select-none">
+                <div className="flex items-center gap-6">
                   <img 
                     src={logoUrl} 
                     alt="Behind the Build Logo" 
-                    className="w-16 sm:w-20 object-contain animate-fadeIn" 
+                    className="w-16 sm:w-20 object-contain" 
                   />
-                  <span className="font-sans text-[10px] font-bold tracking-widest text-brand-charcoal/60 uppercase">
-                    CASE STUDY NARRATIVE
-                  </span>
+                  <div className="hidden sm:flex items-center gap-2 text-[10px] font-mono font-bold tracking-widest text-[#212121]/40 uppercase">
+                    <span>HOME</span>
+                    <span>/</span>
+                    <span>OUR WORK</span>
+                    <span>/</span>
+                    <span className="text-[#C8041C] font-black">{story.name}</span>
+                  </div>
                 </div>
                 <button
                   onClick={handleCloseDetail}
-                  className="flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-brand-charcoal/50 hover:text-brand-charcoal transition-colors p-2.5 border border-brand-charcoal/10 hover:border-brand-charcoal/30 rounded-full focus-ring bg-brand-white"
+                  className="flex items-center gap-3 text-[10px] font-mono font-bold uppercase tracking-widest text-[#212121] hover:text-[#C8041C] transition-colors duration-300 group"
                   aria-label="Close project view"
                 >
-                  <X className="w-4 h-4" />
+                  <div className="w-8 h-8 rounded-full border border-[#E6E6E6] group-hover:border-[#C8041C] flex items-center justify-center transition-colors duration-300">
+                    <X className="w-3.5 h-3.5" />
+                  </div>
+                  <span>CLOSE CASE STUDY</span>
                 </button>
               </div>
 
-              {/* Section 1: Cinematic Hero */}
-              <section className="min-h-[80vh] flex items-center py-20 md:py-24 border-b border-brand-charcoal/5 bg-brand-white select-none">
-                <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                  {/* Left Column Content */}
-                  <div className="lg:col-span-5 text-left space-y-6">
-                    <div>
-                      <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-brand-red">
-                        FEATURED PROJECT
-                      </p>
-                      <h1 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-brand-charcoal leading-none mt-4">
-                        {story.name}
-                      </h1>
-                      <p className="text-base sm:text-lg text-brand-charcoal/60 leading-relaxed mt-4 font-normal max-w-sm">
-                        {story.subtitle}
-                      </p>
-                    </div>
-
-                    {/* Animated Metrics */}
-                    <div className="flex flex-wrap items-center gap-6 sm:gap-10 pt-4 border-t border-brand-charcoal/10">
-                      {story.heroMetrics.map((metric, i) => (
-                        <div key={i}>
-                          <span className="text-2xl sm:text-3xl font-black text-brand-red block font-sans tracking-tight">
-                            <AnimatedCounter value={metric.value} />
-                          </span>
-                          <span className="text-[9px] font-mono text-brand-charcoal/40 uppercase tracking-widest font-bold mt-1.5 block">
-                            {metric.label}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Scroll Indicator */}
-                    <div className="pt-4 hidden lg:flex items-center gap-2.5 text-brand-charcoal/40 font-mono text-[9px] tracking-widest">
-                      <div className="w-5 h-8 border border-brand-charcoal/20 rounded-full flex justify-center p-1">
-                        <motion.div 
-                          animate={{ y: [0, 8, 0] }}
-                          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-                          className="w-1 h-1.5 bg-brand-red rounded-full"
-                        />
-                      </div>
-                      <span className="font-bold uppercase">SCROLL TO EXPLORE</span>
-                    </div>
-                  </div>
-
-                  {/* Right Column Video */}
-                  <div className="lg:col-span-7 w-full">
-                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-brand-lightgray rounded-[20px] shadow-[0_20px_48px_rgba(0,0,0,0.06)] border border-brand-charcoal/5">
-                      <video
-                        src={selectedProject.videoUrl}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-brand-charcoal/40 via-transparent to-brand-charcoal/25 pointer-events-none" />
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              {/* Section 2: The Challenge */}
-              <section className="py-20 md:py-24 border-b border-brand-charcoal/5 bg-brand-white">
+              {/* HERO CASE STUDY SECTION */}
+              <section className="min-h-[80vh] flex items-center py-16 md:py-24 border-b border-[#E6E6E6] bg-brand-white select-none">
                 <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                   
-                  {/* Left Column Description */}
-                  <div className="lg:col-span-6 text-left space-y-12">
+                  {/* Left Column Content */}
+                  <div className="lg:col-span-5 text-left space-y-8">
                     <div className="space-y-4">
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-brand-charcoal/40">
-                        02 / THE CHALLENGE
-                      </span>
-                      <h2 
-                        className="text-2xl sm:text-3xl md:text-4xl font-black uppercase leading-[1.1] text-brand-charcoal tracking-tight font-sans"
-                        dangerouslySetInnerHTML={{ __html: story.challengeHeading }}
-                      />
-                    </div>
-                    <p className="text-sm sm:text-base text-brand-charcoal/75 leading-relaxed font-normal">
-                      {story.challengeParagraph}
-                    </p>
-                  </div>
-
-                  {/* Right Column Graphic & Goal Card */}
-                  <div className="lg:col-span-6 relative">
-                    <div className="aspect-[16/10] overflow-hidden bg-brand-lightgray rounded-[20px] shadow-sm border border-brand-charcoal/5">
-                      <img
-                        src={selectedProject.image}
-                        alt="Project challenge setting preview"
-                        width="800"
-                        height="500"
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                    </div>
-                    {/* Floating circular Goal Card */}
-                    <div className="sm:absolute sm:-bottom-6 sm:-right-6 relative bottom-0 right-0 mt-6 mx-auto bg-brand-charcoal text-brand-white p-6 sm:p-8 rounded-full w-44 h-44 sm:w-48 sm:h-48 flex flex-col justify-center items-center text-center shadow-lg border border-brand-white/10 z-10 hover:scale-105 transition-transform duration-300 select-none">
-                      <span className="text-[9px] font-mono text-brand-red uppercase font-black tracking-widest block mb-2">
-                        THE GOAL
-                      </span>
-                      <ul className="text-[10px] font-mono space-y-1 text-brand-white/80 font-bold uppercase leading-tight">
-                        {story.goalList.map((goal, idx) => (
-                          <li key={idx}>• {goal}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                </div>
-              </section>
-
-              {/* Section 3: Our Solution */}
-              <section className="py-20 md:py-24 border-b border-brand-charcoal/5 bg-brand-white">
-                <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full text-left space-y-12">
-                  
-                  {/* Section Title */}
-                  <div className="space-y-4 max-w-xl">
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-brand-charcoal/40">
-                      03 / OUR SOLUTION
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase text-brand-charcoal tracking-tight font-sans leading-none">
-                      End-to-End Content Production That Connects, Educates & Converts.
-                    </h2>
-                  </div>
-
-                  {/* Process Cards Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-                    {[
-                      { icon: Compass, title: 'Strategy & Research', desc: 'Target audience profiling and structural editing scripting.' },
-                      { icon: Camera, title: 'Content Production', desc: 'Dynamic camera setups and professional on-site video capturing.' },
-                      { icon: Sliders, title: 'Editing & Motion', desc: 'Cinematic cuts, sound design mixes, and high-retention post-production.' },
-                      { icon: TrendingUp, title: 'Optimization', desc: 'Multi-platform adapting formatting, hook templates, and pacing grids.' },
-                      { icon: Share2, title: 'Publishing', desc: 'Consistent release calendar scheduling, retention analytics tracking, and revisions.' }
-                    ].map((stepCard, idx) => (
-                      <div 
-                        key={idx}
-                        className="bg-brand-white border border-brand-charcoal/5 rounded-[20px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:-translate-y-1.5 transition-all duration-300 text-left flex flex-col justify-between group"
-                      >
-                        <div className="w-10 h-10 rounded-xl bg-brand-red/5 flex items-center justify-center text-brand-red group-hover:bg-brand-red group-hover:text-brand-white transition-colors duration-300">
-                          <stepCard.icon className="w-5 h-5 stroke-[1.5]" />
-                        </div>
-                        <div className="mt-8 space-y-2">
-                          <h4 className="text-sm font-bold uppercase tracking-tight text-brand-charcoal font-sans">
-                            {stepCard.title}
-                          </h4>
-                          <p className="text-xs text-brand-charcoal/60 leading-relaxed">
-                            {stepCard.desc}
-                          </p>
-                        </div>
+                      <div>
+                        <p className="text-xs font-mono font-black uppercase tracking-widest text-[#C8041C] block">
+                          FEATURED PROJECT
+                        </p>
+                        <div className="w-8 h-[2px] bg-[#C8041C] mt-2" />
                       </div>
-                    ))}
-                  </div>
-
-                </div>
-              </section>
-
-              {/* Section 4: Project Showcase */}
-              <section className="py-20 md:py-24 border-b border-brand-charcoal/5 bg-brand-white">
-                <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full text-left space-y-12">
-                  
-                  {/* Showcase Header */}
-                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                    <div className="space-y-4">
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-brand-charcoal/40">
-                        04 / PROJECT SHOWCASE
-                      </span>
-                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase text-brand-charcoal tracking-tight font-sans leading-none">
-                        Interactive Visual Showcase
-                      </h2>
-                    </div>
-
-                    {/* Gallery Tabs */}
-                    <div className="flex flex-wrap gap-2">
-                      {['All', 'YouTube', 'Instagram Reels', 'Shorts', 'Behind The Scenes'].map((tab) => (
-                        <button
-                          key={tab}
-                          onClick={() => setActiveShowcaseTab(tab)}
-                          className={`text-[9px] font-mono font-bold tracking-widest uppercase px-3 py-1.5 border rounded-full transition-all ${
-                            activeShowcaseTab === tab
-                              ? 'border-brand-red bg-brand-red text-brand-white'
-                              : 'border-brand-charcoal/10 bg-transparent text-brand-charcoal/50 hover:text-brand-charcoal hover:border-brand-charcoal/30'
-                          }`}
-                        >
-                          {tab}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Showcase Media Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {(() => {
-                      const items = GALLERY_MEDIA[selectedProject.id] || [];
-                      const filteredItems = activeShowcaseTab === 'All' ? items : items.filter(item => item.category === activeShowcaseTab);
                       
-                      if (filteredItems.length === 0) {
+                      <h1 className="text-5xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-[#212121] leading-none font-sans">
+                        {renderProjectTitle(story.name)}
+                      </h1>
+                      
+                      <p className="text-lg sm:text-xl font-medium text-[#212121]/60 tracking-tight leading-snug">
+                        {story.subtitle}
+                      </p>
+                      
+                      <p className="text-sm sm:text-base text-brand-charcoal/80 leading-relaxed font-normal max-w-md pt-2">
+                        {story.challengeParagraph}
+                      </p>
+                    </div>
+
+                    {/* Results / Metrics horizontal strip */}
+                    <div className="grid grid-cols-3 gap-6 pt-8 border-t border-brand-charcoal/10 w-full">
+                      {story.heroMetrics.map((metric, i) => {
+                        const Icon = metricIcons[i] || EyeIcon;
                         return (
-                          <div className="col-span-full py-12 text-center text-xs font-mono text-brand-charcoal/40 uppercase">
-                            No showcase media files under this category.
+                          <div key={i} className={`space-y-2 text-left ${i > 0 ? 'border-l border-brand-charcoal/10 pl-6' : ''}`}>
+                            <Icon className="text-[#C8041C] shrink-0 w-5 h-5" />
+                            <div className="space-y-0.5">
+                              <span className="text-2xl sm:text-3xl font-black text-[#212121] block tracking-tight leading-none font-sans">
+                                <AnimatedCounter value={metric.value} />
+                              </span>
+                              <span className="text-[9px] font-mono text-[#212121]/50 uppercase tracking-widest font-black block leading-tight">
+                                {metric.label}
+                              </span>
+                            </div>
                           </div>
                         );
-                      }
+                      })}
+                    </div>
+                  </div>
 
-                      return filteredItems.map((item, idx) => (
-                        <div 
-                          key={idx}
-                          onClick={() => setActiveLightboxVideo(selectedProject.videoUrl)}
-                          className="group cursor-pointer bg-brand-white border border-brand-charcoal/5 rounded-[20px] overflow-hidden shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 flex flex-col h-full relative"
-                        >
-                          <div className="aspect-[16/10] overflow-hidden bg-brand-lightgray relative filter grayscale contrast-90 mix-blend-luminosity brightness-90 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:brightness-100 group-hover:contrast-100 transition-all duration-500">
-                            <img
-                              src={item.image || selectedProject.image}
-                              alt={item.title}
-                              width="800"
-                              height="500"
-                              className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-500"
-                              loading="lazy"
-                            />
-                            {/* Play Overlay */}
-                            <div className="absolute inset-0 flex items-center justify-center bg-brand-charcoal/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                              <div className="w-12 h-12 rounded-full bg-brand-white/95 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <Play className="w-5 h-5 text-brand-red fill-current ml-0.5" />
+                  {/* Right Column Showcase Image & Dark Strip */}
+                  <div className="lg:col-span-7 w-full flex flex-col items-stretch">
+                    <div className="relative aspect-[16/9.5] w-full overflow-hidden bg-brand-lightgray rounded-t-[12px] shadow-sm border border-brand-charcoal/5 group">
+                      <img
+                        src={selectedProject.image}
+                        alt={story.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    {/* Dark Information Strip */}
+                    <div className="bg-[#212121] text-white py-6 px-8 rounded-b-[12px] grid grid-cols-2 sm:grid-cols-4 gap-6 text-left items-start select-none border-t border-white/5">
+                      <div className="space-y-1">
+                        <span className="text-[9px] font-mono font-black text-[#C8041C] uppercase tracking-widest block">
+                          SERVICES
+                        </span>
+                        <span className="text-xs font-bold text-white/90 font-sans block leading-tight">
+                          {story.servicesListText || story.services.map(s => s.name).join(', ')}
+                        </span>
+                      </div>
+                      <div className="space-y-1 sm:border-l sm:border-white/10 sm:pl-6">
+                        <span className="text-[9px] font-mono font-black text-[#C8041C] uppercase tracking-widest block">
+                          INDUSTRY
+                        </span>
+                        <span className="text-xs font-bold text-white/90 font-sans block leading-tight">
+                          {story.industry || selectedProject.industry}
+                        </span>
+                      </div>
+                      <div className="space-y-1 sm:border-l sm:border-white/10 sm:pl-6">
+                        <span className="text-[9px] font-mono font-black text-[#C8041C] uppercase tracking-widest block">
+                          DURATION
+                        </span>
+                        <span className="text-xs font-bold text-white/90 font-sans block leading-tight">
+                          {story.duration || '3 Weeks'}
+                        </span>
+                      </div>
+                      <div className="space-y-1 sm:border-l sm:border-white/10 sm:pl-6">
+                        <span className="text-[9px] font-mono font-black text-[#C8041C] uppercase tracking-widest block">
+                          YEAR
+                        </span>
+                        <span className="text-xs font-bold text-white/90 font-sans block leading-tight">
+                          {story.year || '2024'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </section>
+
+              {/* PROJECT OVERVIEW & THE CHALLENGE */}
+              <section className="py-20 md:py-24 border-b border-[#E6E6E6] bg-brand-white">
+                <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16 items-start">
+                  
+                  {/* Left Column: Project Overview */}
+                  <div className="lg:col-span-4 space-y-6 text-left">
+                    <div className="space-y-2">
+                      <span className="text-xs font-mono font-black uppercase tracking-widest text-[#C8041C]">
+                        PROJECT OVERVIEW
+                      </span>
+                      <div className="w-8 h-[2px] bg-[#C8041C]" />
+                    </div>
+                    
+                    <p className="text-sm md:text-[15px] text-[#212121]/80 leading-relaxed font-normal max-w-sm font-sans">
+                      {story.projectOverviewText}
+                    </p>
+                    
+                    <div className="pt-2">
+                      <button 
+                        onClick={() => setActiveLightboxVideo(selectedProject.videoUrl)}
+                        className="inline-flex items-center gap-2.5 border-2 border-[#212121] hover:border-[#C8041C] text-[#212121] hover:text-[#C8041C] px-6 py-3.5 text-xs font-mono font-bold uppercase tracking-widest transition-all duration-300 hover:scale-[1.02] bg-transparent"
+                      >
+                        <span>VIEW LIVE PROJECT</span>
+                        <span className="text-[10px]">↗</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Challenge Cards */}
+                  <div className="lg:col-span-8 space-y-6 text-left">
+                    <div className="space-y-2">
+                      <span className="text-xs font-mono font-black uppercase tracking-widest text-[#C8041C]">
+                        THE CHALLENGE
+                      </span>
+                      <div className="w-8 h-[2px] bg-[#C8041C]" />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+                      {story.challengeCards.map((card, idx) => {
+                        const IconComponent = challengeIcons[idx] || TargetIcon;
+                        return (
+                          <div
+                            key={idx}
+                            className="bg-brand-white border border-[#E6E6E6] rounded-[12px] p-6 text-left flex flex-col justify-between items-start transition-all duration-300 hover:border-[#C8041C]/40 hover:-translate-y-1.5 cursor-default select-none shadow-[0_4px_20px_rgba(0,0,0,0.01)]"
+                          >
+                            <div className="space-y-6">
+                              {/* Icon Box */}
+                              <div className="w-10 h-10 rounded-[8px] bg-[#C8041C]/5 flex items-center justify-center text-[#C8041C]">
+                                <IconComponent className="stroke-[1.5]" />
+                              </div>
+                              
+                              <div className="space-y-2">
+                                <span className="text-[10px] font-mono font-bold text-[#212121]/30 block leading-none">
+                                  0{idx + 1}
+                                </span>
+                                <h4 className="text-[15px] font-bold text-[#212121] tracking-tight font-sans">
+                                  {card.title}
+                                </h4>
+                                <p className="text-xs text-[#212121]/60 leading-relaxed font-normal">
+                                  {card.desc}
+                                </p>
                               </div>
                             </div>
                           </div>
-                          <div className="p-5 flex-grow text-left space-y-1">
-                            <span className="text-[8px] font-mono text-brand-charcoal/40 uppercase tracking-widest block font-bold">
-                              {item.category}
-                            </span>
-                            <h4 className="text-sm font-bold uppercase text-brand-charcoal font-sans tracking-tight">
-                              {item.title}
-                            </h4>
-                          </div>
-                        </div>
-                      ));
-                    })()}
-                  </div>
-
-                </div>
-              </section>
-
-              {/* Section 5: Results */}
-              <section className="py-20 md:py-24 border-b border-brand-charcoal/5 bg-brand-white">
-                <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full text-left space-y-12">
-                  
-                  {/* Results Heading */}
-                  <div className="space-y-4 max-w-xl">
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-brand-charcoal/40">
-                      05 / THE OUTCOME
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase text-brand-charcoal tracking-tight font-sans leading-none">
-                      Measurable Audience Growth, Engagement & Conversions.
-                    </h2>
-                  </div>
-
-                  {/* Outcome Metric Cards Grid */}
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
-                    {story.outcomeMetrics.map((metric, i) => (
-                      <div 
-                        key={i}
-                        className="bg-brand-white border border-brand-charcoal/5 rounded-[20px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.03)] transition-all duration-300"
-                      >
-                        <span className="text-[9px] font-mono text-brand-charcoal/40 uppercase tracking-widest font-black block">
-                          {metric.label}
-                        </span>
-                        <span className="text-2xl sm:text-3xl md:text-4xl font-black text-brand-red block font-sans tracking-tight mt-6 leading-none">
-                          <AnimatedCounter value={metric.value} />
-                        </span>
-                        {/* Self-drawing svg mini sparkline */}
-                        <MiniSparkline color="#C8041C" />
-                      </div>
-                    ))}
-                  </div>
-
-                </div>
-              </section>
-
-              {/* Section 6: Client Feedback */}
-              <section className="py-20 md:py-24 border-b border-brand-charcoal/5 bg-brand-white">
-                <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full flex justify-center">
-                  
-                  <div className="max-w-3xl bg-brand-white border border-brand-charcoal/5 p-8 sm:p-12 md:p-16 rounded-[24px] shadow-[0_16px_40px_rgba(0,0,0,0.03)] text-center relative select-none">
-                    <Quote className="w-10 h-10 text-brand-red/10 mx-auto mb-6 fill-current" />
-                    
-                    <h3 className="text-xl sm:text-2xl md:text-3xl font-black uppercase text-brand-charcoal tracking-tight font-sans leading-relaxed">
-                      "{story.feedbackQuote}"
-                    </h3>
-                    
-                    <div className="flex flex-col items-center justify-center mt-6 gap-3">
-                      <div className="w-14 h-14 rounded-full overflow-hidden border border-brand-charcoal/10 shadow-sm bg-brand-lightgray">
-                        <img 
-                          src={story.feedbackAuthorAvatar} 
-                          alt={story.feedbackAuthorName}
-                          width="56"
-                          height="56"
-                          className="w-full h-full object-cover" 
-                          loading="lazy"
-                        />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold uppercase tracking-tight text-brand-charcoal font-sans leading-none">
-                          {story.feedbackAuthorName}
-                        </h4>
-                        <p className="text-[9px] font-mono text-brand-charcoal/40 uppercase tracking-widest font-black mt-1.5">
-                          {story.feedbackAuthorTitle}, {story.feedbackAuthorCompany}
-                        </p>
-                      </div>
+                        );
+                      })}
                     </div>
                   </div>
 
                 </div>
               </section>
 
-              {/* Section 7: Services Delivered */}
-              <section className="py-20 md:py-24 border-b border-brand-charcoal/5 bg-brand-white">
-                <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full text-left space-y-12">
+              {/* CREATIVE PROCESS TIMELINE */}
+              <section className="py-20 md:py-24 border-b border-[#E6E6E6] bg-brand-white select-none">
+                <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full text-left space-y-16">
                   
-                  {/* Title */}
-                  <div className="space-y-4 max-w-xl">
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-brand-charcoal/40">
-                      06 / DELIVERABLES
+                  <div className="space-y-2">
+                    <span className="text-xs font-mono font-black uppercase tracking-widest text-[#C8041C]">
+                      CREATIVE PROCESS
                     </span>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase text-brand-charcoal tracking-tight font-sans leading-none">
-                      Services Provided For This Build
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-[#212121] leading-none font-sans">
+                      HOW WE BUILT IT<span className="text-[#C8041C]">.</span>
                     </h2>
                   </div>
 
-                  {/* Services Delivered Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                    {story.services.map((serv, idx) => (
-                      <div 
-                        key={idx}
-                        className="bg-brand-white border border-brand-charcoal/5 rounded-[20px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.03)] hover:-translate-y-1.5 hover:border-brand-red transition-all duration-300 flex flex-col justify-between min-h-[160px]"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-brand-red" />
-                        <div className="mt-6 space-y-1 text-left">
-                          <h4 className="text-sm font-bold uppercase tracking-tight text-brand-charcoal font-sans">
-                            {serv.name}
-                          </h4>
-                          <p className="text-xs text-brand-charcoal/60 leading-relaxed font-normal">
-                            {serv.desc}
-                          </p>
+                  <div className="relative">
+                    {/* Horizontal connector line for desktop */}
+                    <div className="absolute top-[18px] left-[5%] right-[5%] h-[1px] bg-brand-charcoal/10 hidden lg:block z-0" />
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 relative z-10 w-full">
+                      {[
+                        { num: '01', title: 'DISCOVERY', desc: 'Understanding the brand, audience, and message.' },
+                        { num: '02', title: 'STORY', desc: 'Developing the visual narrative and content direction.' },
+                        { num: '03', title: 'PRODUCTION', desc: 'Capturing and producing the visual assets.' },
+                        { num: '04', title: 'EDITING', desc: 'Editing, color grading, sound design, and final polish.' },
+                        { num: '05', title: 'DELIVERY', desc: 'Publishing optimized content and measuring performance.' }
+                      ].map((step, idx) => (
+                        <ScrollReveal 
+                          key={idx} 
+                          delay={idx * 0.08} 
+                          yOffset={20}
+                          className="space-y-4 group text-left"
+                        >
+                          {/* Step circle */}
+                          <div className="w-9 h-9 rounded-full border-2 border-[#E6E6E6] bg-brand-white flex items-center justify-center font-bold text-xs text-[#212121] group-hover:border-[#C8041C] group-hover:bg-[#C8041C] group-hover:text-brand-white transition-all duration-300">
+                            {step.num}
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <h4 className="text-xs font-mono font-black uppercase tracking-widest text-[#212121] group-hover:text-[#C8041C] transition-colors duration-300">
+                              {step.title}
+                            </h4>
+                            <p className="text-xs sm:text-[13px] text-[#212121]/60 leading-relaxed font-normal">
+                              {step.desc}
+                            </p>
+                          </div>
+                        </ScrollReveal>
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
+              </section>
+
+              {/* VISUAL STORY SECTION */}
+              <section className="py-20 md:py-24 border-b border-[#E6E6E6] bg-brand-white">
+                <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full text-left space-y-12">
+                  
+                  <div className="space-y-2">
+                    <span className="text-xs font-mono font-black uppercase tracking-widest text-[#C8041C]">
+                      VISUAL STORY
+                    </span>
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-[#212121] leading-none font-sans">
+                      EDITORIAL SHOWCASE<span className="text-[#C8041C]">.</span>
+                    </h2>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+                    {/* Left: Large Featured Image */}
+                    {galleryItems[0] && (
+                      <ScrollReveal delay={0} yOffset={35} className="lg:col-span-8 aspect-[16/10] w-full">
+                        <div 
+                          onClick={() => setActiveLightboxVideo(selectedProject.videoUrl)}
+                          className="group relative overflow-hidden bg-brand-lightgray rounded-[12px] border border-brand-charcoal/5 cursor-pointer shadow-sm w-full h-full"
+                        >
+                          <div className="w-full h-full overflow-hidden">
+                            <img
+                              src={galleryItems[0].image}
+                              alt={galleryItems[0].title}
+                              className="w-full h-full object-cover transform scale-100 group-hover:scale-103 transition-transform duration-700 ease-out"
+                            />
+                          </div>
+                          <div className="absolute inset-0 bg-brand-charcoal/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                            <div className="px-5 py-2.5 bg-brand-white text-[#C8041C] text-[10px] font-mono font-bold uppercase tracking-widest shadow-lg flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                              <span>VIEW</span>
+                              <span className="text-[8px]">▶</span>
+                            </div>
+                          </div>
+                          <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/60 to-transparent text-left select-none">
+                            <span className="text-[8px] font-mono font-bold text-white/50 uppercase tracking-widest">
+                              {galleryItems[0].category}
+                            </span>
+                            <h4 className="text-xs sm:text-sm font-bold uppercase text-white tracking-tight mt-0.5">
+                              {galleryItems[0].title}
+                            </h4>
+                          </div>
                         </div>
-                      </div>
+                      </ScrollReveal>
+                    )}
+
+                    {/* Right: Two stacked smaller images */}
+                    <div className="lg:col-span-4 flex flex-col gap-6 justify-between w-full">
+                      {galleryItems[1] && (
+                        <ScrollReveal delay={0.15} yOffset={25} className="aspect-[16/9.5] w-full flex-grow">
+                          <div 
+                            onClick={() => setActiveLightboxVideo(selectedProject.videoUrl)}
+                            className="group relative overflow-hidden bg-brand-lightgray rounded-[12px] border border-brand-charcoal/5 cursor-pointer shadow-sm w-full h-full"
+                          >
+                            <div className="w-full h-full overflow-hidden">
+                              <img
+                                src={galleryItems[1].image}
+                                alt={galleryItems[1].title}
+                                className="w-full h-full object-cover transform scale-100 group-hover:scale-103 transition-transform duration-700 ease-out"
+                              />
+                            </div>
+                            <div className="absolute inset-0 bg-brand-charcoal/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                              <div className="px-5 py-2.5 bg-brand-white text-[#C8041C] text-[10px] font-mono font-bold uppercase tracking-widest shadow-lg flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                                <span>VIEW</span>
+                                <span className="text-[8px]">▶</span>
+                              </div>
+                            </div>
+                            <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/60 to-transparent text-left select-none">
+                              <span className="text-[8px] font-mono font-bold text-white/50 uppercase tracking-widest">
+                                {galleryItems[1].category}
+                              </span>
+                              <h4 className="text-xs sm:text-sm font-bold uppercase text-white tracking-tight mt-0.5">
+                                {galleryItems[1].title}
+                              </h4>
+                            </div>
+                          </div>
+                        </ScrollReveal>
+                      )}
+                      {galleryItems[2] && (
+                        <ScrollReveal delay={0.25} yOffset={25} className="aspect-[16/9.5] w-full flex-grow">
+                          <div 
+                            onClick={() => setActiveLightboxVideo(selectedProject.videoUrl)}
+                            className="group relative overflow-hidden bg-brand-lightgray rounded-[12px] border border-brand-charcoal/5 cursor-pointer shadow-sm w-full h-full"
+                          >
+                            <div className="w-full h-full overflow-hidden">
+                              <img
+                                src={galleryItems[2].image}
+                                alt={galleryItems[2].title}
+                                className="w-full h-full object-cover transform scale-100 group-hover:scale-103 transition-transform duration-700 ease-out"
+                              />
+                            </div>
+                            <div className="absolute inset-0 bg-brand-charcoal/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                              <div className="px-5 py-2.5 bg-brand-white text-[#C8041C] text-[10px] font-mono font-bold uppercase tracking-widest shadow-lg flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                                <span>VIEW</span>
+                                <span className="text-[8px]">▶</span>
+                              </div>
+                            </div>
+                            <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/60 to-transparent text-left select-none">
+                              <span className="text-[8px] font-mono font-bold text-white/50 uppercase tracking-widest">
+                                {galleryItems[2].category}
+                              </span>
+                              <h4 className="text-xs sm:text-sm font-bold uppercase text-white tracking-tight mt-0.5">
+                                {galleryItems[2].title}
+                              </h4>
+                            </div>
+                          </div>
+                        </ScrollReveal>
+                      )}
+                    </div>
+
+                    {/* Full-width bottom banner */}
+                    {galleryItems[3] && (
+                      <ScrollReveal delay={0.35} yOffset={35} className="lg:col-span-12 aspect-[21/9] sm:aspect-[21/7] w-full mt-2">
+                        <div 
+                          onClick={() => setActiveLightboxVideo(selectedProject.videoUrl)}
+                          className="group relative overflow-hidden bg-brand-lightgray rounded-[12px] border border-brand-charcoal/5 cursor-pointer shadow-sm w-full h-full"
+                        >
+                          <div className="w-full h-full overflow-hidden">
+                            <img
+                              src={galleryItems[3].image}
+                              alt={galleryItems[3].title}
+                              className="w-full h-full object-cover transform scale-100 group-hover:scale-103 transition-transform duration-700 ease-out"
+                            />
+                          </div>
+                          <div className="absolute inset-0 bg-brand-charcoal/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                            <div className="px-5 py-2.5 bg-brand-white text-[#C8041C] text-[10px] font-mono font-bold uppercase tracking-widest shadow-lg flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                              <span>VIEW</span>
+                              <span className="text-[8px]">▶</span>
+                            </div>
+                          </div>
+                          <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/60 to-transparent text-left select-none">
+                            <span className="text-[8px] font-mono font-bold text-white/50 uppercase tracking-widest">
+                              {galleryItems[3].category}
+                            </span>
+                            <h4 className="text-xs sm:text-sm font-bold uppercase text-white tracking-tight mt-0.5">
+                              {galleryItems[3].title}
+                            </h4>
+                          </div>
+                        </div>
+                      </ScrollReveal>
+                    )}
+                  </div>
+
+                </div>
+              </section>
+
+              {/* THE IMPACT */}
+              <section className="py-24 md:py-32 border-b border-[#E6E6E6] bg-brand-offwhite select-none">
+                <div className="max-w-4xl mx-auto px-6 text-center space-y-8">
+                  <ScrollReveal delay={0} yOffset={10}>
+                    <span className="text-xs font-mono font-black uppercase tracking-widest text-[#C8041C]">
+                      THE IMPACT
+                    </span>
+                  </ScrollReveal>
+                  
+                  <ScrollReveal delay={0.1} yOffset={35}>
+                    <h2 className="text-3xl sm:text-5xl md:text-[60px] font-black uppercase tracking-tight text-[#212121] leading-[1.05] font-sans">
+                      CONTENT SHOULD NOT
+                      <br />
+                      JUST BE SEEN.
+                      <br />
+                      IT SHOULD BE <span className="text-[#C8041C]">FELT.</span>
+                    </h2>
+                  </ScrollReveal>
+                  
+                  <ScrollReveal delay={0.25} yOffset={20}>
+                    <p className="text-sm sm:text-base md:text-lg text-[#212121]/75 leading-relaxed font-sans max-w-2xl mx-auto font-normal">
+                      {story.impactText}
+                    </p>
+                  </ScrollReveal>
+                </div>
+              </section>
+
+              {/* SERVICES DELIVERED */}
+              <section className="py-20 md:py-24 border-b border-[#E6E6E6] bg-brand-white">
+                <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full text-left space-y-12">
+                  
+                  <div className="space-y-2">
+                    <span className="text-xs font-mono font-black uppercase tracking-widest text-[#C8041C]">
+                      SERVICES DELIVERED
+                    </span>
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-[#212121] leading-none font-sans">
+                      SERVICES FOR THIS BUILD<span className="text-[#C8041C]">.</span>
+                    </h2>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 pt-4 w-full">
+                    {story.servicesDeliveredList.map((serv, idx) => (
+                      <ScrollReveal key={idx} delay={idx * 0.05} yOffset={15} className="space-y-3 text-left group">
+                        <div className="w-6 h-[2px] bg-[#C8041C] group-hover:w-12 transition-all duration-300" />
+                        <h4 className="text-[15px] sm:text-base font-black text-[#212121] uppercase tracking-wider font-sans">
+                          {serv}
+                        </h4>
+                      </ScrollReveal>
                     ))}
                   </div>
 
                 </div>
               </section>
 
-              {/* Section 8: More Projects */}
-              <section className="py-20 md:py-24 border-b border-brand-charcoal/5 bg-brand-white">
+              {/* MORE PROJECTS */}
+              <section className="py-20 md:py-24 border-b border-[#E6E6E6] bg-brand-white">
                 <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full text-left space-y-12">
                   
-                  <div className="space-y-4 max-w-xl">
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-brand-charcoal/40">
+                  <div className="space-y-2">
+                    <span className="text-xs font-mono font-black uppercase tracking-widest text-[#C8041C]">
                       NEXT STORIES
                     </span>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase text-brand-charcoal tracking-tight font-sans leading-none">
-                      More Projects
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase text-[#212121] tracking-tight font-sans leading-none">
+                      MORE PROJECTS
                     </h2>
                   </div>
 
-                  {/* Horizontal Case study cards list */}
                   <div className="space-y-6">
                     {moreProjects.map((proj) => (
                       <div 
@@ -997,34 +1167,31 @@ export default function FeaturedWork() {
                           const targetProj = projects.find(p => p.id === proj.id) || MOCK_PROJECTS[proj.id];
                           if (targetProj) {
                             handleOpenDetail(targetProj);
-                            // Scroll modal container back to top
                             const modalContainer = document.querySelector('[role="dialog"]');
                             if (modalContainer) {
                               modalContainer.scrollTo({ top: 0, behavior: 'smooth' });
                             }
                           }
                         }}
-                        className="group cursor-pointer bg-brand-white border border-brand-charcoal/5 rounded-[20px] overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col md:flex-row items-stretch"
+                        className="group cursor-pointer bg-brand-white border border-[#E6E6E6] rounded-[12px] overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col md:flex-row items-stretch"
                       >
                         <div className="w-full md:w-1/3 aspect-[16/10] md:aspect-auto overflow-hidden relative bg-brand-lightgray shrink-0">
                           <img 
                             src={proj.image} 
                             alt={proj.name}
-                            width="600"
-                            height="375"
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                            className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-500" 
                           />
                         </div>
                         <div className="p-6 md:p-8 flex flex-col justify-between flex-grow text-left">
-                          <div className="space-y-4">
-                            <span className="text-[9px] font-mono text-brand-charcoal/40 uppercase tracking-widest block font-bold">
+                          <div className="space-y-3">
+                            <span className="text-[9px] font-mono text-[#212121]/40 uppercase tracking-widest block font-black">
                               {proj.industry}
                             </span>
-                            <h4 className="text-xl md:text-2xl font-black uppercase text-brand-charcoal tracking-tight font-sans">
+                            <h4 className="text-xl md:text-2xl font-black uppercase text-[#212121] tracking-tight font-sans">
                               {proj.name}
                             </h4>
                           </div>
-                          <button className="mt-6 md:mt-0 inline-flex items-center gap-1.5 text-[10px] font-mono font-bold tracking-widest text-brand-charcoal group-hover:text-brand-red transition-colors w-fit uppercase">
+                          <button className="mt-6 md:mt-0 inline-flex items-center gap-1.5 text-[10px] font-mono font-black tracking-widest text-[#212121] group-hover:text-[#C8041C] transition-colors w-fit uppercase">
                             <span>View Case Study</span>
                             <ArrowUpRight className="w-3.5 h-3.5" />
                           </button>
@@ -1036,37 +1203,49 @@ export default function FeaturedWork() {
                 </div>
               </section>
 
-              {/* Section 9: Final CTA */}
-              <section className="py-20 md:py-24 bg-brand-white">
-                <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full text-center space-y-12">
-                  <div className="max-w-4xl mx-auto space-y-8 select-none">
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase leading-[1.05] text-brand-charcoal tracking-tight font-sans">
-                      READY TO BUILD YOUR NEXT <span className="text-brand-red">SUCCESS STORY?</span>
+              {/* FINAL CTA */}
+              <section className="py-28 md:py-36 bg-brand-white relative overflow-hidden">
+                <div 
+                  className="absolute inset-0 bg-cover bg-center opacity-[0.035] pointer-events-none select-none filter grayscale" 
+                  style={{ backgroundImage: `url(${selectedProject.image})` }} 
+                />
+                
+                <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full text-center space-y-8 relative z-10">
+                  <ScrollReveal delay={0} yOffset={25}>
+                    <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-[#212121] leading-none font-sans">
+                      HAVE A STORY TO BUILD?
                     </h2>
-                    <p className="text-sm md:text-base text-brand-charcoal/60 leading-relaxed font-sans max-w-lg mx-auto">
-                      Let's create content that drives real impact for your brand.
+                  </ScrollReveal>
+                  
+                  <ScrollReveal delay={0.12} yOffset={15}>
+                    <p className="text-base sm:text-lg text-[#212121]/60 leading-relaxed font-sans max-w-md mx-auto">
+                      Let's bring it to the world.
                     </p>
-                    
+                  </ScrollReveal>
+                  
+                  <ScrollReveal delay={0.25} yOffset={15}>
                     <div className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-6">
                       <button
                         onClick={handleCtaClick}
-                        className="bg-brand-red text-brand-white hover:bg-brand-red/90 px-8 py-4 rounded-full text-xs font-mono font-bold uppercase tracking-widest flex items-center gap-2 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_8px_20px_rgba(200,4,28,0.25)] active:scale-95"
+                        className="bg-[#C8041C] text-brand-white hover:bg-[#C8041C]/90 px-8 py-4 rounded-none text-xs font-mono font-bold uppercase tracking-widest flex items-center gap-2 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_8px_20px_rgba(200,4,28,0.2)] active:scale-95"
                       >
-                        Start Your Project
+                        <span>START A PROJECT</span>
+                        <span>→</span>
                       </button>
                       <button
                         onClick={handleCloseDetail}
-                        className="border border-brand-charcoal text-brand-charcoal hover:bg-brand-charcoal hover:text-brand-white px-8 py-4 rounded-full text-xs font-mono font-bold uppercase tracking-widest transition-all duration-300 hover:scale-[1.02] hover:shadow-sm active:scale-95 bg-transparent"
+                        className="border-2 border-[#212121] text-[#212121] hover:bg-[#212121] hover:text-brand-white px-8 py-4 rounded-none text-xs font-mono font-bold uppercase tracking-widest transition-all duration-300 hover:scale-[1.02] active:scale-95 bg-transparent"
                       >
-                        View More Work
+                        <span>VIEW OUR WORK</span>
+                        <span>→</span>
                       </button>
                     </div>
-                  </div>
+                  </ScrollReveal>
                 </div>
               </section>
 
               {/* Detail Footer */}
-              <div className="w-full border-t border-brand-charcoal/5 py-6 px-6 text-center text-[10px] font-mono text-brand-charcoal/40 bg-brand-white">
+              <div className="w-full border-t border-brand-charcoal/5 py-8 px-6 text-center text-[10px] font-mono text-[#212121]/40 bg-brand-white">
                 &copy; BEHIND THE BUILD. ALL WORK SPECIFICATIONS ARE PROPRIETARY AND VERIFIED.
               </div>
 
