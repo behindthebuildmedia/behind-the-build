@@ -53,14 +53,14 @@ export default function Clients() {
               initial="rest"
               whileHover="hover"
               animate="rest"
-              className="flex flex-col items-center justify-center cursor-default relative py-4 px-4 w-full max-w-[200px]"
+              className="flex flex-col items-center justify-center cursor-default relative py-4 px-4 w-full max-w-[280px]"
             >
-              <div className="h-12 flex items-center justify-center w-full">
+              <div className="h-20 flex items-center justify-center w-full">
                 <motion.img 
                   src={logoConsistency} 
                   alt="Consistency.AI Logo" 
-                  width="160"
-                  height="48"
+                  width="240"
+                  height="80"
                   className="max-h-full object-contain filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                   style={{ transitionProperty: 'filter, opacity' }}
                   variants={{
@@ -82,14 +82,14 @@ export default function Clients() {
               initial="rest"
               whileHover="hover"
               animate="rest"
-              className="flex flex-col items-center justify-center cursor-default relative py-4 px-4 w-full max-w-[200px]"
+              className="flex flex-col items-center justify-center cursor-default relative py-4 px-4 w-full max-w-[280px]"
             >
-              <div className="h-12 flex items-center justify-center w-full">
+              <div className="h-20 flex items-center justify-center w-full">
                 <motion.img 
                   src={logoDelusion} 
                   alt="DelusionAI Logo" 
-                  width="160"
-                  height="48"
+                  width="240"
+                  height="80"
                   className="max-h-full object-contain filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                   style={{ transitionProperty: 'filter, opacity' }}
                   variants={{
