@@ -9,7 +9,7 @@ export default function ServicePage({ serviceKey }) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = `${data.name} Services | Behind the Build`;
+    document.title = `${data.name} | Behind the Build`;
   }, [data]);
 
   const handleSpaNav = (e, path) => {
@@ -99,38 +99,17 @@ export default function ServicePage({ serviceKey }) {
             <ScrollReveal delay={0.05} yOffset={15} className="max-w-2xl mx-auto">
               <div className="border border-[#C8041C]/20 bg-[#FAF9F9] p-5 text-center space-y-1 rounded-none relative overflow-hidden">
                 <span className="text-[10px] font-mono font-black text-[#C8041C] uppercase tracking-widest block">
-                  FIRST FEW CLIENTS / INTRODUCTORY RATES
+                  INTRODUCTORY PRICING
                 </span>
                 <p className="text-[11px] sm:text-xs text-[#212121]/70 leading-relaxed font-semibold">
-                  Partner with us early. Our current packages are offered at introductory rates for our first few clients. Rates will be revised after the initial partnerships.
+                  Special pricing available for our first 4 clients. Pricing will increase as we expand.
                 </p>
               </div>
             </ScrollReveal>
           )}
 
-          {data.pricing && data.pricing.custom ? (
-            /* Custom Contact Plan */
-            <ScrollReveal delay={0.1} className="max-w-md mx-auto">
-              <div className="bg-brand-white border border-[#E6E6E6] p-8 text-center space-y-6 rounded-none">
-                <div className="space-y-2">
-                  <h4 className="text-lg font-black text-[#212121] uppercase tracking-wide">
-                    CUSTOM PARTNERSHIP
-                  </h4>
-                  <p className="text-xs text-[#212121]/60 leading-relaxed font-semibold">
-                    Let's structure a custom performance-focused campaign matching your specific budget, goals, and release frequency.
-                  </p>
-                </div>
-                <button
-                  onClick={handleCtaClick}
-                  className="w-full py-4 text-xs font-mono font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 border-2 border-[#212121] text-[#212121] hover:bg-[#212121] hover:text-brand-white"
-                >
-                  <span>{data.pricing.customText.replace(' →', '')}</span>
-                  <span>→</span>
-                </button>
-              </div>
-            </ScrollReveal>
-          ) : (
-            /* Standard Pricing Cards */
+          {/* Standard Pricing Cards */}
+          {data.pricing && data.pricing.starter && (
             <div className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto items-stretch">
                 {/* STARTER CARD */}
@@ -154,6 +133,27 @@ export default function ServicePage({ serviceKey }) {
               )}
             </div>
           )}
+
+          {/* CUSTOM PARTNERSHIP */}
+          <ScrollReveal delay={0.28} className="max-w-md mx-auto pt-8">
+            <div className="bg-brand-white border border-[#E6E6E6] p-8 text-center space-y-6 rounded-none relative">
+              <div className="space-y-2">
+                <span className="text-[10px] font-mono font-black tracking-widest text-[#212121]/45 uppercase block">
+                  CUSTOM PARTNERSHIP
+                </span>
+                <p className="text-xs text-[#212121]/60 leading-relaxed font-semibold">
+                  Let's structure a custom performance-focused campaign matching your specific budget, goals, and release frequency.
+                </p>
+              </div>
+              <button
+                onClick={handleCtaClick}
+                className="w-full py-4 text-xs font-mono font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 border-2 border-[#212121] text-[#212121] hover:bg-[#212121] hover:text-brand-white"
+              >
+                <span>LET'S BUILD A PLAN</span>
+                <span>→</span>
+              </button>
+            </div>
+          </ScrollReveal>
         </section>
 
         {/* FAQ SECTION */}
@@ -244,7 +244,7 @@ function PricingCard({ plan, onCta, isGrowth }) {
         isGrowth 
           ? 'border-[#C8041C] shadow-[0_12px_40px_rgba(200,4,28,0.02)]' 
           : 'border-[#E6E6E6]'
-      } ${isHovered ? '-translate-y-1 shadow-[0_16px_40px_rgba(0,0,0,0.03)] border-[#C8041C]/25' : ''}`}
+      } ${isHovered ? '-translate-y-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.03)] border-[#C8041C]/25' : ''}`}
     >
       {/* Subtle top indicator bar */}
       <div 
@@ -262,7 +262,7 @@ function PricingCard({ plan, onCta, isGrowth }) {
             </span>
             {isGrowth && (
               <span className="text-[8px] font-mono font-bold bg-[#C8041C] text-brand-white px-2 py-0.5 tracking-wider uppercase">
-                MOST POPULAR
+                RECOMMENDED
               </span>
             )}
           </div>

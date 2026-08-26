@@ -265,24 +265,57 @@ export const servicesData = {
     num: '06',
     label: 'DIGITAL MARKETING',
     name: 'DIGITAL MARKETING',
-    intro: "Performance-focused digital strategies designed to help brands reach the right audience.",
+    intro: "Build a stronger digital presence with consistent content, strategy and audience growth.",
     servicesList: [
-      { name: "Search Marketing", desc: "Ensuring organic visibility on Google using search maps." },
-      { name: "Paid Campaigns", desc: "Constructing targeted click conversions across channels." },
-      { name: "Meta Ads", desc: "Structuring Instagram and Facebook creative campaign loops." },
-      { name: "Google Ads", desc: "Running CPC search and display campaigns." },
-      { name: "Campaign Strategy", desc: "Drafting structural budgets and audience profile maps." },
-      { name: "Performance Tracking", desc: "Installing analytics parameters to check funnel metrics." },
-      { name: "Analytics & Reporting", desc: "Creating dashboards summarizing customer conversion costs." }
+      { name: "Social Media Management", desc: "Complete operations across your channels." },
+      { name: "Content Strategy", desc: "Script planning, hook design, and release maps." },
+      { name: "Content Creation", desc: "Copywriting, graphic templates, and media formats." },
+      { name: "Content Calendar & Scheduling", desc: "Structured post calendars and timing setups." },
+      { name: "Community Management", desc: "Message responses and user communications." },
+      { name: "Monthly Performance Reports", desc: "Insightful metrics monitoring audience retention." },
+      { name: "Hashtag Strategy", desc: "Organic search optimization tags." },
+      { name: "Campaign Planning", desc: "Launch plans to trigger marketing momentum." }
     ],
     pricing: {
-      custom: true,
-      customText: "Let's build a plan →"
+      introductory: true,
+      starter: {
+        planName: "STARTER",
+        price: "₹5,000",
+        billing: "per month",
+        features: [
+          "Management of 2 social media accounts",
+          "12 posts per month",
+          "Basic content creation",
+          "Simple hashtag strategy",
+          "1-month content strategy",
+          "Content calendar & scheduling",
+          "Monthly performance report"
+        ],
+        buttonText: "GET STARTED →",
+        highlighted: false
+      },
+      growth: {
+        planName: "GROWTH",
+        price: "₹9,000",
+        billing: "per 2 months",
+        features: [
+          "Management of 4 social media accounts",
+          "20 posts per month",
+          "Advanced content creation",
+          "Advanced hashtag strategy",
+          "2-month content strategy",
+          "Content calendar & scheduling",
+          "Community management",
+          "Monthly performance reports"
+        ],
+        buttonText: "GET STARTED →",
+        highlighted: true
+      }
     },
     faq: [
       {
-        question: "How do we get started with marketing services?",
-        answer: "Click the 'Let's build a plan' action. We will review your goals and formulate a custom target strategy."
+        question: "How do we get started with marketing plans?",
+        answer: "Choose Starter or Growth to begin our setup. We will schedule a kickoff session to align on accounts and strategy."
       }
     ]
   }
