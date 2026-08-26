@@ -261,7 +261,7 @@ function App() {
           <Suspense fallback={<div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">LOADING...</div>}>
             <StartProjectFlow currentPath={currentPath} />
           </Suspense>
-        ) : (currentPath.startsWith('/book/') || currentPath === '/booking-success') ? (
+        ) : (currentPath === '/book' || currentPath.startsWith('/book/') || currentPath === '/booking-success') ? (
           <Suspense fallback={<div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">LOADING...</div>}>
             <BookingPage currentPath={currentPath} />
           </Suspense>

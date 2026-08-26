@@ -19,7 +19,13 @@ export default function BookingPage({ currentPath }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState(null);
 
-  // Parse path and query parameters
+  // Direct access to general /book page without service parameter
+  const isDirectBook = currentPath === '/book';
+
+  // For /book dropdown selections
+  const [selectedServiceSlug, setSelectedServiceSlug] = useState('video-editing');
+  const [selectedPlanSlug, setSelectedPlanSlug] = useState('growth');
+
   const isSuccessPage = currentPath === '/booking-success';
   
   const routeServiceKey = !isSuccessPage && currentPath.startsWith('/book/') 
@@ -32,7 +38,7 @@ export default function BookingPage({ currentPath }) {
 
   const activeService = servicesData[serviceKeyClean];
 
-  // Retrieve plan parameter
+  // Retrieve plan parameter from query string
   const urlParams = new URLSearchParams(window.location.search);
   const planParam = (urlParams.get('plan') || 'starter').toLowerCase();
   
@@ -45,14 +51,27 @@ export default function BookingPage({ currentPath }) {
     }
   }
 
+  // Resolve service and plan based on path
+  const activeServiceResolved = isDirectBook 
+    ? servicesData[selectedServiceSlug] 
+    : activeService;
+
+  const selectedPlanResolved = isDirectBook
+    ? (activeServiceResolved && activeServiceResolved.pricing
+        ? (selectedPlanSlug === 'growth' ? activeServiceResolved.pricing.growth : activeServiceResolved.pricing.starter)
+        : null)
+    : selectedPlan;
+
   useEffect(() => {
     window.scrollTo(0, 0);
     if (isSuccessPage) {
       document.title = 'Booking Confirmed | Behind the Build';
-    } else if (activeService && selectedPlan) {
-      document.title = `Book ${activeService.name} - ${selectedPlan.planName} | Behind the Build`;
+    } else if (isDirectBook) {
+      document.title = 'Book a Plan | Behind the Build';
+    } else if (activeServiceResolved && selectedPlanResolved) {
+      document.title = `Book ${activeServiceResolved.name} - ${selectedPlanResolved.planName} | Behind the Build`;
     }
-  }, [isSuccessPage, activeService, selectedPlan]);
+  }, [isSuccessPage, isDirectBook, activeServiceResolved, selectedPlanResolved]);
 
   const handleSpaNav = (e, path) => {
     e.preventDefault();
@@ -100,16 +119,16 @@ export default function BookingPage({ currentPath }) {
       region: formData.location || 'Remote',
       services: [
         {
-          service: activeService.name,
-          serviceSlug: routeServiceKey,
-          plan: selectedPlan.planName,
-          price: selectedPlan.price,
+          service: activeServiceResolved.name,
+          serviceSlug: isDirectBook ? selectedServiceSlug : routeServiceKey,
+          plan: selectedPlanResolved.planName,
+          price: selectedPlanResolved.price,
           location: formData.location || 'Remote',
           referenceLink: formData.referenceLink || 'None',
           preferredStartDate: formData.preferredStartDate || 'Flexible'
         }
       ],
-      budget: selectedPlan.price,
+      budget: selectedPlanResolved.price,
       timeline: formData.preferredStartDate || 'Flexible',
       project_description: formData.requirements
     };
@@ -142,9 +161,9 @@ export default function BookingPage({ currentPath }) {
 
       // Store success info
       localStorage.setItem('success_booking_id', data.booking_id || data.bookingId || 'BTB-2026-00124');
-      localStorage.setItem('success_service', activeService.name);
-      localStorage.setItem('success_plan', selectedPlan.planName);
-      localStorage.setItem('success_amount', selectedPlan.price);
+      localStorage.setItem('success_service', activeServiceResolved.name);
+      localStorage.setItem('success_plan', selectedPlanResolved.planName);
+      localStorage.setItem('success_amount', selectedPlanResolved.price);
 
       // Redirect to booking-success
       window.history.pushState(null, '', '/booking-success');
@@ -250,7 +269,7 @@ export default function BookingPage({ currentPath }) {
   }
 
   // BOOKING FORM PAGE
-  if (!activeService || !selectedPlan) {
+  if (!activeServiceResolved || !selectedPlanResolved) {
     return (
       <div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">
         LOADING BOOKING...
@@ -287,28 +306,56 @@ export default function BookingPage({ currentPath }) {
 
         {/* Selected Plan Summary Banner */}
         <ScrollReveal delay={0.1} yOffset={15} className="border border-[#E6E6E6] bg-[#FAF9F9] p-6 rounded-xl grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="space-y-1">
-            <span className="text-[9px] font-mono font-black text-[#212121]/45 uppercase tracking-widest block">
+          <div className="space-y-1 flex flex-col justify-start">
+            <span className="text-[9px] font-mono font-black text-[#212121]/45 uppercase tracking-widest block leading-none">
               SERVICE
             </span>
-            <span className="text-sm font-black text-brand-charcoal uppercase block">
-              {activeService.name}
-            </span>
+            {isDirectBook ? (
+              <select
+                value={selectedServiceSlug}
+                onChange={(e) => setSelectedServiceSlug(e.target.value)}
+                className="mt-2 bg-[#FAF9F9] border border-[#E6E6E6] px-3 py-1.5 rounded text-xs font-black text-brand-charcoal uppercase focus:outline-none focus:border-[#C8041C] transition-all cursor-pointer w-full max-w-[200px]"
+              >
+                <option value="video-editing">VIDEO EDITING</option>
+                <option value="social-media-marketing">SOCIAL MEDIA MARKETING</option>
+                <option value="design">DESIGN</option>
+                <option value="website-design">WEBSITE DESIGN</option>
+                <option value="tech-events-coverage">TECH EVENT COVERAGE</option>
+                <option value="digital-marketing">DIGITAL MARKETING</option>
+              </select>
+            ) : (
+              <span className="text-sm font-black text-brand-charcoal uppercase block mt-1.5">
+                {activeServiceResolved.name}
+              </span>
+            )}
           </div>
-          <div className="space-y-1">
-            <span className="text-[9px] font-mono font-black text-[#212121]/45 uppercase tracking-widest block">
+          
+          <div className="space-y-1 flex flex-col justify-start">
+            <span className="text-[9px] font-mono font-black text-[#212121]/45 uppercase tracking-widest block leading-none">
               PLAN
             </span>
-            <span className="text-sm font-black text-brand-charcoal uppercase block">
-              {selectedPlan.planName}
-            </span>
+            {isDirectBook ? (
+              <select
+                value={selectedPlanSlug}
+                onChange={(e) => setSelectedPlanSlug(e.target.value)}
+                className="mt-2 bg-[#FAF9F9] border border-[#E6E6E6] px-3 py-1.5 rounded text-xs font-black text-brand-charcoal uppercase focus:outline-none focus:border-[#C8041C] transition-all cursor-pointer w-full max-w-[120px]"
+              >
+                <option value="starter">STARTER</option>
+                <option value="growth">GROWTH</option>
+              </select>
+            ) : (
+              <span className="text-sm font-black text-brand-charcoal uppercase block mt-1.5">
+                {selectedPlanResolved.planName}
+              </span>
+            )}
           </div>
-          <div className="space-y-1">
-            <span className="text-[9px] font-mono font-black text-[#212121]/45 uppercase tracking-widest block">
+
+          <div className="space-y-1 flex flex-col justify-start">
+            <span className="text-[9px] font-mono font-black text-[#212121]/45 uppercase tracking-widest block leading-none">
               PRICE
             </span>
-            <span className="text-sm font-black text-[#C8041C] uppercase block">
-              {selectedPlan.price} <span className="text-[10px] text-brand-charcoal/45 font-semibold">/ {selectedPlan.billing}</span>
+            <span className="text-sm font-black text-[#C8041C] uppercase block mt-1.5">
+              {selectedPlanResolved.price} <span className="text-[10px] text-brand-charcoal/45 font-semibold">/ {selectedPlanResolved.billing}</span>
             </span>
           </div>
         </ScrollReveal>
@@ -498,7 +545,7 @@ export default function BookingPage({ currentPath }) {
 
             <button
               type="button"
-              onClick={(e) => handleSpaNav(e, `/services/${routeServiceKey}`)}
+              onClick={(e) => handleSpaNav(e, isDirectBook ? '/' : `/services/${routeServiceKey}`)}
               className="w-full py-4 text-xs font-mono font-black uppercase tracking-widest text-[#212121]/50 hover:text-[#C8041C] transition-colors block text-center"
             >
               ← BACK TO PLAN SELECTOR

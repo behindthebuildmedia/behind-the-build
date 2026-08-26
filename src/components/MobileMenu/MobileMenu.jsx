@@ -150,12 +150,12 @@ export default function MobileMenu({ isOpen, onClose, onNavClick, activeSection 
               WHAT YOU BUILD DESERVES TO BE SEEN.
             </p>
             <a
-              href="/start-a-project"
+              href="/book"
               onClick={(e) => {
                 e.preventDefault();
                 onClose();
                 setTimeout(() => {
-                  window.history.pushState(null, '', '/start-a-project');
+                  window.history.pushState(null, '', '/book');
                   window.dispatchEvent(new Event('popstate'));
                   window.scrollTo({ top: 0, behavior: 'instant' });
                 }, 300);
