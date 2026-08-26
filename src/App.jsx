@@ -18,6 +18,8 @@ const WhyChooseUs = lazy(() => import('./sections/WhyChooseUs/WhyChooseUs'));
 const Testimonials = lazy(() => import('./sections/Testimonials/Testimonials'));
 const FinalCTA = lazy(() => import('./sections/FinalCTA/FinalCTA'));
 const Footer = lazy(() => import('./sections/Footer/Footer'));
+const ServicePage = lazy(() => import('./sections/ServicePage/ServicePage'));
+const Careers = lazy(() => import('./sections/Careers/Careers'));
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -91,6 +93,14 @@ function App() {
     } else if (currentPath === '/terms') {
       title = "Terms & Conditions | Behind the Build";
       desc = "Behind The Build Terms & Conditions. Read our service agreements, project requests, intellectual property transfer rights, deliverables, and payment terms.";
+    } else if (currentPath === '/careers') {
+      title = "Careers | Behind the Build";
+      desc = "Join Behind the Build. We are looking for talented video editors, motion designers, content creators, and digital strategists to build with us.";
+    } else if (currentPath.startsWith('/services/')) {
+      const sKey = currentPath.split('/').pop();
+      const sTitle = sKey.charAt(0).toUpperCase() + sKey.slice(1);
+      title = `${sTitle} Services | Behind the Build`;
+      desc = `Premium ${sTitle} services by Behind the Build. Explore our Starter and Growth plans for high-end creative agency execution.`;
     } else if (submitted_booking_id) {
       title = "Booking Confirmed | Behind the Build";
       desc = `Thank you for choosing Behind the Build. Your project request (ID: ${submitted_booking_id}) has been received. Our creative team will contact you in 60 minutes.`;
@@ -231,6 +241,14 @@ function App() {
           <Privacy />
         ) : currentPath === '/terms' ? (
           <Terms />
+        ) : currentPath.startsWith('/services/') ? (
+          <Suspense fallback={<div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">LOADING SERVICE...</div>}>
+            <ServicePage serviceKey={currentPath.split('/').pop()} />
+          </Suspense>
+        ) : currentPath === '/careers' ? (
+          <Suspense fallback={<div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">LOADING CAREERS...</div>}>
+            <Careers />
+          </Suspense>
         ) : submitted_booking_id ? (
           <Confirmation 
             booking_id={submitted_booking_id}

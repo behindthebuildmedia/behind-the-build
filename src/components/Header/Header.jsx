@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Menu, ArrowRight } from 'lucide-react';
 import logoUrl from '../../assets/images/btb logo.webp';
@@ -10,6 +10,7 @@ export default function Header({ onHomeRedirect }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -113,13 +114,20 @@ export default function Header({ onHomeRedirect }) {
       }
     }, onHomeRedirect ? 120 : 0);
   };
+  const handleSpaClick = (e, path) => {
+    e.preventDefault();
+    window.history.pushState(null, '', path);
+    window.dispatchEvent(new Event('popstate'));
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
 
   const navItems = [
-    { label: 'Work', sentenceLabel: 'Work', href: '#work' },
-    { label: 'Build Your Plan', sentenceLabel: 'Build your plan', href: '#build-plan' },
-    { label: 'Our Process', sentenceLabel: 'Our process', href: '#process' },
-    { label: 'About', sentenceLabel: 'About', href: '#about' },
-    { label: 'Contact', sentenceLabel: 'Contact', href: '#footer' }
+    { label: 'Work', href: '#work' },
+    { label: 'Build Your Plan', href: '#build-plan', isDropdown: true },
+    { label: 'Our Process', href: '#process' },
+    { label: 'About', href: '#about' },
+    { label: 'Careers', href: '/careers', isSpa: true },
+    { label: 'Contact', href: '#footer' }
   ];
 
   return (
@@ -180,23 +188,74 @@ export default function Header({ onHomeRedirect }) {
             {navItems.map((item) => {
               const isActive = activeSection === item.href;
               return (
-                <a
+                <div
                   key={item.label}
-                  href={item.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleNavClick(item.href);
-                  }}
-                  className={`relative font-sans text-[16px] font-semibold tracking-[0.2px] py-1.5 transition-colors duration-300 group ${
-                    isActive ? 'text-brand-red' : 'text-brand-charcoal/80 hover:text-brand-red'
-                  }`}
+                  className="relative py-2.5"
+                  onMouseEnter={() => item.isDropdown && setIsDropdownOpen(true)}
+                  onMouseLeave={() => item.isDropdown && setIsDropdownOpen(false)}
                 >
-                  {item.label}
-                  {/* Underline Active/Hover Animation */}
-                  <span className={`absolute bottom-0 left-0 h-[2px] bg-brand-red transition-all duration-300 ${
-                    isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                  }`} />
-                </a>
+                  <a
+                    href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (item.isSpa) {
+                        handleSpaClick(e, item.href);
+                      } else {
+                        handleNavClick(item.href);
+                      }
+                    }}
+                    className={`relative font-sans text-[16px] font-semibold tracking-[0.2px] py-1.5 transition-colors duration-300 group ${
+                      isActive ? 'text-brand-red' : 'text-brand-charcoal/80 hover:text-brand-red'
+                    }`}
+                  >
+                    {item.label}
+                    {/* Underline Active/Hover Animation */}
+                    <span className={`absolute bottom-0 left-0 h-[2px] bg-brand-red transition-all duration-300 ${
+                      isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`} />
+                  </a>
+
+                  {item.isDropdown && (
+                    <AnimatePresence>
+                      {isDropdownOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 15 }}
+                          transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                          className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 bg-brand-white border border-[#E6E6E6] rounded-xl shadow-[0_16px_48px_rgba(0,0,0,0.08)] py-5 px-5 grid grid-cols-2 gap-3.5 w-[360px] text-left pointer-events-auto"
+                        >
+                          {[
+                            { label: 'MEDIA', num: '01', path: '/services/media' },
+                            { label: 'CONTENT', num: '02', path: '/services/content' },
+                            { label: 'DIGITAL', num: '03', path: '/services/digital' },
+                            { label: 'DESIGN', num: '04', path: '/services/design' }
+                          ].map((subItem) => (
+                            <a
+                              key={subItem.label}
+                              href={subItem.path}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setIsDropdownOpen(false);
+                                handleSpaClick(e, subItem.path);
+                              }}
+                              className="relative group border border-[#E6E6E6] hover:border-[#C8041C]/25 bg-brand-white hover:bg-[#FAF9F9] p-4 rounded-lg flex flex-col justify-between min-h-[90px] transition-all duration-300 transform hover:-translate-y-1 select-none"
+                            >
+                              <div className="absolute top-0 left-0 w-full h-[2.5px] bg-[#C8041C] transition-transform duration-300 origin-left scale-x-0 group-hover:scale-x-100 rounded-t-lg" />
+                              
+                              <span className="text-[9px] font-mono font-black text-[#212121]/30 uppercase tracking-widest leading-none block">
+                                {subItem.num}
+                              </span>
+                              <span className="text-xs font-black uppercase text-brand-charcoal group-hover:text-[#C8041C] transition-colors tracking-wide leading-none mt-4">
+                                {subItem.label}
+                              </span>
+                            </a>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  )}
+                </div>
               );
             })}
           </nav>

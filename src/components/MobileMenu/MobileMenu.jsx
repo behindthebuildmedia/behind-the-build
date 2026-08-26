@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowRight } from 'lucide-react';
+import { X, ArrowRight, ChevronDown } from 'lucide-react';
 import logoUrl from '../../assets/images/btb logo.webp';
 
 export default function MobileMenu({ isOpen, onClose, onNavClick, activeSection }) {
+  const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
+
   const menuVariants = {
     initial: { clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)' },
     animate: {
@@ -17,9 +20,10 @@ export default function MobileMenu({ isOpen, onClose, onNavClick, activeSection 
 
   const navLinks = [
     { label: 'Work', href: '#work' },
-    { label: 'Build Your Plan', href: '#build-plan' },
+    { label: 'Build Your Plan', href: '#build-plan', isDropdown: true },
     { label: 'Our Process', href: '#process' },
     { label: 'About', href: '#about' },
+    { label: 'Careers', href: '/careers', isSpa: true },
     { label: 'Contact', href: '#footer' }
   ];
 
@@ -73,23 +77,66 @@ export default function MobileMenu({ isOpen, onClose, onNavClick, activeSection 
               const isActive = activeSection === link.href;
               return (
                 <div key={link.label} className="overflow-hidden">
-                  <motion.a
-                    variants={itemVariants}
-                    href={link.href}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onClose();
-                      // Allow modal animation to finish before scrolling
-                      setTimeout(() => {
-                        onNavClick(link.href);
-                      }, 400);
-                    }}
-                    className={`font-sans text-3xl sm:text-5xl font-bold tracking-tight transition-colors block py-1 uppercase ${
-                      isActive ? 'text-brand-red' : 'hover:text-brand-red text-brand-charcoal'
-                    }`}
-                  >
-                    {link.label}
-                  </motion.a>
+                  {link.isDropdown ? (
+                    <div className="flex flex-col">
+                      <button
+                        onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}
+                        className="font-sans text-3xl sm:text-5xl font-bold tracking-tight text-brand-charcoal hover:text-brand-red transition-colors block py-1 uppercase text-left w-full flex items-center justify-between"
+                      >
+                        <span>{link.label}</span>
+                        <ChevronDown className={`w-6 h-6 transition-transform duration-300 ${isMobileDropdownOpen ? 'transform rotate-180 text-brand-red' : ''}`} />
+                      </button>
+                      
+                      <div className={`overflow-hidden transition-all duration-300 ${isMobileDropdownOpen ? 'max-h-[220px] my-3 pl-4 border-l border-brand-charcoal/10 space-y-3' : 'max-h-0'}`}>
+                        {[
+                          { label: 'MEDIA', path: '/services/media' },
+                          { label: 'CONTENT', path: '/services/content' },
+                          { label: 'DIGITAL', path: '/services/digital' },
+                          { label: 'DESIGN', path: '/services/design' }
+                        ].map((subItem) => (
+                          <a
+                            key={subItem.label}
+                            href={subItem.path}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              onClose();
+                              setTimeout(() => {
+                                window.history.pushState(null, '', subItem.path);
+                                window.dispatchEvent(new Event('popstate'));
+                                window.scrollTo({ top: 0, behavior: 'instant' });
+                              }, 300);
+                            }}
+                            className="font-sans text-xl sm:text-2xl font-bold tracking-tight text-brand-charcoal/70 hover:text-brand-red block uppercase"
+                          >
+                            {subItem.label}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <motion.a
+                      variants={itemVariants}
+                      href={link.href}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onClose();
+                        setTimeout(() => {
+                          if (link.isSpa) {
+                            window.history.pushState(null, '', link.href);
+                            window.dispatchEvent(new Event('popstate'));
+                            window.scrollTo({ top: 0, behavior: 'instant' });
+                          } else {
+                            onNavClick(link.href);
+                          }
+                        }, 400);
+                      }}
+                      className={`font-sans text-3xl sm:text-5xl font-bold tracking-tight transition-colors block py-1 uppercase ${
+                        isActive ? 'text-brand-red' : 'hover:text-brand-red text-brand-charcoal'
+                      }`}
+                    >
+                      {link.label}
+                    </motion.a>
+                  )}
                 </div>
               );
             })}

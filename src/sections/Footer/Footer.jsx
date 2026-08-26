@@ -166,14 +166,19 @@ export default function Footer() {
               {[
                 { label: 'About Us', id: '#about' },
                 { label: 'Our Process', id: '#process' },
-                { label: 'Our Work', id: '#work' }
+                { label: 'Our Work', id: '#work' },
+                { label: 'Careers', path: '/careers', isSpa: true }
               ].map((item, idx) => (
                 <li key={idx}>
                   <a 
-                    href={item.id} 
+                    href={item.isSpa ? item.path : item.id} 
                     onClick={(e) => {
                       e.preventDefault();
-                      handleNavClick(item.id);
+                      if (item.isSpa) {
+                        handleSpaClick(e, item.path);
+                      } else {
+                        handleNavClick(item.id);
+                      }
                     }}
                     className="relative group text-[15px] font-bold text-[#212121] hover:text-[#C8041C] transition-colors duration-300 font-sans inline-block py-0.5"
                   >
