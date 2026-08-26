@@ -19,18 +19,24 @@ export default function BookingPage({ currentPath }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState(null);
 
-  // Direct access to general /book page without service parameter
-  const isDirectBook = currentPath === '/book';
+  const isSuccessPage = currentPath === '/booking-success';
 
-  // For /book dropdown selections
+  // Parse query parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const serviceParam = urlParams.get('service'); // e.g. 'video-editing'
+  const planParam = (urlParams.get('plan') || 'starter').toLowerCase();
+
+  // Route fallback key (handles /book/video-editing?plan=starter style as well)
+  const routeServiceKey = serviceParam || (!isSuccessPage && currentPath.startsWith('/book/') 
+    ? currentPath.split('?')[0].split('/').pop() 
+    : '');
+
+  // Direct access to general /book page without service parameter
+  const isDirectBook = !isSuccessPage && !routeServiceKey;
+
+  // Dropdown states (used when isDirectBook is true)
   const [selectedServiceSlug, setSelectedServiceSlug] = useState('video-editing');
   const [selectedPlanSlug, setSelectedPlanSlug] = useState('growth');
-
-  const isSuccessPage = currentPath === '/booking-success';
-  
-  const routeServiceKey = !isSuccessPage && currentPath.startsWith('/book/') 
-    ? currentPath.split('?')[0].split('/').pop() 
-    : '';
 
   const serviceKeyClean = routeServiceKey === 'event-coverage' 
     ? 'tech-events-coverage' 
@@ -38,10 +44,6 @@ export default function BookingPage({ currentPath }) {
 
   const activeService = servicesData[serviceKeyClean];
 
-  // Retrieve plan parameter from query string
-  const urlParams = new URLSearchParams(window.location.search);
-  const planParam = (urlParams.get('plan') || 'starter').toLowerCase();
-  
   let selectedPlan = null;
   if (activeService && activeService.pricing) {
     if (planParam === 'growth') {
@@ -285,13 +287,13 @@ export default function BookingPage({ currentPath }) {
         <div className="space-y-4 pt-8">
           <ScrollReveal yOffset={10} duration={0.6}>
             <span className="text-[11px] font-mono font-black uppercase tracking-widest text-[#C8041C] block">
-              BOOKING DETAILS
+              START A PROJECT
             </span>
           </ScrollReveal>
           
           <ScrollReveal delay={0.12} yOffset={25} duration={0.6}>
             <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-[1.05]">
-              LET'S BUILD SOMETHING.
+              LET'S BUILD<br />SOMETHING.
             </h1>
           </ScrollReveal>
 
@@ -308,7 +310,7 @@ export default function BookingPage({ currentPath }) {
         <ScrollReveal delay={0.1} yOffset={15} className="border border-[#E6E6E6] bg-[#FAF9F9] p-6 rounded-xl grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="space-y-1 flex flex-col justify-start">
             <span className="text-[9px] font-mono font-black text-[#212121]/45 uppercase tracking-widest block leading-none">
-              SERVICE
+              SELECTED SERVICE
             </span>
             {isDirectBook ? (
               <select
@@ -324,7 +326,7 @@ export default function BookingPage({ currentPath }) {
                 <option value="digital-marketing">DIGITAL MARKETING</option>
               </select>
             ) : (
-              <span className="text-sm font-black text-brand-charcoal uppercase block mt-1.5">
+              <span className="text-sm font-black text-brand-charcoal uppercase block mt-1.5 leading-none">
                 {activeServiceResolved.name}
               </span>
             )}
@@ -332,7 +334,7 @@ export default function BookingPage({ currentPath }) {
           
           <div className="space-y-1 flex flex-col justify-start">
             <span className="text-[9px] font-mono font-black text-[#212121]/45 uppercase tracking-widest block leading-none">
-              PLAN
+              SELECTED PLAN
             </span>
             {isDirectBook ? (
               <select
@@ -344,7 +346,7 @@ export default function BookingPage({ currentPath }) {
                 <option value="growth">GROWTH</option>
               </select>
             ) : (
-              <span className="text-sm font-black text-brand-charcoal uppercase block mt-1.5">
+              <span className="text-sm font-black text-brand-charcoal uppercase block mt-1.5 leading-none">
                 {selectedPlanResolved.planName}
               </span>
             )}
@@ -354,7 +356,7 @@ export default function BookingPage({ currentPath }) {
             <span className="text-[9px] font-mono font-black text-[#212121]/45 uppercase tracking-widest block leading-none">
               PRICE
             </span>
-            <span className="text-sm font-black text-[#C8041C] uppercase block mt-1.5">
+            <span className="text-sm font-black text-[#C8041C] uppercase block mt-1.5 leading-none">
               {selectedPlanResolved.price} <span className="text-[10px] text-brand-charcoal/45 font-semibold">/ {selectedPlanResolved.billing}</span>
             </span>
           </div>
@@ -458,7 +460,7 @@ export default function BookingPage({ currentPath }) {
             {/* Preferred Start Date */}
             <div className="flex flex-col">
               <label htmlFor="preferredStartDate" className="text-[10px] font-mono font-black uppercase tracking-wider text-brand-charcoal/65">
-                Preferred Start Date (Optional)
+                Preferred Start Date
               </label>
               <input
                 type="text"
@@ -474,7 +476,7 @@ export default function BookingPage({ currentPath }) {
             {/* Reference / Portfolio Link */}
             <div className="flex flex-col md:col-span-2">
               <label htmlFor="referenceLink" className="text-[10px] font-mono font-black uppercase tracking-wider text-brand-charcoal/65">
-                Reference / Portfolio Link (Optional)
+                Reference / Portfolio Link
               </label>
               <input
                 type="text"
@@ -490,7 +492,7 @@ export default function BookingPage({ currentPath }) {
             {/* Project Details / Requirements */}
             <div className="flex flex-col md:col-span-2">
               <label htmlFor="requirements" className="text-[10px] font-mono font-black uppercase tracking-wider text-brand-charcoal/65">
-                Project Details / Requirements *
+                Project Details & Requirements *
               </label>
               <textarea
                 id="requirements"

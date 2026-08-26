@@ -25,7 +25,7 @@ export default function ServicePage({ serviceKey }) {
     const servicePath = serviceKey === 'tech-events-coverage' ? 'event-coverage' : serviceKey;
     const planSlug = planName.toLowerCase();
     
-    window.history.pushState(null, '', `/book/${servicePath}?plan=${planSlug}`);
+    window.history.pushState(null, '', `/book?service=${servicePath}&plan=${planSlug}`);
     window.dispatchEvent(new Event('popstate'));
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
