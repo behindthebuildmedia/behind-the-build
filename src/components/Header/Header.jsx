@@ -125,7 +125,7 @@ export default function Header({ onHomeRedirect }) {
     { label: 'Work', href: '#work' },
     { label: 'Build Your Plan', href: '#build-plan', isDropdown: true },
     { label: 'Our Process', href: '#process' },
-    { label: 'About', href: '#about' },
+    { label: 'About', href: '/about', isSpa: true },
     { label: 'Careers', href: '/careers', isSpa: true },
     { label: 'Contact', href: '#footer' }
   ];

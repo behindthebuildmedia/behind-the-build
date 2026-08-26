@@ -20,6 +20,7 @@ const FinalCTA = lazy(() => import('./sections/FinalCTA/FinalCTA'));
 const Footer = lazy(() => import('./sections/Footer/Footer'));
 const ServicePage = lazy(() => import('./sections/ServicePage/ServicePage'));
 const Careers = lazy(() => import('./sections/Careers/Careers'));
+const AboutPage = lazy(() => import('./sections/AboutPage/AboutPage'));
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -93,6 +94,9 @@ function App() {
     } else if (currentPath === '/terms') {
       title = "Terms & Conditions | Behind the Build";
       desc = "Behind The Build Terms & Conditions. Read our service agreements, project requests, intellectual property transfer rights, deliverables, and payment terms.";
+    } else if (currentPath === '/about') {
+      title = "About | Behind the Build";
+      desc = "We're building what's next. Behind The Build helps ambitious brands turn what they build into stories, experiences and digital presence people remember.";
     } else if (currentPath === '/careers') {
       title = "Careers | Behind the Build";
       desc = "Join Behind the Build. We are looking for talented video editors, motion designers, content creators, and digital strategists to build with us.";
@@ -241,6 +245,10 @@ function App() {
           <Privacy />
         ) : currentPath === '/terms' ? (
           <Terms />
+        ) : currentPath === '/about' ? (
+          <Suspense fallback={<div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">LOADING ABOUT...</div>}>
+            <AboutPage />
+          </Suspense>
         ) : currentPath.startsWith('/services/') ? (
           <Suspense fallback={<div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">LOADING SERVICE...</div>}>
             <ServicePage serviceKey={currentPath.split('/').pop()} />

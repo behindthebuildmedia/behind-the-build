@@ -164,7 +164,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               {[
-                { label: 'About Us', id: '#about' },
+                { label: 'About Us', path: '/about', isSpa: true },
                 { label: 'Our Process', id: '#process' },
                 { label: 'Our Work', id: '#work' },
                 { label: 'Careers', path: '/careers', isSpa: true }
