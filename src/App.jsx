@@ -102,9 +102,9 @@ function App() {
       desc = "Join Behind the Build. We are looking for talented video editors, motion designers, content creators, and digital strategists to build with us.";
     } else if (currentPath.startsWith('/services/')) {
       const sKey = currentPath.split('/').pop();
-      const sTitle = sKey.charAt(0).toUpperCase() + sKey.slice(1);
-      title = `${sTitle} Services | Behind the Build`;
-      desc = `Premium ${sTitle} services by Behind the Build. Explore our Starter and Growth plans for high-end creative agency execution.`;
+      const sTitle = sKey.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+      title = `${sTitle} | Behind the Build`;
+      desc = `Explore premium ${sTitle} packages by Behind the Build. Review our custom deliverables, starter and growth launch partnership rates.`;
     } else if (submitted_booking_id) {
       title = "Booking Confirmed | Behind the Build";
       desc = `Thank you for choosing Behind the Build. Your project request (ID: ${submitted_booking_id}) has been received. Our creative team will contact you in 60 minutes.`;

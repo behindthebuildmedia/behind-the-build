@@ -87,12 +87,14 @@ export default function MobileMenu({ isOpen, onClose, onNavClick, activeSection 
                         <ChevronDown className={`w-6 h-6 transition-transform duration-300 ${isMobileDropdownOpen ? 'transform rotate-180 text-brand-red' : ''}`} />
                       </button>
                       
-                      <div className={`overflow-hidden transition-all duration-300 ${isMobileDropdownOpen ? 'max-h-[220px] my-3 pl-4 border-l border-brand-charcoal/10 space-y-3' : 'max-h-0'}`}>
+                      <div className={`overflow-hidden transition-all duration-300 ${isMobileDropdownOpen ? 'max-h-[300px] my-3 pl-4 border-l border-brand-charcoal/10 space-y-3' : 'max-h-0'}`}>
                         {[
-                          { label: 'MEDIA', path: '/services/media' },
-                          { label: 'CONTENT', path: '/services/content' },
-                          { label: 'DIGITAL', path: '/services/digital' },
-                          { label: 'DESIGN', path: '/services/design' }
+                          { label: 'VIDEO EDITING', path: '/services/video-editing' },
+                          { label: 'SOCIAL MEDIA MARKETING', path: '/services/social-media-marketing' },
+                          { label: 'DESIGN', path: '/services/design' },
+                          { label: 'WEBSITE DESIGN', path: '/services/website-design' },
+                          { label: 'TECH EVENTS COVERAGE', path: '/services/tech-events-coverage' },
+                          { label: 'DIGITAL MARKETING', path: '/services/digital-marketing' }
                         ].map((subItem) => (
                           <a
                             key={subItem.label}

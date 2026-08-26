@@ -223,13 +223,15 @@ export default function Header({ onHomeRedirect }) {
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: 15 }}
                           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                          className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 bg-brand-white border border-[#E6E6E6] rounded-xl shadow-[0_16px_48px_rgba(0,0,0,0.08)] py-5 px-5 grid grid-cols-2 gap-3.5 w-[360px] text-left pointer-events-auto"
+                          className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 bg-brand-white border border-[#E6E6E6] rounded-xl shadow-[0_16px_48px_rgba(0,0,0,0.08)] py-5 px-5 grid grid-cols-2 gap-3.5 w-[420px] text-left pointer-events-auto"
                         >
                           {[
-                            { label: 'MEDIA', num: '01', path: '/services/media' },
-                            { label: 'CONTENT', num: '02', path: '/services/content' },
-                            { label: 'DIGITAL', num: '03', path: '/services/digital' },
-                            { label: 'DESIGN', num: '04', path: '/services/design' }
+                            { label: 'VIDEO EDITING', num: '01', path: '/services/video-editing' },
+                            { label: 'SOCIAL MEDIA MARKETING', num: '02', path: '/services/social-media-marketing' },
+                            { label: 'DESIGN', num: '03', path: '/services/design' },
+                            { label: 'WEBSITE DESIGN', num: '04', path: '/services/website-design' },
+                            { label: 'TECH EVENTS COVERAGE', num: '05', path: '/services/tech-events-coverage' },
+                            { label: 'DIGITAL MARKETING', num: '06', path: '/services/digital-marketing' }
                           ].map((subItem) => (
                             <a
                               key={subItem.label}

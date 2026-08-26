@@ -136,16 +136,17 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               {[
-                { label: 'Video Editing', id: '#build-plan' },
-                { label: 'Event Coverage', id: '#build-plan' },
-                { label: 'Social Media & Design', id: '#build-plan' }
+                { label: 'Video Editing', path: '/services/video-editing' },
+                { label: 'Social Media', path: '/services/social-media-marketing' },
+                { label: 'Website Design', path: '/services/website-design' },
+                { label: 'Events Coverage', path: '/services/tech-events-coverage' }
               ].map((item, idx) => (
                 <li key={idx}>
                   <a 
-                    href={item.id} 
+                    href={item.path} 
                     onClick={(e) => {
                       e.preventDefault();
-                      handleNavClick(item.id);
+                      handleSpaClick(e, item.path);
                     }}
                     className="relative group text-[15px] font-bold text-[#212121] hover:text-[#C8041C] transition-colors duration-300 font-sans inline-block py-0.5"
                   >

@@ -1,55 +1,61 @@
 import { useState } from 'react';
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
+import { ArrowRight } from 'lucide-react';
 
 export default function MediaDigital() {
   const [hoveredCard, setHoveredCard] = useState(null);
 
-  const services = [
+  const categories = [
     {
       num: '01',
-      title: 'MEDIA',
-      items: [
-        'Video Production',
-        'Video Editing',
-        'Photography',
-        'Event Coverage',
-        'Motion Graphics'
-      ]
+      title: 'VIDEO EDITING',
+      subtitle: 'MEDIA',
+      desc: 'We turn raw footage into content built to hold attention.',
+      path: '/services/video-editing'
     },
     {
       num: '02',
-      title: 'CONTENT',
-      items: [
-        'Social Media',
-        'Content Strategy',
-        'Reels & Short-form',
-        'Personal Branding',
-        'Creative Campaigns'
-      ]
+      title: 'SOCIAL MEDIA MARKETING',
+      subtitle: 'CONTENT',
+      desc: 'We build a consistent social presence around your brand.',
+      path: '/services/social-media-marketing'
     },
     {
       num: '03',
-      title: 'DIGITAL',
-      items: [
-        'Websites',
-        'Landing Pages',
-        'E-commerce',
-        'Digital Experiences',
-        'Digital Marketing'
-      ]
+      title: 'DESIGN',
+      subtitle: 'DESIGN',
+      desc: 'Visual systems that make your brand recognizable.',
+      path: '/services/design'
     },
     {
       num: '04',
-      title: 'DESIGN',
-      items: [
-        'Graphic Design',
-        'Logo Design',
-        'Brand Identity',
-        'Carousel Design',
-        'Presentation Design'
-      ]
+      title: 'WEBSITE DESIGN',
+      subtitle: 'DIGITAL',
+      desc: 'Digital experiences designed to make your brand look serious.',
+      path: '/services/website-design'
+    },
+    {
+      num: '05',
+      title: 'TECH EVENTS COVERAGE',
+      subtitle: 'EVENTS',
+      desc: 'Capture the moments, people and energy behind your event.',
+      path: '/services/tech-events-coverage'
+    },
+    {
+      num: '06',
+      title: 'DIGITAL MARKETING',
+      subtitle: 'MARKETING',
+      desc: 'Performance-focused digital strategies designed to reach the right audience.',
+      path: '/services/digital-marketing'
     }
   ];
+
+  const handleSpaClick = (e, path) => {
+    e.preventDefault();
+    window.history.pushState(null, '', path);
+    window.dispatchEvent(new Event('popstate'));
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
 
   return (
     <section id="about" className="py-24 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
@@ -68,24 +74,20 @@ export default function MediaDigital() {
               BUILDING BRANDS FOR WHAT'S NEXT.
             </ScrollReveal>
           </h2>
-          
-          <ScrollReveal yOffset={20} duration={0.7} delay={0.25}>
-            <p className="text-sm md:text-base text-brand-charcoal/60 leading-relaxed font-normal max-w-2xl">
-              We combine media, content, digital experiences and design to help brands build attention, presence and momentum.
-            </p>
-          </ScrollReveal>
         </div>
 
-        {/* Services 4-Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full text-left">
-          {services.map((service, idx) => (
-            <ScrollReveal key={idx} delay={0.1 * idx}>
-              <div
+        {/* Services 3-Column Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full text-left">
+          {categories.map((cat, idx) => (
+            <ScrollReveal key={idx} delay={0.08 * idx}>
+              <a
+                href={cat.path}
+                onClick={(e) => handleSpaClick(e, cat.path)}
                 onMouseEnter={() => setHoveredCard(idx)}
                 onMouseLeave={() => setHoveredCard(null)}
-                className={`relative bg-brand-white border border-[#E6E6E6] p-8 rounded-none flex flex-col justify-between min-h-[380px] cursor-default transition-all duration-500 overflow-hidden transform ${
-                  hoveredCard !== null && hoveredCard !== idx ? 'opacity-40 scale-[0.98]' : 'opacity-100 scale-100'
-                } ${hoveredCard === idx ? '-translate-y-2 border-[#C8041C]/25 shadow-[0_12px_40px_rgba(0,0,0,0.03)]' : ''}`}
+                className={`relative bg-brand-white border border-[#E6E6E6] p-8 rounded-none flex flex-col justify-between min-h-[250px] transition-all duration-500 overflow-hidden transform ${
+                  hoveredCard !== null && hoveredCard !== idx ? 'opacity-45 scale-[0.98]' : 'opacity-100 scale-100'
+                } ${hoveredCard === idx ? '-translate-y-1.5 border-[#C8041C]/25 bg-[#FAF9F9] shadow-[0_12px_40px_rgba(0,0,0,0.02)]' : ''}`}
               >
                 {/* Subtle red top bar revealed on hover */}
                 <div 
@@ -94,33 +96,38 @@ export default function MediaDigital() {
                   }`}
                 />
 
-                <div className="space-y-8">
-                  {/* Top Bar with Number & Title */}
-                  <div className="flex justify-between items-baseline border-b border-brand-charcoal/5 pb-4">
-                    <h3 className={`text-lg font-black tracking-wider uppercase transition-colors duration-300 ${
-                      hoveredCard === idx ? 'text-[#C8041C]' : 'text-brand-charcoal'
-                    }`}>
-                      {service.title}
-                    </h3>
-                    <span className="text-xl font-mono font-black text-brand-charcoal/20 select-none">
-                      {service.num}
+                <div className="space-y-6">
+                  {/* Top line with category number and subtitle */}
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-[9px] font-mono font-black text-[#212121]/30 uppercase tracking-widest block">
+                      {cat.subtitle}
+                    </span>
+                    <span className="text-sm font-mono font-black text-brand-charcoal/20 select-none">
+                      {cat.num}
                     </span>
                   </div>
 
-                  {/* Service Items List */}
-                  <ul className="space-y-4">
-                    {service.items.map((item, itemIdx) => (
-                      <li 
-                        key={itemIdx}
-                        className="text-xs sm:text-sm font-semibold text-brand-charcoal/70 hover:text-brand-charcoal transition-colors duration-200 flex items-start gap-3.5"
-                      >
-                        <span className="w-1.5 h-[1.5px] bg-[#C8041C] mt-2 shrink-0" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  {/* Service Title */}
+                  <h3 className={`text-xl font-black tracking-wide uppercase transition-colors duration-300 ${
+                    hoveredCard === idx ? 'text-[#C8041C]' : 'text-brand-charcoal'
+                  }`}>
+                    {cat.title}
+                  </h3>
+
+                  {/* One-line Description */}
+                  <p className="text-xs sm:text-sm text-brand-charcoal/60 leading-relaxed font-semibold">
+                    {cat.desc}
+                  </p>
                 </div>
-              </div>
+
+                {/* Explore button with arrow shift */}
+                <div className="pt-6 flex items-center gap-1 text-[10px] font-mono font-black uppercase tracking-widest text-[#212121] transition-colors">
+                  <span>EXPLORE</span>
+                  <ArrowRight className={`w-3.5 h-3.5 transition-transform duration-300 ${
+                    hoveredCard === idx ? 'transform translate-x-1 text-[#C8041C]' : 'text-[#212121]/50'
+                  }`} />
+                </div>
+              </a>
             </ScrollReveal>
           ))}
         </div>
