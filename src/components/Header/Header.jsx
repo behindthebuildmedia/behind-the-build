@@ -267,7 +267,7 @@ export default function Header({ onHomeRedirect }) {
             <button
               onClick={(e) => {
                 e.preventDefault();
-                handleNavClick('#build-plan');
+                handleSpaClick(e, '/start-a-project');
               }}
               className="hidden md:flex h-[48px] px-[28px] bg-brand-red text-brand-white text-xs font-mono font-bold uppercase tracking-widest items-center gap-2 rounded-full transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_8px_20px_rgba(200,4,28,0.25)] group"
             >

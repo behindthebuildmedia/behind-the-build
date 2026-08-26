@@ -12,7 +12,6 @@ import FeaturedWork from './sections/FeaturedWork/FeaturedWork';
 // Lazy load below-the-fold sections
 const MediaDigital = lazy(() => import('./sections/MediaDigital/MediaDigital'));
 const Clients = lazy(() => import('./sections/Clients/Clients'));
-const PlanBuilder = lazy(() => import('./sections/PlanBuilder/PlanBuilder'));
 const Process = lazy(() => import('./sections/Process/Process'));
 const WhyChooseUs = lazy(() => import('./sections/WhyChooseUs/WhyChooseUs'));
 const Testimonials = lazy(() => import('./sections/Testimonials/Testimonials'));
@@ -21,11 +20,11 @@ const Footer = lazy(() => import('./sections/Footer/Footer'));
 const ServicePage = lazy(() => import('./sections/ServicePage/ServicePage'));
 const Careers = lazy(() => import('./sections/Careers/Careers'));
 const AboutPage = lazy(() => import('./sections/AboutPage/AboutPage'));
+const StartProjectFlow = lazy(() => import('./sections/StartProjectFlow/StartProjectFlow'));
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [submitted_booking_id, setSubmitted_booking_id] = useState(null);
-  const [planBuilderKey, setPlanBuilderKey] = useState(0);
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
   // Monitor location changes
@@ -257,12 +256,17 @@ function App() {
           <Suspense fallback={<div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">LOADING CAREERS...</div>}>
             <Careers />
           </Suspense>
+        ) : (currentPath.startsWith('/start-a-project') || currentPath === '/project-submitted') ? (
+          <Suspense fallback={<div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">LOADING...</div>}>
+            <StartProjectFlow currentPath={currentPath} />
+          </Suspense>
         ) : submitted_booking_id ? (
           <Confirmation 
             booking_id={submitted_booking_id}
             onBack={() => setSubmitted_booking_id(null)}
             onSubmitAnother={() => {
-              setPlanBuilderKey(prev => prev + 1);
+              window.history.pushState(null, '', '/start-a-project');
+              window.dispatchEvent(new Event('popstate'));
               setSubmitted_booking_id(null);
             }}
           />
@@ -276,7 +280,6 @@ function App() {
               <Process />
               <WhyChooseUs />
               <Testimonials />
-              <PlanBuilder key={planBuilderKey} onSuccess={(id) => setSubmitted_booking_id(id)} />
               <FinalCTA />
             </Suspense>
           </>

@@ -21,21 +21,12 @@ export default function ServicePage({ serviceKey }) {
 
   const handleCtaClick = (e, planName = 'CUSTOM') => {
     e.preventDefault();
-    localStorage.setItem('selectedService', data.name);
     localStorage.setItem('selectedPlan', planName);
     
-    window.history.pushState(null, '', '/');
+    const servicePath = serviceKey === 'tech-events-coverage' ? 'event-coverage' : serviceKey;
+    window.history.pushState(null, '', `/start-a-project/${servicePath}`);
     window.dispatchEvent(new Event('popstate'));
-    
-    setTimeout(() => {
-      const element = document.querySelector('#build-plan');
-      if (element) {
-        const headerOffset = 80;
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-      }
-    }, 150);
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   return (

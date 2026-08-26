@@ -7,13 +7,9 @@ export default function FinalCTA() {
 
   const handleScrollToBuilder = (e) => {
     e.preventDefault();
-    const builderSection = document.getElementById('build-plan');
-    if (builderSection) {
-      const headerOffset = 80;
-      const elementPosition = builderSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-    }
+    window.history.pushState(null, '', '/start-a-project');
+    window.dispatchEvent(new Event('popstate'));
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   const handleScrollToWork = (e) => {

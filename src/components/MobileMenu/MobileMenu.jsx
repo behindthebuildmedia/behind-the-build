@@ -150,13 +150,15 @@ export default function MobileMenu({ isOpen, onClose, onNavClick, activeSection 
               WHAT YOU BUILD DESERVES TO BE SEEN.
             </p>
             <a
-              href="#build-plan"
+              href="/start-a-project"
               onClick={(e) => {
                 e.preventDefault();
                 onClose();
                 setTimeout(() => {
-                  onNavClick('#build-plan');
-                }, 400);
+                  window.history.pushState(null, '', '/start-a-project');
+                  window.dispatchEvent(new Event('popstate'));
+                  window.scrollTo({ top: 0, behavior: 'instant' });
+                }, 300);
               }}
               className="bg-brand-red text-white flex items-center gap-2 px-6 py-4 text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-brand-red/90 transition-colors w-full sm:w-auto justify-center focus-ring"
             >
