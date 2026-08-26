@@ -19,8 +19,11 @@ export default function ServicePage({ serviceKey }) {
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
-  const handleCtaClick = (e) => {
+  const handleCtaClick = (e, planName = 'CUSTOM') => {
     e.preventDefault();
+    localStorage.setItem('selectedService', data.name);
+    localStorage.setItem('selectedPlan', planName);
+    
     window.history.pushState(null, '', '/');
     window.dispatchEvent(new Event('popstate'));
     
@@ -290,7 +293,7 @@ function PricingCard({ plan, onCta, isGrowth }) {
       {/* Button CTA */}
       <div className="pt-8 text-left">
         <button
-          onClick={onCta}
+          onClick={(e) => onCta(e, plan.planName)}
           className={`w-full py-4 text-xs font-mono font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 border-2 ${
             isGrowth
               ? 'bg-[#C8041C] border-[#C8041C] text-brand-white hover:bg-[#C8041C]/90'
