@@ -64,24 +64,24 @@ export default function MediaDigital() {
   };
 
   return (
-    <section id="about" className="py-24 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
+    <section id="about" className="pt-32 pb-24 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 flex flex-col items-center text-center space-y-16">
         
         {/* SECTION HEADER */}
         <div className="space-y-4 max-w-3xl">
-          <ScrollReveal yOffset={10} duration={0.6} delay={0}>
+          <ScrollReveal yOffset={30} duration={0.7} delay={0}>
             <span className="text-[11px] font-mono font-black uppercase tracking-widest text-[#C8041C] block">
               SERVICES
             </span>
           </ScrollReveal>
           
-          <ScrollReveal delay={0.12} yOffset={25} duration={0.6}>
+          <ScrollReveal delay={0.12} yOffset={30} duration={0.7}>
             <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-[1.05]">
               WHAT WE DO.
             </h2>
           </ScrollReveal>
 
-          <ScrollReveal delay={0.24} yOffset={15} duration={0.6} className="pt-2">
+          <ScrollReveal delay={0.24} yOffset={30} duration={0.7} className="pt-2">
             <p className="text-xs sm:text-sm md:text-base text-brand-charcoal/60 leading-relaxed font-semibold max-w-2xl mx-auto">
               From ideation to execution, we bring together media, content, design and digital services built for what's next.
             </p>
@@ -91,7 +91,7 @@ export default function MediaDigital() {
         {/* SERVICE CARDS GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full text-left items-stretch">
           {categories.map((cat, idx) => (
-            <ScrollReveal key={idx} delay={0.3 + 0.08 * idx} yOffset={20} duration={0.6} className="flex flex-col h-full w-full">
+            <ScrollReveal key={idx} delay={0.35 + 0.08 * idx} yOffset={30} duration={0.7} className="flex flex-col h-full w-full">
               <a
                 href={cat.path}
                 onClick={(e) => handleSpaClick(e, cat.path)}
@@ -99,7 +99,7 @@ export default function MediaDigital() {
                 onMouseLeave={() => setHoveredCard(null)}
                 className={`relative bg-brand-white border border-[#E6E6E6] p-8 rounded-xl flex flex-col justify-between transition-all duration-300 w-full h-full transform ${
                   hoveredCard === idx 
-                    ? '-translate-y-1.5 border-[#C8041C]/35 bg-[#FAF9F9] shadow-[0_12px_40px_rgba(0,0,0,0.03)]' 
+                    ? '-translate-y-1 border-[#C8041C]/35 bg-[#FAF9F9] shadow-[0_8px_30px_rgba(0,0,0,0.02)]' 
                     : ''
                 }`}
                 style={{ minHeight: '440px' }}
@@ -142,7 +142,9 @@ export default function MediaDigital() {
                     <span className="text-[9px] font-mono text-[#212121]/50 uppercase tracking-widest font-black block">
                       STARTING FROM
                     </span>
-                    <span className="text-2xl font-black text-brand-charcoal leading-none">
+                    <span className={`text-2xl font-black transition-colors duration-300 leading-none ${
+                      hoveredCard === idx ? 'text-[#C8041C]' : 'text-brand-charcoal'
+                    }`}>
                       {cat.price}
                     </span>
                   </div>

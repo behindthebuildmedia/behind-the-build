@@ -270,13 +270,13 @@ function App() {
           <>
             <Hero />
             <Suspense fallback={<div className="min-h-[200px]" />}>
+              <FeaturedWork initialProjectId={initialProjectId} />
               <MediaDigital />
               <Clients />
-              <FeaturedWork initialProjectId={initialProjectId} />
-              <PlanBuilder key={planBuilderKey} onSuccess={(id) => setSubmitted_booking_id(id)} />
               <Process />
               <WhyChooseUs />
               <Testimonials />
+              <PlanBuilder key={planBuilderKey} onSuccess={(id) => setSubmitted_booking_id(id)} />
               <FinalCTA />
             </Suspense>
           </>
