@@ -10,42 +10,48 @@ export default function MediaDigital() {
       num: '01',
       title: 'VIDEO EDITING',
       subtitle: 'MEDIA',
-      desc: 'We turn raw footage into content built to hold attention.',
+      desc: 'High-impact edits that keep your audience hooked.',
+      services: ['Reels Editing', 'Personal Growth Edits', 'Motion Graphics', 'Product Videos'],
       path: '/services/video-editing'
     },
     {
       num: '02',
       title: 'SOCIAL MEDIA MARKETING',
       subtitle: 'CONTENT',
-      desc: 'We build a consistent social presence around your brand.',
+      desc: 'Strategic content that builds presence and drives engagement.',
+      services: ['Social Media Strategy', 'Content Creation', 'Content Calendar & Scheduling', 'Community Management'],
       path: '/services/social-media-marketing'
     },
     {
       num: '03',
       title: 'DESIGN',
       subtitle: 'DESIGN',
-      desc: 'Visual systems that make your brand recognizable.',
+      desc: 'Creative design systems that make brands recognizable.',
+      services: ['Announcement Posts', 'Thumbnails', 'Story Designs', 'Branding & Identity'],
       path: '/services/design'
     },
     {
       num: '04',
       title: 'WEBSITE DESIGN',
       subtitle: 'DIGITAL',
-      desc: 'Digital experiences designed to make your brand look serious.',
+      desc: 'Websites that look great and perform even better.',
+      services: ['Portfolio Websites', 'E-commerce', 'Commercial Websites', 'Landing Pages'],
       path: '/services/website-design'
     },
     {
       num: '05',
       title: 'TECH EVENTS COVERAGE',
       subtitle: 'EVENTS',
-      desc: 'Capture the moments, people and energy behind your event.',
+      desc: 'We capture the moments, people and energy that matter.',
+      services: ['Videography', 'Photography', 'Video Editing', 'Event Highlights'],
       path: '/services/tech-events-coverage'
     },
     {
       num: '06',
       title: 'DIGITAL MARKETING',
       subtitle: 'MARKETING',
-      desc: 'Performance-focused digital strategies designed to reach the right audience.',
+      desc: 'Performance-focused strategies designed to grow your brand.',
+      services: ['Paid Campaigns', 'Search Marketing', 'Meta & Google Ads', 'Analytics & Reporting'],
       path: '/services/digital-marketing'
     }
   ];
@@ -59,71 +65,79 @@ export default function MediaDigital() {
 
   return (
     <section id="about" className="py-24 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 flex flex-col items-center text-center space-y-16">
         
-        {/* Top Header Area */}
-        <div className="space-y-5 text-left max-w-3xl mb-16">
-          <ScrollReveal yOffset={10} duration={0.45} delay={0}>
-            <span className="text-[10px] font-mono font-black uppercase tracking-widest text-[#C8041C] block">
+        {/* SECTION HEADER */}
+        <div className="space-y-4 max-w-3xl">
+          <ScrollReveal yOffset={10} duration={0.6} delay={0}>
+            <span className="text-[11px] font-mono font-black uppercase tracking-widest text-[#C8041C] block">
               WHAT WE DO
             </span>
           </ScrollReveal>
           
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-[1.05]">
-            <ScrollReveal delay={0.1} yOffset={35} duration={0.8} className="block overflow-hidden pb-1">
-              BUILDING BRANDS FOR WHAT'S NEXT.
-            </ScrollReveal>
-          </h2>
+          <ScrollReveal delay={0.12} yOffset={25} duration={0.6}>
+            <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-[1.05]">
+              BUILDING BRANDS<br /> FOR WHAT’S NEXT.
+            </h2>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.24} yOffset={15} duration={0.6} className="pt-2">
+            <p className="text-xs sm:text-sm md:text-base text-brand-charcoal/60 leading-relaxed font-semibold max-w-2xl mx-auto">
+              From powerful content and digital experiences to design and event coverage, we help brands show up, stand out and grow.
+            </p>
+          </ScrollReveal>
         </div>
 
-        {/* Services 3-Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full text-left">
+        {/* SERVICE CARDS GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-5 w-full text-left items-stretch">
           {categories.map((cat, idx) => (
-            <ScrollReveal key={idx} delay={0.08 * idx}>
+            <ScrollReveal key={idx} delay={0.3 + 0.08 * idx} yOffset={20} duration={0.6} className="flex flex-col h-full w-full">
               <a
                 href={cat.path}
                 onClick={(e) => handleSpaClick(e, cat.path)}
                 onMouseEnter={() => setHoveredCard(idx)}
                 onMouseLeave={() => setHoveredCard(null)}
-                className={`relative bg-brand-white border border-[#E6E6E6] p-8 rounded-none flex flex-col justify-between min-h-[250px] transition-all duration-500 overflow-hidden transform ${
-                  hoveredCard !== null && hoveredCard !== idx ? 'opacity-45 scale-[0.98]' : 'opacity-100 scale-100'
-                } ${hoveredCard === idx ? '-translate-y-1.5 border-[#C8041C]/25 bg-[#FAF9F9] shadow-[0_12px_40px_rgba(0,0,0,0.02)]' : ''}`}
+                className={`relative bg-brand-white border border-[#E6E6E6] p-6 rounded-xl flex flex-col justify-between transition-all duration-300 w-full h-full transform ${
+                  hoveredCard === idx 
+                    ? '-translate-y-1.5 border-[#C8041C]/35 bg-[#FAF9F9]' 
+                    : ''
+                }`}
+                style={{ minHeight: '350px' }}
               >
-                {/* Subtle red top bar revealed on hover */}
-                <div 
-                  className={`absolute top-0 left-0 w-full h-[3px] bg-[#C8041C] transition-transform duration-500 origin-left ${
-                    hoveredCard === idx ? 'scale-x-100' : 'scale-x-0'
-                  }`}
-                />
+                <div className="space-y-4">
+                  {/* Service Number */}
+                  <span className="text-2xl font-mono font-black text-[#C8041C] leading-none select-none block">
+                    {cat.num}
+                  </span>
 
-                <div className="space-y-6">
-                  {/* Top line with category number and subtitle */}
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-[9px] font-mono font-black text-[#212121]/30 uppercase tracking-widest block">
-                      {cat.subtitle}
-                    </span>
-                    <span className="text-sm font-mono font-black text-brand-charcoal/20 select-none">
-                      {cat.num}
-                    </span>
-                  </div>
-
-                  {/* Service Title */}
-                  <h3 className={`text-xl font-black tracking-wide uppercase transition-colors duration-300 ${
-                    hoveredCard === idx ? 'text-[#C8041C]' : 'text-brand-charcoal'
-                  }`}>
+                  {/* Title */}
+                  <h3 className="text-xs sm:text-sm font-black tracking-wider uppercase text-brand-charcoal leading-snug">
                     {cat.title}
                   </h3>
 
+                  {/* Thin Red Accent Line */}
+                  <div className="w-6 h-[1.5px] bg-[#C8041C]" />
+
                   {/* One-line Description */}
-                  <p className="text-xs sm:text-sm text-brand-charcoal/60 leading-relaxed font-semibold">
+                  <p className="text-[11px] text-brand-charcoal/60 leading-relaxed font-semibold min-h-[44px]">
                     {cat.desc}
                   </p>
+
+                  {/* Capabilities Items */}
+                  <ul className="space-y-2 pt-2 border-t border-brand-charcoal/5">
+                    {cat.services.map((service, sIdx) => (
+                      <li key={sIdx} className="text-[10px] font-semibold text-brand-charcoal/70 flex items-start gap-2">
+                        <span className="w-1 h-[1px] bg-[#C8041C] mt-1.5 shrink-0" />
+                        <span>{service}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                {/* Explore button with arrow shift */}
-                <div className="pt-6 flex items-center gap-1 text-[10px] font-mono font-black uppercase tracking-widest text-[#212121] transition-colors">
+                {/* Explore button at the bottom */}
+                <div className="pt-6 flex items-center gap-1 text-[9px] font-mono font-black uppercase tracking-widest text-[#212121] transition-colors">
                   <span>EXPLORE</span>
-                  <ArrowRight className={`w-3.5 h-3.5 transition-transform duration-300 ${
+                  <ArrowRight className={`w-3 h-3 transition-transform duration-300 ${
                     hoveredCard === idx ? 'transform translate-x-1 text-[#C8041C]' : 'text-[#212121]/50'
                   }`} />
                 </div>
@@ -131,6 +145,31 @@ export default function MediaDigital() {
             </ScrollReveal>
           ))}
         </div>
+
+        {/* INTRODUCTORY PRICING BANNER */}
+        <ScrollReveal delay={0.8} yOffset={20} duration={0.6} className="w-full max-w-4xl pt-4">
+          <div className="border border-[#E6E6E6] bg-[#FAF9F9] rounded-xl p-8 sm:p-10 text-center relative overflow-hidden select-none space-y-4">
+            {/* Subtle red top bar */}
+            <div className="absolute top-0 left-0 w-full h-[3px] bg-[#C8041C]" />
+            
+            <div className="space-y-1">
+              <span className="text-[10px] font-mono font-black tracking-widest text-[#C8041C] uppercase block">
+                INTRODUCTORY RATES
+              </span>
+              <h4 className="text-base sm:text-lg font-black uppercase text-brand-charcoal tracking-wide">
+                SPECIAL PRICING FOR OUR FIRST 4 CLIENTS.
+              </h4>
+            </div>
+
+            <p className="text-xs text-brand-charcoal/60 leading-relaxed font-semibold max-w-xl mx-auto">
+              Partner with us early. Our current packages are offered at introductory rates for our first four client partnerships.
+            </p>
+
+            <span className="text-[9px] font-mono font-bold text-[#C8041C] uppercase tracking-wider block">
+              Rates will be updated after the fourth client partnership.
+            </span>
+          </div>
+        </ScrollReveal>
 
       </div>
     </section>
