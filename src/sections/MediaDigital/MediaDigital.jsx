@@ -9,49 +9,49 @@ export default function MediaDigital() {
     {
       num: '01',
       title: 'VIDEO EDITING',
-      subtitle: 'MEDIA',
-      desc: 'High-impact edits that keep your audience hooked.',
-      services: ['Reels Editing', 'Personal Growth Edits', 'Motion Graphics', 'Product Videos'],
+      desc: 'Professional short-form editing for brands, founders, products and technology companies.',
+      services: ['Reels & Short-form', 'Personal Growth Edits', 'Motion Graphics', 'Product Videos'],
+      price: '₹6,000',
       path: '/services/video-editing'
     },
     {
       num: '02',
       title: 'SOCIAL MEDIA MARKETING',
-      subtitle: 'CONTENT',
-      desc: 'Strategic content that builds presence and drives engagement.',
-      services: ['Social Media Strategy', 'Content Creation', 'Content Calendar & Scheduling', 'Community Management'],
+      desc: 'Strategy, content and management designed to build a consistent digital presence.',
+      services: ['Social Media Strategy', 'Content Creation', 'Content Calendar & Scheduling', 'Community Management', 'Monthly Reports'],
+      price: '₹5,000',
       path: '/services/social-media-marketing'
     },
     {
       num: '03',
       title: 'DESIGN',
-      subtitle: 'DESIGN',
-      desc: 'Creative design systems that make brands recognizable.',
-      services: ['Announcement Posts', 'Thumbnails', 'Story Designs', 'Branding & Identity'],
+      desc: 'Creative design systems that make your brand look consistent and recognizable.',
+      services: ['Graphic Design', 'Logo Design', 'Social Media Designs', 'Carousels', 'Thumbnails', 'Brand Identity'],
+      price: '₹5,000',
       path: '/services/design'
     },
     {
       num: '04',
       title: 'WEBSITE DESIGN',
-      subtitle: 'DIGITAL',
-      desc: 'Websites that look great and perform even better.',
-      services: ['Portfolio Websites', 'E-commerce', 'Commercial Websites', 'Landing Pages'],
+      desc: 'Modern, responsive websites built to present your brand and convert visitors.',
+      services: ['Portfolio Websites', 'Commercial Websites', 'E-commerce', 'Landing Pages'],
+      price: '₹12,999',
       path: '/services/website-design'
     },
     {
       num: '05',
       title: 'TECH EVENTS COVERAGE',
-      subtitle: 'EVENTS',
-      desc: 'We capture the moments, people and energy that matter.',
-      services: ['Videography', 'Photography', 'Video Editing', 'Event Highlights'],
+      desc: 'Professional photo and video coverage for launches, conferences, campus and technology events.',
+      services: ['Videography', 'Photography', 'Event Editing', 'Highlight Videos', 'Reels'],
+      price: '₹8,000',
       path: '/services/tech-events-coverage'
     },
     {
       num: '06',
       title: 'DIGITAL MARKETING',
-      subtitle: 'MARKETING',
-      desc: 'Performance-focused strategies designed to grow your brand.',
-      services: ['Paid Campaigns', 'Search Marketing', 'Meta & Google Ads', 'Analytics & Reporting'],
+      desc: 'Strategic digital marketing designed to grow your visibility, reach and audience.',
+      services: ['Social Media Management', 'Content Strategy', 'Content Creation', 'Campaign Planning', 'Community Management', 'Monthly Reports'],
+      price: '₹5,000',
       path: '/services/digital-marketing'
     }
   ];
@@ -65,31 +65,31 @@ export default function MediaDigital() {
 
   return (
     <section id="about" className="py-24 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 flex flex-col items-center text-center space-y-16">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 flex flex-col items-center text-center space-y-16">
         
         {/* SECTION HEADER */}
         <div className="space-y-4 max-w-3xl">
           <ScrollReveal yOffset={10} duration={0.6} delay={0}>
             <span className="text-[11px] font-mono font-black uppercase tracking-widest text-[#C8041C] block">
-              WHAT WE DO
+              SERVICES
             </span>
           </ScrollReveal>
           
           <ScrollReveal delay={0.12} yOffset={25} duration={0.6}>
             <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-[1.05]">
-              BUILDING BRANDS<br /> FOR WHAT’S NEXT.
+              WHAT WE DO.
             </h2>
           </ScrollReveal>
 
           <ScrollReveal delay={0.24} yOffset={15} duration={0.6} className="pt-2">
             <p className="text-xs sm:text-sm md:text-base text-brand-charcoal/60 leading-relaxed font-semibold max-w-2xl mx-auto">
-              From powerful content and digital experiences to design and event coverage, we help brands show up, stand out and grow.
+              From ideation to execution, we bring together media, content, design and digital services built for what's next.
             </p>
           </ScrollReveal>
         </div>
 
         {/* SERVICE CARDS GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-5 w-full text-left items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full text-left items-stretch">
           {categories.map((cat, idx) => (
             <ScrollReveal key={idx} delay={0.3 + 0.08 * idx} yOffset={20} duration={0.6} className="flex flex-col h-full w-full">
               <a
@@ -97,79 +97,69 @@ export default function MediaDigital() {
                 onClick={(e) => handleSpaClick(e, cat.path)}
                 onMouseEnter={() => setHoveredCard(idx)}
                 onMouseLeave={() => setHoveredCard(null)}
-                className={`relative bg-brand-white border border-[#E6E6E6] p-6 rounded-xl flex flex-col justify-between transition-all duration-300 w-full h-full transform ${
+                className={`relative bg-brand-white border border-[#E6E6E6] p-8 rounded-xl flex flex-col justify-between transition-all duration-300 w-full h-full transform ${
                   hoveredCard === idx 
-                    ? '-translate-y-1.5 border-[#C8041C]/35 bg-[#FAF9F9]' 
+                    ? '-translate-y-1.5 border-[#C8041C]/35 bg-[#FAF9F9] shadow-[0_12px_40px_rgba(0,0,0,0.03)]' 
                     : ''
                 }`}
-                style={{ minHeight: '350px' }}
+                style={{ minHeight: '440px' }}
               >
-                <div className="space-y-4">
-                  {/* Service Number */}
-                  <span className="text-2xl font-mono font-black text-[#C8041C] leading-none select-none block">
+                <div className="space-y-6">
+                  {/* Top Line: Number */}
+                  <span className="text-3xl font-mono font-black text-[#C8041C] leading-none select-none block">
                     {cat.num}
                   </span>
 
-                  {/* Title */}
-                  <h3 className="text-xs sm:text-sm font-black tracking-wider uppercase text-brand-charcoal leading-snug">
-                    {cat.title}
-                  </h3>
+                  {/* Title & Short Description */}
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-black tracking-wider uppercase text-brand-charcoal leading-snug">
+                      {cat.title}
+                    </h3>
+                    <p className="text-xs text-brand-charcoal/60 leading-relaxed font-semibold">
+                      {cat.desc}
+                    </p>
+                  </div>
 
-                  {/* Thin Red Accent Line */}
-                  <div className="w-6 h-[1.5px] bg-[#C8041C]" />
-
-                  {/* One-line Description */}
-                  <p className="text-[11px] text-brand-charcoal/60 leading-relaxed font-semibold min-h-[44px]">
-                    {cat.desc}
-                  </p>
-
-                  {/* Capabilities Items */}
-                  <ul className="space-y-2 pt-2 border-t border-brand-charcoal/5">
-                    {cat.services.map((service, sIdx) => (
-                      <li key={sIdx} className="text-[10px] font-semibold text-brand-charcoal/70 flex items-start gap-2">
-                        <span className="w-1 h-[1px] bg-[#C8041C] mt-1.5 shrink-0" />
-                        <span>{service}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  {/* What's Included */}
+                  <div className="space-y-3 pt-4 border-t border-[#E6E6E6]">
+                    <span className="text-[10px] font-mono font-black text-[#212121]/50 uppercase tracking-widest block">
+                      WHAT'S INCLUDED
+                    </span>
+                    <ul className="grid grid-cols-1 gap-2">
+                      {cat.services.map((service, sIdx) => (
+                        <li key={sIdx} className="text-xs font-semibold text-brand-charcoal/70 flex items-start gap-2.5">
+                          <span className="w-1.5 h-[1.5px] bg-[#C8041C] mt-2 shrink-0" />
+                          <span>{service}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
 
-                {/* Explore button at the bottom */}
-                <div className="pt-6 flex items-center gap-1 text-[9px] font-mono font-black uppercase tracking-widest text-[#212121] transition-colors">
-                  <span>EXPLORE</span>
-                  <ArrowRight className={`w-3 h-3 transition-transform duration-300 ${
-                    hoveredCard === idx ? 'transform translate-x-1 text-[#C8041C]' : 'text-[#212121]/50'
-                  }`} />
+                {/* Bottom line: Price and Button */}
+                <div className="pt-8 flex justify-between items-end border-t border-[#E6E6E6] mt-6">
+                  <div className="space-y-0.5">
+                    <span className="text-[9px] font-mono text-[#212121]/50 uppercase tracking-widest font-black block">
+                      STARTING FROM
+                    </span>
+                    <span className="text-2xl font-black text-brand-charcoal leading-none">
+                      {cat.price}
+                    </span>
+                  </div>
+                  
+                  <div className={`flex items-center gap-1.5 text-[10px] font-mono font-black uppercase tracking-widest transition-colors duration-300 ${
+                    hoveredCard === idx ? 'text-[#C8041C]' : 'text-[#212121]'
+                  }`}>
+                    <span>KNOW MORE</span>
+                    <ArrowRight className={`w-3.5 h-3.5 transition-transform duration-300 ${
+                      hoveredCard === idx ? 'transform translate-x-1' : 'text-[#212121]/50'
+                    }`} />
+                  </div>
                 </div>
               </a>
             </ScrollReveal>
           ))}
         </div>
-
-        {/* INTRODUCTORY PRICING BANNER */}
-        <ScrollReveal delay={0.8} yOffset={20} duration={0.6} className="w-full max-w-4xl pt-4">
-          <div className="border border-[#E6E6E6] bg-[#FAF9F9] rounded-xl p-8 sm:p-10 text-center relative overflow-hidden select-none space-y-4">
-            {/* Subtle red top bar */}
-            <div className="absolute top-0 left-0 w-full h-[3px] bg-[#C8041C]" />
-            
-            <div className="space-y-1">
-              <span className="text-[10px] font-mono font-black tracking-widest text-[#C8041C] uppercase block">
-                INTRODUCTORY RATES
-              </span>
-              <h4 className="text-base sm:text-lg font-black uppercase text-brand-charcoal tracking-wide">
-                SPECIAL PRICING FOR OUR FIRST FEW CLIENTS.
-              </h4>
-            </div>
-
-            <p className="text-xs text-brand-charcoal/60 leading-relaxed font-semibold max-w-xl mx-auto">
-              Partner with us early. Our current packages are offered at introductory rates for our first few client partnerships.
-            </p>
-
-            <span className="text-[9px] font-mono font-bold text-[#C8041C] uppercase tracking-wider block">
-              Rates will be updated after the initial client partnerships.
-            </span>
-          </div>
-        </ScrollReveal>
 
       </div>
     </section>
