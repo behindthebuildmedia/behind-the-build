@@ -157,16 +157,16 @@ export default function MediaDigital() {
                 INTRODUCTORY RATES
               </span>
               <h4 className="text-base sm:text-lg font-black uppercase text-brand-charcoal tracking-wide">
-                SPECIAL PRICING FOR OUR FIRST 4 CLIENTS.
+                SPECIAL PRICING FOR OUR FIRST FEW CLIENTS.
               </h4>
             </div>
 
             <p className="text-xs text-brand-charcoal/60 leading-relaxed font-semibold max-w-xl mx-auto">
-              Partner with us early. Our current packages are offered at introductory rates for our first four client partnerships.
+              Partner with us early. Our current packages are offered at introductory rates for our first few client partnerships.
             </p>
 
             <span className="text-[9px] font-mono font-bold text-[#C8041C] uppercase tracking-wider block">
-              Rates will be updated after the fourth client partnership.
+              Rates will be updated after the initial client partnerships.
             </span>
           </div>
         </ScrollReveal>

@@ -99,10 +99,10 @@ export default function ServicePage({ serviceKey }) {
             <ScrollReveal delay={0.05} yOffset={15} className="max-w-2xl mx-auto">
               <div className="border border-[#C8041C]/20 bg-[#FAF9F9] p-5 text-center space-y-1 rounded-none relative overflow-hidden">
                 <span className="text-[10px] font-mono font-black text-[#C8041C] uppercase tracking-widest block">
-                  FIRST 4 CLIENTS / INTRODUCTORY RATES
+                  FIRST FEW CLIENTS / INTRODUCTORY RATES
                 </span>
                 <p className="text-[11px] sm:text-xs text-[#212121]/70 leading-relaxed font-semibold">
-                  Partner with us early. Our current packages are offered at introductory rates for our first four clients. Rates will be revised after the first 4 partnerships.
+                  Partner with us early. Our current packages are offered at introductory rates for our first few clients. Rates will be revised after the initial partnerships.
                 </p>
               </div>
             </ScrollReveal>
