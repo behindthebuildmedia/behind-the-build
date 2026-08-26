@@ -77,6 +77,15 @@ export default function Hero() {
     },
   };
 
+  const eyebrowVariants = {
+    initial: { opacity: 0, y: 15 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.05 },
+    },
+  };
+
   const fadeUpVariants = {
     initial: { opacity: 0, y: 20 },
     animate: {
@@ -139,6 +148,14 @@ export default function Hero() {
           animate="animate"
           className="lg:col-span-9 flex flex-col items-start text-left z-10"
         >
+          {/* Eyebrow Positioning Line */}
+          <motion.span
+            variants={eyebrowVariants}
+            className="text-xs font-mono font-bold uppercase tracking-widest text-brand-red mb-4 block"
+          >
+            BUILDING BRANDS FOR WHAT'S NEXT.
+          </motion.span>
+
           {/* Main Headline line-by-line mask reveal */}
           <h1 className="font-sans text-4xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-brand-charcoal leading-[1.05] uppercase">
             <span className="block overflow-hidden pb-1">
