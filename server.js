@@ -85,18 +85,18 @@ const isValidPhone = (phone) => {
 
 // Fetch next sequential booking ID from Supabase
 const getNextBookingIdFromSupabase = async () => {
+  const currentYear = new Date().getFullYear();
   const generateFallbackBookingId = () => {
-    const timestamp = Date.now().toString().slice(-4);
-    const rand = Math.floor(1000 + Math.random() * 9000);
-    return `BTB-${timestamp}${rand}`;
+    const rand = Math.floor(10000 + Math.random() * 90000);
+    return `BTB-${currentYear}-${rand}`;
   };
 
   try {
     const { data, error } = await supabase
       .from('bookings')
       .select('booking_id')
-      .order('booking_id', { ascending: false })
-      .limit(1);
+      .order('created_at', { ascending: false })
+      .limit(20);
 
     if (error) {
       console.error('[Supabase ID Generation] Error fetching latest booking_id:', error.message);
@@ -104,17 +104,26 @@ const getNextBookingIdFromSupabase = async () => {
     }
 
     if (!data || data.length === 0) {
-      return 'BTB-0001';
+      return `BTB-${currentYear}-00001`;
     }
 
-    const latestId = data[0].booking_id; // e.g. "BTB-0001"
-    const match = latestId.match(/^BTB\-(\d+)$/);
-    if (match) {
-      const nextNum = parseInt(match[1], 10) + 1;
-      return `BTB-${String(nextNum).padStart(4, '0')}`;
+    let maxNum = 0;
+    for (const row of data) {
+      const match = row.booking_id.match(/^BTB-(\d{4})-(\d{5})$/);
+      if (match && parseInt(match[1], 10) === currentYear) {
+        const num = parseInt(match[2], 10);
+        if (num > maxNum) {
+          maxNum = num;
+        }
+      }
     }
 
-    return generateFallbackBookingId();
+    if (maxNum > 0) {
+      const nextNum = maxNum + 1;
+      return `BTB-${currentYear}-${String(nextNum).padStart(5, '0')}`;
+    }
+
+    return `BTB-${currentYear}-00001`;
   } catch (err) {
     console.error('[Supabase ID Generation] Exception:', err.message);
     return generateFallbackBookingId();

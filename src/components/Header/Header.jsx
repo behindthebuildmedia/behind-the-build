@@ -230,7 +230,7 @@ export default function Header({ onHomeRedirect }) {
                             { label: 'SOCIAL MEDIA MARKETING', num: '02', path: '/services/social-media-marketing' },
                             { label: 'DESIGN', num: '03', path: '/services/design' },
                             { label: 'WEBSITE DESIGN', num: '04', path: '/services/website-design' },
-                            { label: 'TECH EVENTS COVERAGE', num: '05', path: '/services/tech-events-coverage' },
+                            { label: 'TECH EVENTS COVERAGE', num: '05', path: '/services/event-coverage' },
                             { label: 'DIGITAL MARKETING', num: '06', path: '/services/digital-marketing' }
                           ].map((subItem) => (
                             <a

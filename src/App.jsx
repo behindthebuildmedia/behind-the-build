@@ -21,6 +21,7 @@ const ServicePage = lazy(() => import('./sections/ServicePage/ServicePage'));
 const Careers = lazy(() => import('./sections/Careers/Careers'));
 const AboutPage = lazy(() => import('./sections/AboutPage/AboutPage'));
 const StartProjectFlow = lazy(() => import('./sections/StartProjectFlow/StartProjectFlow'));
+const BookingPage = lazy(() => import('./sections/BookingPage/BookingPage'));
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -259,6 +260,10 @@ function App() {
         ) : (currentPath.startsWith('/start-a-project') || currentPath === '/project-submitted') ? (
           <Suspense fallback={<div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">LOADING...</div>}>
             <StartProjectFlow currentPath={currentPath} />
+          </Suspense>
+        ) : (currentPath.startsWith('/book/') || currentPath === '/booking-success') ? (
+          <Suspense fallback={<div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">LOADING...</div>}>
+            <BookingPage currentPath={currentPath} />
           </Suspense>
         ) : submitted_booking_id ? (
           <Confirmation 

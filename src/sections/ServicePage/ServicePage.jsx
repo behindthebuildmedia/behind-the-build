@@ -4,7 +4,8 @@ import { servicesData } from '../../data/servicesData';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 
 export default function ServicePage({ serviceKey }) {
-  const data = servicesData[serviceKey] || servicesData['video-editing'];
+  const serviceKeyClean = serviceKey === 'event-coverage' ? 'tech-events-coverage' : serviceKey;
+  const data = servicesData[serviceKeyClean] || servicesData['video-editing'];
   const [openFaq, setOpenFaq] = useState(null);
 
   useEffect(() => {
@@ -21,10 +22,10 @@ export default function ServicePage({ serviceKey }) {
 
   const handleCtaClick = (e, planName = 'CUSTOM') => {
     e.preventDefault();
-    localStorage.setItem('selectedPlan', planName);
-    
     const servicePath = serviceKey === 'tech-events-coverage' ? 'event-coverage' : serviceKey;
-    window.history.pushState(null, '', `/start-a-project/${servicePath}`);
+    const planSlug = planName.toLowerCase();
+    
+    window.history.pushState(null, '', `/book/${servicePath}?plan=${planSlug}`);
     window.dispatchEvent(new Event('popstate'));
     window.scrollTo({ top: 0, behavior: 'instant' });
   };

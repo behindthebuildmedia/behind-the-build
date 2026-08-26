@@ -44,7 +44,7 @@ export default function MediaDigital() {
       desc: 'Professional photo and video coverage for launches, conferences, campus and technology events.',
       services: ['Videography', 'Photography', 'Event Editing', 'Highlight Videos', 'Reels'],
       price: '₹8,000',
-      path: '/services/tech-events-coverage'
+      path: '/services/event-coverage'
     },
     {
       num: '06',
