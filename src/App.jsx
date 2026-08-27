@@ -28,11 +28,12 @@ function App() {
   const [submitted_booking_id, setSubmitted_booking_id] = useState(null);
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
-  // Monitor location changes
+  // Monitor location changes (including query string changes)
   useEffect(() => {
     const handleUrlChange = () => {
-      if (currentPath !== window.location.pathname) {
-        setCurrentPath(window.location.pathname);
+      const newPath = window.location.pathname;
+      if (currentPath !== newPath) {
+        setCurrentPath(newPath);
       }
     };
     const interval = setInterval(handleUrlChange, 100);
@@ -105,6 +106,11 @@ function App() {
       const sTitle = sKey.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
       title = `${sTitle} | Behind the Build`;
       desc = `Explore premium ${sTitle} packages by Behind the Build. Review our custom deliverables, starter and growth launch partnership rates.`;
+    } else if (currentPath === '/booking' || currentPath.startsWith('/booking/') || currentPath === '/book' || currentPath.startsWith('/book/') || currentPath === '/booking-success') {
+      title = "Book Your Project | Behind the Build";
+      desc = "Book a creative media service with Behind the Build. Fill in your project details and we'll get back to you within 60 minutes.";
+      // Keep the full path + query string so BookingPage can read params
+      path = window.location.pathname + window.location.search;
     } else if (submitted_booking_id) {
       title = "Booking Confirmed | Behind the Build";
       desc = `Thank you for choosing Behind the Build. Your project request (ID: ${submitted_booking_id}) has been received. Our creative team will contact you in 60 minutes.`;
@@ -143,7 +149,11 @@ function App() {
     canonicalLink.setAttribute('href', canonicalUrl);
 
     // Update browser URL dynamically for search friendliness
-    if (window.location.pathname !== path) {
+    // Compare full href (including query string) to avoid clobbering booking params
+    const fullCurrentHref = window.location.pathname + window.location.search;
+    const pathWithoutTrailingSlash = path.replace(/\/$/, '') || '/';
+    const hrefWithoutTrailingSlash = fullCurrentHref.replace(/\/$/, '') || '/';
+    if (hrefWithoutTrailingSlash !== pathWithoutTrailingSlash) {
       window.history.pushState(null, '', path);
     }
 
