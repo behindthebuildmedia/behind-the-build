@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
 import logoConsistency from '../../assets/images/partner_1.webp';
 import logoDelusion from '../../assets/images/partner_2.webp';
+import logoPartner3 from '../../assets/images/partner3.webp';
+import logoPartner4 from '../../assets/images/partner4.webp';
 
 export default function Clients() {
   const lineVariants = {
@@ -57,7 +59,7 @@ export default function Clients() {
 
         {/* Logo Row */}
         <ScrollReveal yOffset={15} duration={0.7} delay={0.5} className="w-full">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16 md:gap-24 w-full">
+          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-8 sm:gap-12 md:gap-16 lg:gap-20 w-full">
             
             {/* Consistency.AI Logo */}
             <motion.div 
@@ -65,20 +67,21 @@ export default function Clients() {
               whileHover="hover"
               animate="rest"
               variants={cardHoverVariants}
-              className="flex flex-col items-center justify-center cursor-default relative py-4 px-4 w-full max-w-[280px]"
+              className="flex flex-col items-center justify-center cursor-default relative py-4 px-4 w-full max-w-[200px]"
             >
-              <div className="h-20 flex items-center justify-center w-full">
+              <div className="h-16 flex items-center justify-center w-full">
                 <motion.img 
                   src={logoConsistency} 
                   alt="Consistency.AI Logo" 
-                  width="240"
-                  height="80"
+                  width="200"
+                  height="66"
                   className="max-h-full object-contain filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                   style={{ transitionProperty: 'filter, opacity' }}
                   variants={{
                     rest: { filter: 'grayscale(1) opacity(0.4)' },
                     hover: { filter: 'grayscale(0) opacity(1)' }
                   }}
+                  loading="lazy"
                 />
               </div>
               
@@ -95,20 +98,83 @@ export default function Clients() {
               whileHover="hover"
               animate="rest"
               variants={cardHoverVariants}
-              className="flex flex-col items-center justify-center cursor-default relative py-4 px-4 w-full max-w-[280px]"
+              className="flex flex-col items-center justify-center cursor-default relative py-4 px-4 w-full max-w-[200px]"
             >
-              <div className="h-20 flex items-center justify-center w-full">
+              <div className="h-16 flex items-center justify-center w-full">
                 <motion.img 
                   src={logoDelusion} 
                   alt="DelusionAI Logo" 
-                  width="240"
-                  height="80"
+                  width="200"
+                  height="66"
                   className="max-h-full object-contain filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                   style={{ transitionProperty: 'filter, opacity' }}
                   variants={{
                     rest: { filter: 'grayscale(1) opacity(0.4)' },
                     hover: { filter: 'grayscale(0) opacity(1)' }
                   }}
+                  loading="lazy"
+                />
+              </div>
+              
+              {/* Subtle Red Line Accent */}
+              <motion.div 
+                variants={lineVariants}
+                className="absolute bottom-0 left-4 right-4 h-[2px] bg-[#C8041C] origin-center"
+              />
+            </motion.div>
+
+            {/* Partner 3 Logo */}
+            <motion.div 
+              initial="rest"
+              whileHover="hover"
+              animate="rest"
+              variants={cardHoverVariants}
+              className="flex flex-col items-center justify-center cursor-default relative py-4 px-4 w-full max-w-[200px]"
+            >
+              <div className="h-16 flex items-center justify-center w-full">
+                <motion.img 
+                  src={logoPartner3} 
+                  alt="Behind the Build client partner" 
+                  width="200"
+                  height="66"
+                  className="max-h-full object-contain filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                  style={{ transitionProperty: 'filter, opacity' }}
+                  variants={{
+                    rest: { filter: 'grayscale(1) opacity(0.4)' },
+                    hover: { filter: 'grayscale(0) opacity(1)' }
+                  }}
+                  loading="lazy"
+                />
+              </div>
+              
+              {/* Subtle Red Line Accent */}
+              <motion.div 
+                variants={lineVariants}
+                className="absolute bottom-0 left-4 right-4 h-[2px] bg-[#C8041C] origin-center"
+              />
+            </motion.div>
+
+            {/* Partner 4 Logo */}
+            <motion.div 
+              initial="rest"
+              whileHover="hover"
+              animate="rest"
+              variants={cardHoverVariants}
+              className="flex flex-col items-center justify-center cursor-default relative py-4 px-4 w-full max-w-[200px]"
+            >
+              <div className="h-16 flex items-center justify-center w-full">
+                <motion.img 
+                  src={logoPartner4} 
+                  alt="Behind the Build client partner" 
+                  width="200"
+                  height="66"
+                  className="max-h-full object-contain filter grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                  style={{ transitionProperty: 'filter, opacity' }}
+                  variants={{
+                    rest: { filter: 'grayscale(1) opacity(0.4)' },
+                    hover: { filter: 'grayscale(0) opacity(1)' }
+                  }}
+                  loading="lazy"
                 />
               </div>
               
