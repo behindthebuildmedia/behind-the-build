@@ -81,34 +81,21 @@ export default function FinalCTA() {
           {/* Large Typographic Editorial Heading */}
           {shouldReduceMotion ? (
             <h2 className="text-4xl sm:text-6xl xl:text-7.5xl font-black tracking-tight text-brand-charcoal leading-[1.1] uppercase font-sans">
-              YOUR NEXT<br />
-              <span className="inline-flex items-center gap-2 md:gap-3 my-1">
-                <span className="bg-[#212121] text-brand-white px-3 py-0.5 text-3xl sm:text-5xl xl:text-6xl font-black rounded-none">
-                  BIG
-                </span>
-                <span className="text-[#C8041C] text-3xl sm:text-5xl xl:text-6xl font-black">STORY</span>
+              HAVE SOMETHING<br />
+              <span className="text-[#C8041C]">
+                WORTH BUILDING?
               </span>
-              <br />
-              STARTS HERE.
             </h2>
           ) : (
             <h2 className="text-4xl sm:text-6xl xl:text-7.5xl font-black tracking-tight text-brand-charcoal leading-[1.1] uppercase font-sans">
               <span className="block overflow-hidden pb-1">
                 <motion.span variants={lineRevealVariants1} className="block">
-                  YOUR NEXT
+                  HAVE SOMETHING
                 </motion.span>
               </span>
               <span className="block overflow-hidden py-1">
-                <motion.span variants={lineRevealVariants2} className="inline-flex items-center gap-2 md:gap-3">
-                  <span className="bg-[#212121] text-brand-white px-3 py-0.5 text-3xl sm:text-5xl xl:text-6xl font-black rounded-none">
-                    BIG
-                  </span>
-                  <span className="text-[#C8041C] text-3xl sm:text-5xl xl:text-6xl font-black">STORY</span>
-                </motion.span>
-              </span>
-              <span className="block overflow-hidden pt-1">
-                <motion.span variants={lineRevealVariants3} className="block">
-                  STARTS HERE.
+                <motion.span variants={lineRevealVariants2} className="text-[#C8041C] block">
+                  WORTH BUILDING?
                 </motion.span>
               </span>
             </h2>
@@ -120,9 +107,9 @@ export default function FinalCTA() {
               initial: { opacity: 0, y: 15 },
               animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.6 } }
             }}
-            className="text-sm sm:text-base text-brand-charcoal/70 leading-relaxed font-sans font-bold max-w-[600px] leading-none"
+            className="text-sm sm:text-base text-brand-charcoal/70 leading-relaxed font-sans font-bold max-w-[600px]"
           >
-            You build it. We bring it to the world.
+            Tell us what you're building. We'll figure out how to bring it to the world.
           </motion.p>
 
           {/* Buttons Deck */}

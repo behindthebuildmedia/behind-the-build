@@ -226,12 +226,10 @@ export default function Header({ onHomeRedirect }) {
                           className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 bg-brand-white border border-[#E6E6E6] rounded-xl shadow-[0_16px_48px_rgba(0,0,0,0.08)] py-5 px-5 grid grid-cols-2 gap-3.5 w-[420px] text-left pointer-events-auto"
                         >
                           {[
-                            { label: 'VIDEO EDITING', num: '01', path: '/services/video-editing' },
-                            { label: 'SOCIAL MEDIA MARKETING', num: '02', path: '/services/social-media-marketing' },
-                            { label: 'DESIGN', num: '03', path: '/services/design' },
-                            { label: 'WEBSITE DESIGN', num: '04', path: '/services/website-design' },
-                            { label: 'TECH EVENTS COVERAGE', num: '05', path: '/services/tech-event-coverage' },
-                            { label: 'DIGITAL MARKETING', num: '06', path: '/services/digital-marketing' }
+                            { label: 'MEDIA', num: '01', path: '/services/video-editing', subtitle: 'Video & Event Production' },
+                            { label: 'CONTENT', num: '02', path: '/services/social-media-marketing', subtitle: 'Social-First Content' },
+                            { label: 'DIGITAL', num: '03', path: '/services/digital-marketing', subtitle: 'Performance & Web Design' },
+                            { label: 'DESIGN', num: '04', path: '/services/design', subtitle: 'Brand & Creative Identity' }
                           ].map((subItem) => (
                             <a
                               key={subItem.label}
@@ -245,12 +243,19 @@ export default function Header({ onHomeRedirect }) {
                             >
                               <div className="absolute top-0 left-0 w-full h-[2.5px] bg-[#C8041C] transition-transform duration-300 origin-left scale-x-0 group-hover:scale-x-100 rounded-t-lg" />
                               
-                              <span className="text-[9px] font-mono font-black text-[#212121]/30 uppercase tracking-widest leading-none block">
-                                {subItem.num}
-                              </span>
-                              <span className="text-xs font-black uppercase text-brand-charcoal group-hover:text-[#C8041C] transition-colors tracking-wide leading-none mt-4">
-                                {subItem.label}
-                              </span>
+                              <div className="flex justify-between items-start w-full">
+                                <span className="text-[9px] font-mono font-black text-[#212121]/30 uppercase tracking-widest leading-none block">
+                                  {subItem.num}
+                                </span>
+                              </div>
+                              <div className="mt-3 flex flex-col text-left">
+                                <span className="text-xs font-black uppercase text-brand-charcoal group-hover:text-[#C8041C] transition-colors tracking-wide leading-none">
+                                  {subItem.label}
+                                </span>
+                                <span className="text-[9px] font-semibold text-[#212121]/45 tracking-tight pt-1 group-hover:text-brand-charcoal/60 transition-colors leading-none">
+                                  {subItem.subtitle}
+                                </span>
+                              </div>
                             </a>
                           ))}
                         </motion.div>

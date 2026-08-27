@@ -160,7 +160,7 @@ export default function Hero() {
           <h1 className="font-sans text-4xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-brand-charcoal leading-[1.05] uppercase">
             <span className="block overflow-hidden pb-1">
               <motion.span variants={lineMaskVariants1} className="block">
-                YOU BUILT IT.
+                YOU BUILD IT.
               </motion.span>
             </span>
             <span className="block overflow-hidden pb-1">
@@ -180,7 +180,7 @@ export default function Hero() {
             variants={fadeUpVariants}
             className="mt-6 text-sm sm:text-base text-brand-charcoal/60 max-w-md font-sans font-normal leading-relaxed"
           >
-            Behind The Build helps brands transform ideas into unforgettable visual stories through photography, videography, editing, podcasts, event coverage, and social-first content.
+            Media, content, digital and design for ambitious brands, startups and technology companies.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -194,7 +194,7 @@ export default function Hero() {
                 onClick={handleScrollToBuilder}
                 className="relative bg-brand-red text-white hover:bg-brand-red/90 text-sm font-bold uppercase tracking-wider px-8 py-4 flex items-center gap-2 transition-colors duration-300 focus-ring overflow-hidden group rounded-lg"
               >
-                BOOK YOUR PROJECT 
+                START A PROJECT
                 <motion.span 
                   className="inline-block"
                   animate={{ x: 0 }}
@@ -211,7 +211,7 @@ export default function Hero() {
               onClick={handleScrollToWork}
               className="text-brand-charcoal hover:text-brand-red text-sm font-bold uppercase tracking-wider py-4 flex items-center gap-1.5 transition-colors relative group font-sans focus-ring"
             >
-              EXPLORE OUR WORK 
+              VIEW OUR WORK
               <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               <span className="absolute bottom-3 left-0 w-full h-[1px] bg-brand-charcoal/20 group-hover:bg-brand-red transition-colors" />
             </a>
@@ -252,7 +252,7 @@ export default function Hero() {
             {/* Client Brands */}
             <div className="flex flex-col items-start min-w-[100px]">
               <Star className="w-5 h-5 text-brand-red mb-2" />
-              <span className="text-2xl sm:text-3xl font-bold tracking-tight text-brand-charcoal">2+</span>
+              <span className="text-2xl sm:text-3xl font-bold tracking-tight text-brand-charcoal">5+</span>
               <span className="text-xs text-brand-charcoal/50 mt-1">Client Brands</span>
             </div>
           </motion.div>

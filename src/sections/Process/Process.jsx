@@ -5,8 +5,8 @@ export default function Process() {
   const steps = [
     {
       num: '01',
-      title: 'DISCOVERY',
-      desc: 'We dive deep into your brand, goals, and audience to uncover what truly matters.',
+      title: 'DISCOVER',
+      desc: 'Understand the brand, product and objective.',
       icon: MessageSquare,
       checklist: [
         'Understand your brand',
@@ -16,8 +16,8 @@ export default function Process() {
     },
     {
       num: '02',
-      title: 'PLANNING',
-      desc: 'We create a strategic plan and creative direction tailored to your goals and timeline.',
+      title: 'PLAN',
+      desc: 'Create the strategy and creative direction.',
       icon: Calendar,
       checklist: [
         'Strategy & concept development',
@@ -27,8 +27,8 @@ export default function Process() {
     },
     {
       num: '03',
-      title: 'PRODUCTION',
-      desc: 'We bring the plan to life with high-quality content built for impact.',
+      title: 'CREATE',
+      desc: 'Produce the content, design or digital experience.',
       icon: Camera,
       checklist: [
         'Professional content creation',
@@ -38,8 +38,8 @@ export default function Process() {
     },
     {
       num: '04',
-      title: 'DELIVERY',
-      desc: 'We deliver the polished assets, optimized and ready to launch.',
+      title: 'AMPLIFY',
+      desc: 'Launch, distribute and improve.',
       icon: Send,
       checklist: [
         'Final assets delivery',
