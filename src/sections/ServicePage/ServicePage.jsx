@@ -130,27 +130,6 @@ export default function ServicePage({ serviceKey }) {
               )}
             </div>
           )}
-
-          {/* CUSTOM PARTNERSHIP */}
-          <ScrollReveal delay={0.28} className="max-w-md mx-auto pt-8">
-            <div className="bg-brand-white border border-[#E6E6E6] p-8 text-center space-y-6 rounded-none relative">
-              <div className="space-y-2">
-                <span className="text-[10px] font-mono font-black tracking-widest text-[#212121]/45 uppercase block">
-                  CUSTOM PARTNERSHIP
-                </span>
-                <p className="text-xs text-[#212121]/60 leading-relaxed font-semibold">
-                  Let's structure a custom performance-focused campaign matching your specific budget, goals, and release frequency.
-                </p>
-              </div>
-              <button
-                onClick={handleCtaClick}
-                className="w-full py-4 text-xs font-mono font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 border-2 border-[#212121] text-[#212121] hover:bg-[#212121] hover:text-brand-white"
-              >
-                <span>LET'S BUILD A PLAN</span>
-                <span>→</span>
-              </button>
-            </div>
-          </ScrollReveal>
         </section>
 
         {/* FAQ SECTION */}
