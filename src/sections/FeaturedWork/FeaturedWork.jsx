@@ -495,10 +495,10 @@ export default function FeaturedWork({ initialProjectId }) {
   }, [selectedProject]);
 
   return (
-    <section id="work" className="py-24 bg-brand-white relative overflow-hidden border-t border-brand-charcoal/5">
+    <section id="work" className="py-20 bg-brand-white relative overflow-hidden border-t border-brand-charcoal/5">
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
          {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-20 text-left">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 text-left">
           <div className="space-y-4">
             <ScrollReveal yOffset={10} duration={0.45} delay={0}>
               <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C]">
@@ -540,10 +540,12 @@ export default function FeaturedWork({ initialProjectId }) {
                 <div className="absolute inset-0 bg-brand-charcoal/5 group-hover:bg-transparent transition-colors duration-500 z-10" />
                 <video
                   src={project.videoUrl}
+                  poster={project.image}
                   autoPlay
                   muted
                   loop
                   playsInline
+                  preload="none"
                   className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:contrast-[1.08] group-hover:scale-[1.03] transition-all duration-500 ease-out"
                 />
                 <div className="absolute top-4 left-4 z-20 flex items-center gap-2">

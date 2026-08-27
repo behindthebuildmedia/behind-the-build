@@ -60,7 +60,7 @@ export default function Footer() {
   return (
     <footer 
       id="footer" 
-      className="bg-brand-white text-brand-charcoal pt-24 pb-8 relative overflow-hidden z-10 text-left font-sans border-t border-[#E5E5E5]"
+      className="bg-brand-white text-brand-charcoal pt-20 pb-8 relative overflow-hidden z-10 text-left font-sans border-t border-[#E5E5E5]"
     >
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 space-y-12">
         

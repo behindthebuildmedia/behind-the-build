@@ -13,6 +13,7 @@ export default function Header({ onHomeRedirect }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
@@ -24,7 +25,6 @@ export default function Header({ onHomeRedirect }) {
       }
     };
 
-    let ticking = false;
     const onScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
@@ -35,7 +35,7 @@ export default function Header({ onHomeRedirect }) {
       }
     };
 
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 

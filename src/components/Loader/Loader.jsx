@@ -5,12 +5,12 @@ export default function Loader({ onComplete }) {
   const [step, setStep] = useState(1);
 
   useEffect(() => {
-    const t2 = setTimeout(() => setStep(2), 600);
-    const t3 = setTimeout(() => setStep(3), 1200);
-    const t4 = setTimeout(() => setStep(4), 1700);
+    const t2 = setTimeout(() => setStep(2), 300);
+    const t3 = setTimeout(() => setStep(3), 600);
+    const t4 = setTimeout(() => setStep(4), 900);
     const t5 = setTimeout(() => {
       onComplete();
-    }, 2400); // Total animation timeline around 2.4s
+    }, 1300); // Total animation timeline around 1.3s (down from 2.4s)
 
     return () => {
       clearTimeout(t2);

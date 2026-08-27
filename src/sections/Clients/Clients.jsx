@@ -21,7 +21,7 @@ export default function Clients() {
   };
 
   return (
-    <section id="clients" className="py-16 sm:py-20 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans flex items-center justify-center min-h-[420px] lg:min-h-[480px] lg:max-h-[520px]">
+    <section id="clients" className="py-12 sm:py-16 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans flex items-center justify-center">
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 w-full text-center flex flex-col justify-center items-center">
         
         {/* Section Label */}

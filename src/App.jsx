@@ -1,5 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
 import Header from './components/Header/Header';
 import Loader from './components/Loader/Loader';
 import Confirmation from './sections/Confirmation/Confirmation';
@@ -24,7 +24,14 @@ const StartProjectFlow = lazy(() => import('./sections/StartProjectFlow/StartPro
 const BookingPage = lazy(() => import('./sections/BookingPage/BookingPage'));
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(() => {
+    // Only show loading screen once per session
+    if (typeof window !== 'undefined') {
+      const hasLoaded = sessionStorage.getItem('btb_session_loaded');
+      return !hasLoaded;
+    }
+    return true;
+  });
   const [submitted_booking_id, setSubmitted_booking_id] = useState(null);
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
@@ -55,19 +62,9 @@ function App() {
   const caseStudyMatch = currentPath.match(/^\/case-studies\/([a-zA-Z0-9-]+)/);
   const initialProjectId = caseStudyMatch ? caseStudyMatch[1] : null;
   
-  // Custom scroll progress state
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalHeight > 0) {
-        setScrollProgress((window.scrollY / totalHeight) * 100);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  // Custom scroll progress using framer-motion (GPU accelerated, zero state updates)
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 28, restDelta: 0.001 });
 
   useEffect(() => {
     if (isLoading) {
@@ -230,18 +227,25 @@ function App() {
 
   }, [isLoading, submitted_booking_id, currentPath]);
 
+  const handleLoaderComplete = () => {
+    setIsLoading(false);
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('btb_session_loaded', 'true');
+    }
+  };
+
   return (
     <div className="relative min-h-screen bg-brand-offwhite text-brand-charcoal selection:bg-brand-red selection:text-brand-white">
       {/* Scroll Progress Indicator */}
-      <div 
-        className="fixed top-0 left-0 h-[2px] bg-[#C8041C] z-[9999] transition-all duration-100 ease-out pointer-events-none" 
-        style={{ width: `${scrollProgress}%` }}
+      <motion.div 
+        className="fixed top-0 left-0 right-0 h-[2px] bg-[#C8041C] z-[9999] origin-left pointer-events-none" 
+        style={{ scaleX }}
       />
 
       {/* Loading Screen */}
       <AnimatePresence>
         {isLoading && (
-          <Loader onComplete={() => setIsLoading(false)} />
+          <Loader onComplete={handleLoaderComplete} />
         )}
       </AnimatePresence>
 

@@ -58,8 +58,8 @@ export default function MediaDigital() {
   };
 
   return (
-    <section id="services" className="pt-32 pb-24 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 flex flex-col items-center text-center space-y-16">
+    <section id="services" className="py-20 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 flex flex-col items-center text-center space-y-12">
         
         {/* SECTION HEADER */}
         <div className="space-y-4 max-w-3xl">
