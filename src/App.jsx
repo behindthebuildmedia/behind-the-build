@@ -24,14 +24,7 @@ const StartProjectFlow = lazy(() => import('./sections/StartProjectFlow/StartPro
 const BookingPage = lazy(() => import('./sections/BookingPage/BookingPage'));
 
 function App() {
-  const [isLoading, setIsLoading] = useState(() => {
-    // Only show loading screen once per session
-    if (typeof window !== 'undefined') {
-      const hasLoaded = sessionStorage.getItem('btb_session_loaded');
-      return !hasLoaded;
-    }
-    return true;
-  });
+  const [isLoading, setIsLoading] = useState(true);
   const [submitted_booking_id, setSubmitted_booking_id] = useState(null);
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
@@ -227,13 +220,6 @@ function App() {
 
   }, [isLoading, submitted_booking_id, currentPath]);
 
-  const handleLoaderComplete = () => {
-    setIsLoading(false);
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem('btb_session_loaded', 'true');
-    }
-  };
-
   return (
     <div className="relative min-h-screen bg-brand-offwhite text-brand-charcoal selection:bg-brand-red selection:text-brand-white">
       {/* Scroll Progress Indicator */}
@@ -245,7 +231,7 @@ function App() {
       {/* Loading Screen */}
       <AnimatePresence>
         {isLoading && (
-          <Loader onComplete={handleLoaderComplete} />
+          <Loader onComplete={() => setIsLoading(false)} />
         )}
       </AnimatePresence>
 
