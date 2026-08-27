@@ -3,7 +3,7 @@ export const servicesData = {
     num: '01',
     label: 'VIDEO EDITING',
     name: 'VIDEO EDITING',
-    intro: "We turn raw footage into content built to hold attention.",
+    intro: "Professional short-form editing for brands, founders, products and technology companies.",
     servicesList: [
       { name: "Reels Editing", desc: "Short-form vertical video cuts with high hook retention." },
       { name: "Personal Growth Edits", desc: "Positioning founders and creators as authorities." },
@@ -15,30 +15,30 @@ export const servicesData = {
       starter: {
         planName: "STARTER",
         price: "₹6,000",
-        billing: "per month",
+        billing: "month",
         features: [
-          "Captions included",
-          "Color Grading",
-          "Minimal Editing",
-          "3 edits per week",
-          "1 Product Video"
+          "Captions",
+          "Color grading",
+          "Minimal editing",
+          "3 videos per week",
+          "1 product video"
         ],
-        buttonText: "START A PROJECT →",
+        buttonText: "SELECT PLAN →",
         highlighted: false
       },
       growth: {
         planName: "GROWTH",
         price: "₹10,500",
-        billing: "per 2 months",
+        billing: "2 months",
         features: [
-          "Sound Effects",
-          "Captions included",
-          "Color Grading",
-          "Premium Editing",
-          "4 edits per week",
-          "2 Product Videos"
+          "Sound effects",
+          "Captions",
+          "Color grading",
+          "Premium editing",
+          "4 videos per week",
+          "2 product videos"
         ],
-        buttonText: "BUILD WITH US →",
+        buttonText: "SELECT PLAN →",
         highlighted: true
       }
     },
@@ -46,10 +46,6 @@ export const servicesData = {
       {
         question: "What raw footage format do you accept?",
         answer: "We support any raw footage format (.MP4, .MOV, .MXF) recorded via smartphone or professional cameras. You can upload them to Google Drive or Dropbox."
-      },
-      {
-        question: "Can we request visual revisions?",
-        answer: "Yes, Starter tier includes 2 rounds of structural changes, while the Growth tier offers priority revision response within 24 hours."
       }
     ]
   },
@@ -57,7 +53,7 @@ export const servicesData = {
     num: '02',
     label: 'SOCIAL MEDIA MARKETING',
     name: 'SOCIAL MEDIA MARKETING',
-    intro: "We build a consistent social presence around your brand.",
+    intro: "Strategy, content and management designed to build a consistent digital presence.",
     servicesList: [
       { name: "Social Media Strategy", desc: "Audience targeting, brand voice direction, and release maps." },
       { name: "Content Creation", desc: "Copywriting, graphic asset creation, and video hooks strategy." },
@@ -70,29 +66,29 @@ export const servicesData = {
       starter: {
         planName: "STARTER",
         price: "₹5,000",
-        billing: "per month",
+        billing: "month",
         features: [
           "Management of 2 accounts",
           "12 posts per month",
-          "Basic Content Creation",
-          "Simple Hashtags",
-          "1 Month Content Strategy"
+          "Basic content creation",
+          "Simple hashtags",
+          "1 month content strategy"
         ],
-        buttonText: "START A PROJECT →",
+        buttonText: "SELECT PLAN →",
         highlighted: false
       },
       growth: {
         planName: "GROWTH",
         price: "₹9,000",
-        billing: "per 2 months",
+        billing: "2 months",
         features: [
           "Management of 4 accounts",
           "20 posts per month",
-          "Advanced Content Creation",
-          "Best-fit Hashtag Strategy",
-          "2 Month Content Strategy"
+          "Advanced content creation",
+          "Best hashtags",
+          "2 month content strategy"
         ],
-        buttonText: "BUILD WITH US →",
+        buttonText: "SELECT PLAN →",
         highlighted: true
       }
     },
@@ -100,10 +96,6 @@ export const servicesData = {
       {
         question: "Which social platforms do you manage?",
         answer: "We support Instagram, YouTube, LinkedIn, and Facebook channel operations."
-      },
-      {
-        question: "Do you create custom visuals?",
-        answer: "Yes, all posts contain custom brand designs matching your primary color scheme."
       }
     ]
   },
@@ -111,46 +103,44 @@ export const servicesData = {
     num: '03',
     label: 'DESIGN',
     name: 'DESIGN',
-    intro: "Visual systems that make your brand recognizable.",
+    intro: "Creative design systems that make your brand look consistent and recognizable.",
     servicesList: [
       { name: "Announcement Posts", desc: "Brand launch graphics, hiring calls, and news releases." },
       { name: "Thumbnails", desc: "High click-through-rate assets for YouTube videos." },
       { name: "Story Designs", desc: "Interactive story templates to boost channel participation." },
       { name: "Instagram Carousels", desc: "Slide decks presenting complex information simply." },
       { name: "Logo Design", desc: "Memorability vector assets matching company theme." },
-      { name: "Branding Assets", desc: "Typography guidelines and corporate styled packages." },
-      { name: "Social Media Covers", desc: "Banner headers optimized for LinkedIn and Twitter." },
-      { name: "Offer Letters", desc: "Clean custom document layouts for candidate onboarding." }
+      { name: "Branding", desc: "Typography guidelines and corporate styled packages." }
     ],
     pricing: {
       introductory: true,
       starter: {
         planName: "STARTER",
         price: "₹5,000",
-        billing: "one-time",
+        billing: "",
         features: [
           "Custom Logo Design",
           "Business Card Design",
           "4 Thumbnails",
-          "3 Instagram Carousels / month",
+          "3 Instagram Carousels per month",
           "Social Media Cover Pages — any 2"
         ],
-        buttonText: "START A PROJECT →",
+        buttonText: "SELECT PLAN →",
         highlighted: false
       },
       growth: {
         planName: "GROWTH",
         price: "₹9,000",
-        billing: "per 2 months",
+        billing: "2 months",
         features: [
           "Logo & Branding Kit",
           "Social Media Templates",
           "Offer Letters",
           "Social Media Cover Pages — any 4",
           "10 Thumbnails",
-          "8 Instagram Carousels / month"
+          "8 Instagram Carousels per month"
         ],
-        buttonText: "BUILD WITH US →",
+        buttonText: "SELECT PLAN →",
         highlighted: true
       }
     },
@@ -165,47 +155,44 @@ export const servicesData = {
     num: '04',
     label: 'WEBSITE DESIGN',
     name: 'WEBSITE DESIGN',
-    intro: "Digital experiences designed to make your brand look as serious as your work.",
+    intro: "Modern, responsive websites built to present your brand and convert visitors.",
     servicesList: [
       { name: "Portfolio Websites", desc: "Editorial visual displays presenting past accomplishments." },
       { name: "E-commerce Websites", desc: "Seamless storefronts managing checkouts and inventory." },
-      { name: "Commercial Websites", desc: "Business platforms describing complex service packages." },
-      { name: "Landing Pages", desc: "Focused single-page campaigns built for conversions." },
-      { name: "Custom Websites", desc: "React applications utilizing modern configurations." }
+      { name: "Commercial Websites", desc: "Business platforms describing complex service packages." }
     ],
     pricing: {
       introductory: true,
-      note: "Custom requirements can be quoted separately.",
       starter: {
         planName: "STARTER",
         price: "₹12,999",
-        billing: "one-time",
+        billing: "",
         features: [
           "Up to 5 pages",
-          "Responsive Design",
-          "Basic SEO Setup",
-          "Contact Form",
-          "Social Media Integration",
-          "Google Analytics Setup"
+          "Responsive design",
+          "Basic SEO setup",
+          "Contact form",
+          "Social media integration",
+          "Google Analytics setup"
         ],
-        buttonText: "START A PROJECT →",
+        buttonText: "SELECT PLAN →",
         highlighted: false
       },
       growth: {
         planName: "GROWTH",
         price: "₹21,999",
-        billing: "one-time",
+        billing: "",
         features: [
           "Up to 10 pages",
-          "Responsive Design",
-          "Advanced SEO Setup",
-          "Contact Form",
-          "Social Media Integration",
-          "Google Analytics Setup",
-          "Custom Functionality",
-          "Content Creation"
+          "Responsive design",
+          "Advanced SEO setup",
+          "Contact form",
+          "Social media integration",
+          "Google Analytics setup",
+          "Custom functionality",
+          "Content creation"
         ],
-        buttonText: "BUILD WITH US →",
+        buttonText: "SELECT PLAN →",
         highlighted: true
       }
     },
@@ -218,9 +205,9 @@ export const servicesData = {
   },
   'tech-events-coverage': {
     num: '05',
-    label: 'TECH EVENTS COVERAGE',
-    name: 'TECH EVENTS COVERAGE',
-    intro: "Capture the moments, people and energy behind your event.",
+    label: 'TECH EVENT COVERAGE',
+    name: 'TECH EVENT COVERAGE',
+    intro: "Professional photo and video coverage for launches, conferences, campus and technology events.",
     servicesList: [
       { name: "Videography", desc: "Dynamic cinematic event capture using premium setups." },
       { name: "Photography", desc: "High-resolution candid shots catching authentic moments." },
@@ -231,26 +218,26 @@ export const servicesData = {
       starter: {
         planName: "STARTER",
         price: "₹8,000",
-        billing: "up to 3 hours",
+        billing: "Up to 3 hours",
         features: [
-          "50 Edited Photos",
-          "1 Highlight Video",
-          "2 Reels"
+          "50 edited photos",
+          "1 highlight video",
+          "2 reels"
         ],
-        buttonText: "START A PROJECT →",
+        buttonText: "SELECT PLAN →",
         highlighted: false
       },
       growth: {
         planName: "GROWTH",
         price: "₹15,000",
-        billing: "up to 6 hours",
+        billing: "Up to 6 hours",
         features: [
-          "100 Edited Photos",
-          "1 Full Event Coverage Video",
-          "1 Highlight Video",
-          "3 Reels"
+          "100 edited photos",
+          "1 full event coverage video",
+          "1 highlight video",
+          "3 reels"
         ],
-        buttonText: "BUILD WITH US →",
+        buttonText: "SELECT PLAN →",
         highlighted: true
       }
     },
@@ -265,23 +252,18 @@ export const servicesData = {
     num: '06',
     label: 'DIGITAL MARKETING',
     name: 'DIGITAL MARKETING',
-    intro: "Build a stronger digital presence with consistent content, strategy and audience growth.",
+    intro: "Strategic digital marketing designed to grow your visibility, reach and audience.",
     servicesList: [
       { name: "Social Media Management", desc: "Complete operations across your channels." },
       { name: "Content Strategy", desc: "Script planning, hook design, and release maps." },
-      { name: "Content Creation", desc: "Copywriting, graphic templates, and media formats." },
-      { name: "Content Calendar & Scheduling", desc: "Structured post calendars and timing setups." },
-      { name: "Community Management", desc: "Message responses and user communications." },
-      { name: "Monthly Performance Reports", desc: "Insightful metrics monitoring audience retention." },
-      { name: "Hashtag Strategy", desc: "Organic search optimization tags." },
-      { name: "Campaign Planning", desc: "Launch plans to trigger marketing momentum." }
+      { name: "Content Creation", desc: "Copywriting, graphic templates, and media formats." }
     ],
     pricing: {
       introductory: true,
       starter: {
         planName: "STARTER",
         price: "₹5,000",
-        billing: "per month",
+        billing: "month",
         features: [
           "Management of 2 social media accounts",
           "12 posts per month",
@@ -291,13 +273,13 @@ export const servicesData = {
           "Content calendar & scheduling",
           "Monthly performance report"
         ],
-        buttonText: "GET STARTED →",
+        buttonText: "SELECT PLAN →",
         highlighted: false
       },
       growth: {
         planName: "GROWTH",
         price: "₹9,000",
-        billing: "per 2 months",
+        billing: "2 months",
         features: [
           "Management of 4 social media accounts",
           "20 posts per month",
@@ -308,7 +290,7 @@ export const servicesData = {
           "Community management",
           "Monthly performance reports"
         ],
-        buttonText: "GET STARTED →",
+        buttonText: "SELECT PLAN →",
         highlighted: true
       }
     },

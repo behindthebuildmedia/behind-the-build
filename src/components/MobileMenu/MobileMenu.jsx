@@ -93,7 +93,7 @@ export default function MobileMenu({ isOpen, onClose, onNavClick, activeSection 
                           { label: 'SOCIAL MEDIA MARKETING', path: '/services/social-media-marketing' },
                           { label: 'DESIGN', path: '/services/design' },
                           { label: 'WEBSITE DESIGN', path: '/services/website-design' },
-                          { label: 'TECH EVENTS COVERAGE', path: '/services/event-coverage' },
+                          { label: 'TECH EVENTS COVERAGE', path: '/services/tech-event-coverage' },
                           { label: 'DIGITAL MARKETING', path: '/services/digital-marketing' }
                         ].map((subItem) => (
                           <a
@@ -150,12 +150,12 @@ export default function MobileMenu({ isOpen, onClose, onNavClick, activeSection 
               WHAT YOU BUILD DESERVES TO BE SEEN.
             </p>
             <a
-              href="/book"
+              href="/booking"
               onClick={(e) => {
                 e.preventDefault();
                 onClose();
                 setTimeout(() => {
-                  window.history.pushState(null, '', '/book');
+                  window.history.pushState(null, '', '/booking');
                   window.dispatchEvent(new Event('popstate'));
                   window.scrollTo({ top: 0, behavior: 'instant' });
                 }, 300);

@@ -199,15 +199,28 @@ app.post('/api/bookings', bookingRateLimiter, async (req, res) => {
   try {
     const {
       client_name,
+      full_name,
       company_name,
       email,
       phone,
       region,
+      project_location,
       services,
       budget,
+      price,
       timeline,
-      project_description
+      project_timeline,
+      project_description,
+      project_details
     } = req.body;
+
+    const normalizedFullName = (full_name || client_name || '').trim();
+    const normalizedEmail = (email || '').trim().toLowerCase();
+    const normalizedPhone = (phone || '').trim();
+    const normalizedCompanyName = (company_name || null);
+    const normalizedRegion = (project_location || region || 'Remote').trim();
+    const normalizedDetails = (project_details || project_description || 'None').trim();
+    const normalizedTimeline = (project_timeline || timeline || 'Flexible').trim();
 
     // Strict input type and length verification to prevent buffer payloads/NoSQL pollution
     const isInvalidString = (val, maxLen) => {
@@ -216,14 +229,13 @@ app.post('/api/bookings', bookingRateLimiter, async (req, res) => {
     };
 
     if (
-      isInvalidString(client_name, 100) ||
-      isInvalidString(company_name, 100) ||
-      isInvalidString(email, 100) ||
-      isInvalidString(phone, 30) ||
-      isInvalidString(region, 50) ||
-      isInvalidString(budget, 50) ||
-      isInvalidString(timeline, 50) ||
-      isInvalidString(project_description, 2000)
+      isInvalidString(normalizedFullName, 100) ||
+      isInvalidString(normalizedCompanyName, 100) ||
+      isInvalidString(normalizedEmail, 100) ||
+      isInvalidString(normalizedPhone, 30) ||
+      isInvalidString(normalizedRegion, 50) ||
+      isInvalidString(normalizedTimeline, 50) ||
+      isInvalidString(normalizedDetails, 2000)
     ) {
       return res.status(400).json({
         success: false,
@@ -233,30 +245,34 @@ app.post('/api/bookings', bookingRateLimiter, async (req, res) => {
     }
 
     // 1. Validate required fields
-    if (!client_name || typeof client_name !== 'string' || !client_name.trim()) {
+    if (!normalizedFullName) {
       return res.status(400).json({
         success: false,
-        message: 'Client name is required.',
-        error: 'Client name is required.'
+        message: 'Full name is required.',
+        error: 'Full name is required.'
       });
     }
-    if (!email || !isValidEmail(email)) {
+    if (!normalizedEmail || !isValidEmail(normalizedEmail)) {
       return res.status(400).json({
         success: false,
         message: 'A valid email address is required.',
         error: 'A valid email address is required.'
       });
     }
-    if (!phone || !isValidPhone(phone)) {
+    if (!normalizedPhone || !isValidPhone(normalizedPhone)) {
       return res.status(400).json({
         success: false,
         message: 'A valid phone number (at least 7 digits) is required.',
         error: 'A valid phone number (at least 7 digits) is required.'
       });
     }
-    const finalRegion = (region && typeof region === 'string') ? region.trim() : 'Remote';
-    const finalBudget = (budget && typeof budget === 'string') ? budget.trim() : 'Custom';
-    const finalTimeline = (timeline && typeof timeline === 'string') ? timeline.trim() : 'Flexible';
+    if (!normalizedDetails) {
+      return res.status(400).json({
+        success: false,
+        message: 'Project details are required.',
+        error: 'Project details are required.'
+      });
+    }
 
     if (!services || !Array.isArray(services) || services.length === 0) {
       return res.status(400).json({
@@ -267,7 +283,7 @@ app.post('/api/bookings', bookingRateLimiter, async (req, res) => {
     }
 
     // 2. Prevent duplicate submissions (within a 30-second window)
-    const isDuplicate = await checkDuplicateInSupabase(email, phone);
+    const isDuplicate = await checkDuplicateInSupabase(normalizedEmail, normalizedPhone);
     if (isDuplicate) {
       return res.status(409).json({
         success: false,
@@ -293,26 +309,27 @@ app.post('/api/bookings', bookingRateLimiter, async (req, res) => {
     const firstServiceObj = (services && Array.isArray(services) && services.length > 0) ? services[0] : {};
     const serviceName = firstServiceObj.service || 'Brand Building';
     const planName = firstServiceObj.plan || 'Custom';
-    const priceVal = firstServiceObj.price || finalBudget;
+    const priceVal = firstServiceObj.price || price || budget || 'Custom';
 
     let data;
     try {
-      // Try writing to project_bookings first
-      const pbResult = await supabase
-        .from('project_bookings')
+      // Try inserting into bookings with the new column layout first
+      const newLayoutResult = await supabase
+        .from('bookings')
         .insert([
           {
             id,
             booking_id,
-            full_name: client_name.trim(),
-            email: email.trim().toLowerCase(),
-            phone: phone.trim(),
-            company_name: company_name ? company_name.trim() : null,
+            full_name: normalizedFullName,
+            email: normalizedEmail,
+            phone: normalizedPhone,
+            company_name: normalizedCompanyName,
             service: serviceName,
             plan: planName,
             price: priceVal,
-            project_location: finalRegion,
-            project_details: project_description || 'None',
+            project_location: normalizedRegion,
+            project_details: normalizedDetails,
+            project_timeline: normalizedTimeline,
             status: 'NEW',
             created_at: now
           }
@@ -320,25 +337,25 @@ app.post('/api/bookings', bookingRateLimiter, async (req, res) => {
         .select()
         .single();
 
-      if (pbResult.error) {
-        console.warn(`[Supabase] project_bookings insert failed, falling back to bookings: ${pbResult.error.message}`);
-        
-        // Fallback to bookings table
-        const bResult = await supabase
+      if (newLayoutResult.error) {
+        console.warn(`[Supabase] Insert into bookings with new schema failed: ${newLayoutResult.error.message}. Falling back to old schema...`);
+
+        // Fallback to the old schema on bookings table
+        const oldLayoutResult = await supabase
           .from('bookings')
           .insert([
             {
               id,
               booking_id,
-              client_name: client_name.trim(),
-              company_name: company_name ? company_name.trim() : null,
-              email: email.trim().toLowerCase(),
-              phone: phone.trim(),
-              region: finalRegion,
+              client_name: normalizedFullName,
+              company_name: normalizedCompanyName,
+              email: normalizedEmail,
+              phone: normalizedPhone,
+              region: normalizedRegion,
               service: services,
-              budget: finalBudget,
-              timeline: finalTimeline,
-              project_description: project_description || null,
+              budget: priceVal,
+              timeline: normalizedTimeline,
+              project_description: normalizedDetails,
               status: 'NEW',
               source: 'Website',
               created_at: now,
@@ -348,16 +365,16 @@ app.post('/api/bookings', bookingRateLimiter, async (req, res) => {
           .select()
           .single();
 
-        if (bResult.error) {
-          console.error(`[Supabase Fallback] bookings insert failed: ${bResult.error.message}`);
+        if (oldLayoutResult.error) {
+          console.error(`[Supabase Fallback] Insert into bookings with old schema failed: ${oldLayoutResult.error.message}`);
           return res.status(500).json({
             success: false,
             message: 'Unable to submit your project request. Please try again.'
           });
         }
-        data = bResult.data;
+        data = oldLayoutResult.data;
       } else {
-        data = pbResult.data;
+        data = newLayoutResult.data;
       }
     } catch (dbErr) {
       console.error(`[Supabase Exception] DB insertion error: ${dbErr.message}`);

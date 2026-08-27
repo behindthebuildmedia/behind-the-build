@@ -230,7 +230,7 @@ export default function Header({ onHomeRedirect }) {
                             { label: 'SOCIAL MEDIA MARKETING', num: '02', path: '/services/social-media-marketing' },
                             { label: 'DESIGN', num: '03', path: '/services/design' },
                             { label: 'WEBSITE DESIGN', num: '04', path: '/services/website-design' },
-                            { label: 'TECH EVENTS COVERAGE', num: '05', path: '/services/event-coverage' },
+                            { label: 'TECH EVENTS COVERAGE', num: '05', path: '/services/tech-event-coverage' },
                             { label: 'DIGITAL MARKETING', num: '06', path: '/services/digital-marketing' }
                           ].map((subItem) => (
                             <a
@@ -267,7 +267,7 @@ export default function Header({ onHomeRedirect }) {
             <button
               onClick={(e) => {
                 e.preventDefault();
-                handleSpaClick(e, '/book');
+                handleSpaClick(e, '/booking');
               }}
               className="hidden md:flex h-[48px] px-[28px] bg-brand-red text-brand-white text-xs font-mono font-bold uppercase tracking-widest items-center gap-2 rounded-full transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_8px_20px_rgba(200,4,28,0.25)] group"
             >

@@ -11,8 +11,7 @@ export default function BookingPage({ currentPath }) {
     company: '',
     location: '',
     requirements: '',
-    referenceLink: '',
-    preferredStartDate: ''
+    timeline: ''
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -26,19 +25,19 @@ export default function BookingPage({ currentPath }) {
   const serviceParam = urlParams.get('service'); // e.g. 'video-editing'
   const planParam = (urlParams.get('plan') || 'starter').toLowerCase();
 
-  // Route fallback key (handles /book/video-editing?plan=starter style as well)
-  const routeServiceKey = serviceParam || (!isSuccessPage && currentPath.startsWith('/book/') 
+  // Route fallback key (handles /booking/video-editing or /book/video-editing style)
+  const routeServiceKey = serviceParam || (!isSuccessPage && (currentPath.startsWith('/book/') || currentPath.startsWith('/booking/'))
     ? currentPath.split('?')[0].split('/').pop() 
     : '');
 
-  // Direct access to general /book page without service parameter
+  // Direct access to general /booking page without service parameter
   const isDirectBook = !isSuccessPage && !routeServiceKey;
 
   // Dropdown states (used when isDirectBook is true)
   const [selectedServiceSlug, setSelectedServiceSlug] = useState('video-editing');
-  const [selectedPlanSlug, setSelectedPlanSlug] = useState('growth');
+  const [selectedPlanSlug, setSelectedPlanSlug] = useState('starter');
 
-  const serviceKeyClean = routeServiceKey === 'event-coverage' 
+  const serviceKeyClean = (routeServiceKey === 'event-coverage' || routeServiceKey === 'tech-event-coverage' || routeServiceKey === 'tech-events-coverage')
     ? 'tech-events-coverage' 
     : routeServiceKey;
 
@@ -113,26 +112,37 @@ export default function BookingPage({ currentPath }) {
     setIsSubmitting(true);
     setSubmissionError(null);
 
+    const priceText = selectedPlanResolved.price + (selectedPlanResolved.billing ? ` / ${selectedPlanResolved.billing}` : '');
+
     const bookingPayload = {
-      client_name: formData.name,
-      company_name: formData.company || null,
-      email: formData.email,
-      phone: formData.phone,
-      region: formData.location || 'Remote',
+      // New columns layout compatibility
+      full_name: formData.name.trim(),
+      email: formData.email.trim(),
+      phone: formData.phone.trim(),
+      company_name: formData.company.trim() || null,
+      project_location: formData.location.trim() || 'Remote',
+      project_details: formData.requirements.trim(),
+      project_timeline: formData.timeline.trim() || 'Flexible',
+      service: activeServiceResolved.name,
+      plan: selectedPlanResolved.planName,
+      price: priceText,
+
+      // Legacy/Standard fields mapping
+      client_name: formData.name.trim(),
+      region: formData.location.trim() || 'Remote',
       services: [
         {
           service: activeServiceResolved.name,
           serviceSlug: isDirectBook ? selectedServiceSlug : routeServiceKey,
           plan: selectedPlanResolved.planName,
-          price: selectedPlanResolved.price,
-          location: formData.location || 'Remote',
-          referenceLink: formData.referenceLink || 'None',
-          preferredStartDate: formData.preferredStartDate || 'Flexible'
+          price: priceText,
+          location: formData.location.trim() || 'Remote',
+          preferredStartDate: formData.timeline.trim() || 'Flexible'
         }
       ],
-      budget: selectedPlanResolved.price,
-      timeline: formData.preferredStartDate || 'Flexible',
-      project_description: formData.requirements
+      budget: priceText,
+      timeline: formData.timeline.trim() || 'Flexible',
+      project_description: formData.requirements.trim()
     };
 
     try {
@@ -162,10 +172,10 @@ export default function BookingPage({ currentPath }) {
       }
 
       // Store success info
-      localStorage.setItem('success_booking_id', data.booking_id || data.bookingId || 'BTB-2026-00124');
+      localStorage.setItem('success_booking_id', data.booking_id || data.bookingId || 'BTB-2026-0001');
       localStorage.setItem('success_service', activeServiceResolved.name);
       localStorage.setItem('success_plan', selectedPlanResolved.planName);
-      localStorage.setItem('success_amount', selectedPlanResolved.price + (selectedPlanResolved.billing ? ` / ${selectedPlanResolved.billing}` : ''));
+      localStorage.setItem('success_amount', priceText);
       localStorage.setItem('success_email', formData.email.trim().toLowerCase());
 
       // Redirect to booking-success
@@ -174,7 +184,7 @@ export default function BookingPage({ currentPath }) {
       window.scrollTo({ top: 0, behavior: 'instant' });
     } catch (err) {
       console.error('Booking submission failed:', err);
-      setSubmissionError('Unable to complete your booking. Please check details and try again.');
+      setSubmissionError(err.message || 'Unable to submit your booking right now. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -182,7 +192,7 @@ export default function BookingPage({ currentPath }) {
 
   // SUCCESS PAGE
   if (isSuccessPage) {
-    const bookingId = localStorage.getItem('success_booking_id') || 'BTB-2026-00124';
+    const bookingId = localStorage.getItem('success_booking_id') || 'BTB-2026-0001';
     const serviceName = localStorage.getItem('success_service') || 'Brand Building';
     const planName = localStorage.getItem('success_plan') || 'Growth';
     const amount = localStorage.getItem('success_amount') || 'Custom';
@@ -199,13 +209,13 @@ export default function BookingPage({ currentPath }) {
           <div className="space-y-4">
             <ScrollReveal delay={0.12} yOffset={25}>
               <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-[#212121] leading-none">
-                THANK YOU.<br />YOUR PROJECT IS NOW IN OUR HANDS.
+                BOOKING SUCCESSFUL.<br />THANK YOU FOR CHOOSING<br />BEHIND THE BUILD.
               </h1>
             </ScrollReveal>
 
             <ScrollReveal delay={0.24} yOffset={15}>
               <p className="text-xs sm:text-sm text-[#212121]/60 leading-relaxed font-semibold">
-                Your booking has been successfully received.
+                Your project booking has been successfully received.
               </p>
             </ScrollReveal>
           </div>
@@ -222,7 +232,7 @@ export default function BookingPage({ currentPath }) {
                 <span>{serviceName}</span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-[#212121]/45">PLAN</span>
+                <span className="text-[#212121]/45">PACKAGE</span>
                 <span>{planName}</span>
               </div>
               <div className="flex justify-between py-1">
@@ -230,13 +240,13 @@ export default function BookingPage({ currentPath }) {
                 <span className="font-bold text-[#212121]">{amount}</span>
               </div>
               <div className="flex justify-between pt-2 border-t border-[#E6E6E6]">
-                <span className="text-[#212121]/45">EMAIL</span>
+                <span className="text-[#212121]/45">CUSTOMER EMAIL</span>
                 <span className="font-mono">{emailVal}</span>
               </div>
             </div>
             
-            <p className="text-[10px] sm:text-xs text-[#212121]/50 leading-relaxed pt-2">
-              We've received your requirements and our team will contact you shortly.
+            <p className="text-[10px] sm:text-xs text-[#212121]/50 leading-relaxed pt-2 font-semibold">
+              We've received your project details. Our team will review your requirements and contact you shortly.
             </p>
           </ScrollReveal>
 
@@ -256,15 +266,6 @@ export default function BookingPage({ currentPath }) {
     );
   }
 
-  // BOOKING FORM PAGE
-  if (!activeServiceResolved || !selectedPlanResolved) {
-    return (
-      <div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">
-        LOADING BOOKING...
-      </div>
-    );
-  }
-
   return (
     <div className="bg-brand-white text-[#212121] pt-28 pb-16 min-h-screen font-sans text-left">
       <div className="max-w-4xl mx-auto px-6 md:px-12 w-full space-y-16">
@@ -273,20 +274,14 @@ export default function BookingPage({ currentPath }) {
         <div className="space-y-4 pt-8">
           <ScrollReveal yOffset={10} duration={0.6}>
             <span className="text-[11px] font-mono font-black uppercase tracking-widest text-[#C8041C] block">
-              START A PROJECT
+              BOOK YOUR PROJECT
             </span>
           </ScrollReveal>
           
           <ScrollReveal delay={0.12} yOffset={25} duration={0.6}>
             <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-[1.05]">
-              LET'S BUILD<br />SOMETHING.
+              BOOK YOUR PROJECT.
             </h1>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.24} yOffset={15} duration={0.6} className="pt-2">
-            <p className="text-xs sm:text-sm text-brand-charcoal/60 leading-relaxed font-semibold max-w-xl">
-              Tell us about your project and we'll get back to you with the next steps.
-            </p>
           </ScrollReveal>
         </div>
 
@@ -296,7 +291,7 @@ export default function BookingPage({ currentPath }) {
         <ScrollReveal delay={0.1} yOffset={15} className="border border-[#E6E6E6] bg-[#FAF9F9] p-6 rounded-xl grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="space-y-1 flex flex-col justify-start">
             <span className="text-[9px] font-mono font-black text-[#212121]/45 uppercase tracking-widest block leading-none">
-              SERVICE
+              Selected Service:
             </span>
             {isDirectBook ? (
               <select
@@ -320,7 +315,7 @@ export default function BookingPage({ currentPath }) {
           
           <div className="space-y-1 flex flex-col justify-start">
             <span className="text-[9px] font-mono font-black text-[#212121]/45 uppercase tracking-widest block leading-none">
-              PLAN
+              Selected Package:
             </span>
             {isDirectBook ? (
               <select
@@ -340,7 +335,7 @@ export default function BookingPage({ currentPath }) {
 
           <div className="space-y-1 flex flex-col justify-start">
             <span className="text-[9px] font-mono font-black text-[#212121]/45 uppercase tracking-widest block leading-none">
-              PRICE
+              Price:
             </span>
             <span className="text-sm font-black text-[#C8041C] uppercase block mt-1.5 leading-none">
               {selectedPlanResolved.price} <span className="text-[10px] text-brand-charcoal/45 font-semibold">/ {selectedPlanResolved.billing}</span>
@@ -357,7 +352,7 @@ export default function BookingPage({ currentPath }) {
             {/* Full Name */}
             <div className="flex flex-col">
               <label htmlFor="name" className="text-[10px] font-mono font-black uppercase tracking-wider text-brand-charcoal/65">
-                Full Name *
+                FULL NAME *
               </label>
               <input
                 type="text"
@@ -376,7 +371,7 @@ export default function BookingPage({ currentPath }) {
             {/* Email Address */}
             <div className="flex flex-col">
               <label htmlFor="email" className="text-[10px] font-mono font-black uppercase tracking-wider text-brand-charcoal/65">
-                Email Address *
+                EMAIL ADDRESS *
               </label>
               <input
                 type="email"
@@ -395,7 +390,7 @@ export default function BookingPage({ currentPath }) {
             {/* Phone Number */}
             <div className="flex flex-col">
               <label htmlFor="phone" className="text-[10px] font-mono font-black uppercase tracking-wider text-brand-charcoal/65">
-                Phone Number *
+                PHONE NUMBER *
               </label>
               <input
                 type="text"
@@ -414,7 +409,7 @@ export default function BookingPage({ currentPath }) {
             {/* Company / Brand Name */}
             <div className="flex flex-col">
               <label htmlFor="company" className="text-[10px] font-mono font-black uppercase tracking-wider text-brand-charcoal/65">
-                Company / Brand Name
+                COMPANY / BRAND NAME
               </label>
               <input
                 type="text"
@@ -430,7 +425,7 @@ export default function BookingPage({ currentPath }) {
             {/* Project Location */}
             <div className="flex flex-col">
               <label htmlFor="location" className="text-[10px] font-mono font-black uppercase tracking-wider text-brand-charcoal/65">
-                Project Location
+                PROJECT LOCATION
               </label>
               <input
                 type="text"
@@ -443,42 +438,26 @@ export default function BookingPage({ currentPath }) {
               />
             </div>
 
-            {/* Preferred Start Date */}
+            {/* Project Timeline */}
             <div className="flex flex-col">
-              <label htmlFor="preferredStartDate" className="text-[10px] font-mono font-black uppercase tracking-wider text-brand-charcoal/65">
-                Preferred Start Date
+              <label htmlFor="timeline" className="text-[10px] font-mono font-black uppercase tracking-wider text-brand-charcoal/65">
+                PROJECT TIMELINE
               </label>
               <input
                 type="text"
-                id="preferredStartDate"
-                name="preferredStartDate"
-                value={formData.preferredStartDate}
+                id="timeline"
+                name="timeline"
+                value={formData.timeline}
                 onChange={handleInputChange}
                 className="mt-2 bg-[#FAF9F9] border border-[#E6E6E6] px-4 py-3 rounded-lg text-sm text-brand-charcoal focus:outline-none focus:border-[#C8041C] transition-all font-semibold"
-                placeholder="e.g. Mid-September 2026"
+                placeholder="e.g. 2 weeks / Ongoing / Specific dates"
               />
             </div>
 
-            {/* Reference / Portfolio Link */}
-            <div className="flex flex-col md:col-span-2">
-              <label htmlFor="referenceLink" className="text-[10px] font-mono font-black uppercase tracking-wider text-brand-charcoal/65">
-                Reference / Portfolio Link
-              </label>
-              <input
-                type="text"
-                id="referenceLink"
-                name="referenceLink"
-                value={formData.referenceLink}
-                onChange={handleInputChange}
-                className="mt-2 bg-[#FAF9F9] border border-[#E6E6E6] px-4 py-3 rounded-lg text-sm text-brand-charcoal focus:outline-none focus:border-[#C8041C] transition-all font-semibold"
-                placeholder="e.g. https://behance.net/brand"
-              />
-            </div>
-
-            {/* Project Details / Requirements */}
+            {/* Project Details & Requirements */}
             <div className="flex flex-col md:col-span-2">
               <label htmlFor="requirements" className="text-[10px] font-mono font-black uppercase tracking-wider text-brand-charcoal/65">
-                Project Details *
+                PROJECT DETAILS & REQUIREMENTS *
               </label>
               <textarea
                 id="requirements"
