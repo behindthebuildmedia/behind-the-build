@@ -387,50 +387,51 @@ app.post('/api/bookings', bookingRateLimiter, async (req, res) => {
     const returnedBookingId = (data && data.booking_id) || booking_id;
     console.log(`[Booking inserted into Supabase] Booking ID: ${returnedBookingId}`);
 
-    // 5. Send Email Notifications
-    try {
-      const clientResult = await sendClientEmail({
-        client_name,
-        company_name,
-        email,
-        phone,
-        region,
-        services,
-        budget,
-        timeline,
-        project_description,
-        created_at: now
-      }, booking_id);
+    // 5. Send Email Notifications (non-blocking)
+    const emailPayload = {
+      client_name: normalizedFullName,
+      company_name: normalizedCompanyName,
+      email: normalizedEmail,
+      phone: normalizedPhone,
+      region: normalizedRegion,
+      project_location: normalizedRegion,
+      services,
+      budget: priceVal,
+      price: priceVal,
+      timeline: normalizedTimeline,
+      project_timeline: normalizedTimeline,
+      project_description: normalizedDetails,
+      project_details: normalizedDetails,
+      created_at: now
+    };
 
-      if (clientResult.success) {
-        console.log("[Email] Client confirmation sent");
-      } else if (clientResult.error) {
-        console.error("[Email] Client email failed", clientResult.error.message || clientResult.error);
-      }
+    console.log("booking ID generated, email process started asynchronously");
+    sendClientEmail(emailPayload, booking_id)
+      .then(result => {
+        if (result.success) {
+          console.log("[Email] Client confirmation sent asynchronously");
+        } else {
+          console.error("[Email] Client email failed asynchronously:", result.error?.message || result.error);
+        }
+      })
+      .catch(err => {
+        console.error("[Email Exception] Client email failed asynchronously:", err.message || err);
+      });
 
-      const teamResult = await sendTeamEmail({
-        client_name,
-        company_name,
-        email,
-        phone,
-        region,
-        services,
-        budget,
-        timeline,
-        project_description,
-        created_at: now
-      }, booking_id);
+    sendTeamEmail(emailPayload, booking_id)
+      .then(result => {
+        if (result.success) {
+          console.log("[Email] Team notification sent to admin@behindthebuild.in asynchronously");
+        } else {
+          console.error("[Email] Team email failed asynchronously:", result.error?.message || result.error);
+        }
+      })
+      .catch(err => {
+        console.error("[Email Exception] Team email failed asynchronously:", err.message || err);
+      });
 
-      if (teamResult.success) {
-        console.log("[Email] Team notification sent");
-      } else if (teamResult.error) {
-        console.error("[Email] Team email failed", teamResult.error.message || teamResult.error);
-      }
-    } catch (emailErr) {
-      console.error("[Email] Notification dispatch failed", emailErr.message || emailErr);
-    }
-
-    // 6. Return response
+    // 6. Return response immediately
+    console.log("API response returned");
     return res.status(201).json({
       success: true,
       booking_id: booking_id,

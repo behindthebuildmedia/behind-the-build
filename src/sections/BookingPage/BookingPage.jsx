@@ -146,16 +146,32 @@ export default function BookingPage({ currentPath }) {
     };
 
     try {
+      console.log("Booking submission started");
+      console.log("Booking payload:", bookingPayload);
+
       const API_URL = import.meta.env.VITE_API_URL || '';
       const requestUrl = `${API_URL}/api/bookings`;
 
-      const response = await fetch(requestUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(bookingPayload)
-      });
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+      }, 20000);
+
+      let response;
+      try {
+        response = await fetch(requestUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(bookingPayload),
+          signal: controller.signal
+        });
+      } finally {
+        clearTimeout(timeoutId);
+      }
+
+      console.log("Booking API response status:", response.status);
 
       const contentType = response.headers.get('content-type') || '';
       let data = {};
@@ -166,6 +182,8 @@ export default function BookingPage({ currentPath }) {
         console.error('[API Error] Received non-JSON response body:', textError);
         throw new Error(`Server returned a non-JSON response (${response.status}).`);
       }
+
+      console.log("Booking API response data:", data);
 
       if (!response.ok) {
         throw new Error(data.error || data.message || 'Unable to submit your request. Please try again.');
@@ -183,8 +201,12 @@ export default function BookingPage({ currentPath }) {
       window.dispatchEvent(new Event('popstate'));
       window.scrollTo({ top: 0, behavior: 'instant' });
     } catch (err) {
-      console.error('Booking submission failed:', err);
-      setSubmissionError(err.message || 'Unable to submit your booking right now. Please try again.');
+      console.error("Booking submission error:", err);
+      if (err.name === 'AbortError') {
+        setSubmissionError('Unable to submit your booking right now. Please try again.');
+      } else {
+        setSubmissionError(err.message || 'Unable to submit your booking right now. Please try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }
