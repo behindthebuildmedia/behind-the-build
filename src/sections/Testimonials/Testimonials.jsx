@@ -1,161 +1,98 @@
-import { motion } from 'framer-motion';
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
-import santhoshImg from '../../assets/projects/santhosh.webp';
-
-import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 const testimonialsData = [
   {
-    id: 1,
-    quote: "Behind The Build has been a game-changer for Consistency.AI. Their content, consistency, and creativity helped us grow an incredible community and reach millions.",
-    avatar: santhoshImg,
-    name: "Santosh Kumar Thota",
-    role: "Founder, Consistency.AI"
+    quote: "Behind The Build has been a <span class=\"text-[#C8041C]\">game-changer</span> for Consistency.AI. Their content, consistency, and creativity helped us grow an incredible community and reach <span class=\"text-[#C8041C]\">millions</span>.",
+    name: "SANTOSH KUMAR THOTA",
+    role: "FOUNDER, CONSISTENCY.AI"
   },
   {
-    id: 2,
-    quote: "Their team understands our vision and turns it into powerful content every single time. Professional, reliable, and extremely creative.",
-    avatar: santhoshImg, // Fallback as Ganesh headshot is not in files
-    name: "Ganesh",
-    role: "Marketing Head, DelusionAI"
+    quote: "Their team understands our vision and turns it into powerful content every single time. <span class=\"text-[#C8041C]\">Professional</span>, reliable, and extremely <span class=\"text-[#C8041C]\">creative</span>.",
+    name: "GANESH",
+    role: "MARKETING HEAD, DELUSIONAL"
+  },
+  {
+    quote: "Behind The Build brings strong creative execution and <span class=\"text-[#C8041C]\">development-focused</span> thinking to every project. Their team understands what needs to be built and communicates it clearly through content.",
+    name: "UDAY",
+    role: "DEVELOPMENT, JATAYU AI"
+  },
+  {
+    quote: "Their execution is structured, reliable, and focused on <span class=\"text-[#C8041C]\">getting things done</span>. Behind The Build has been a valuable creative and operations partner for War Rooms.",
+    name: "SASHI",
+    role: "OPERATIONS HEAD, WAR ROOMS"
   }
 ];
 
 export default function Testimonials() {
-  const shouldReduceMotion = useReducedMotion();
-
-  const imageRevealVariants = {
-    initial: { opacity: 0, x: -12 },
-    animate: (idx) => ({
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: idx * 0.12 + 0.1 }
-    })
-  };
-
-  const rightContentVariants = {
-    initial: {},
-    animate: (idx) => ({
-      transition: {
-        staggerChildren: 0.12,
-        delayChildren: idx * 0.12 + 0.22
-      }
-    })
-  };
-
-  const quoteRevealVariants = {
-    initial: { opacity: 0, y: 10 },
-    animate: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] }
-    }
-  };
-
-  const nameRevealVariants = {
-    initial: { opacity: 0, y: 15 },
-    animate: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] }
-    }
-  };
-
   return (
-    <section id="testimonials" className="py-24 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 space-y-16">
+    <section id="testimonials" className="py-20 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 space-y-12">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-left">
-          <div className="space-y-4">
-            <ScrollReveal yOffset={10} duration={0.45} delay={0}>
-              <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C] font-mono">
+          <div className="space-y-3">
+            <ScrollReveal yOffset={10} duration={0.4} delay={0}>
+              <span className="text-[11px] font-mono font-black uppercase tracking-widest text-[#C8041C] block">
                 CLIENT LOVE
-              </p>
+              </span>
             </ScrollReveal>
-            <ScrollReveal yOffset={35} duration={0.8} delay={0.1}>
-              <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal">
+            
+            <ScrollReveal yOffset={15} duration={0.6} delay={0.1}>
+              <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-[#212121] leading-none">
                 CLIENT LOVE<span className="text-[#C8041C]">.</span>
               </h2>
             </ScrollReveal>
           </div>
-          <div>
-            <ScrollReveal yOffset={10} duration={0.45} delay={0.2}>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-brand-charcoal/50 select-none block md:pb-1">
-                MORE REVIEWS ON REQUEST →
-              </span>
-            </ScrollReveal>
-          </div>
+          
+          <ScrollReveal yOffset={10} duration={0.4} delay={0.2} className="shrink-0">
+            <span className="text-[10px] font-mono font-black uppercase tracking-widest text-[#212121]/45 hover:text-[#C8041C] transition-colors duration-300">
+              MORE REVIEWS ON REQUEST →
+            </span>
+          </ScrollReveal>
         </div>
 
-        {/* 2-Column Split Testimonials Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+        {/* 2-Column Testimonials Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
           {testimonialsData.map((item, idx) => (
-            <div 
-              key={item.id}
+            <ScrollReveal 
+              key={idx} 
+              delay={idx * 0.1}
+              yOffset={20}
               className="w-full"
             >
-              <motion.div 
-                initial="initial"
-                whileInView="animate"
-                whileHover="hover"
-                animate="rest"
-                viewport={{ once: true, amount: 0.15 }}
-                custom={idx}
-                className="bg-brand-white border border-[#E6E6E6] rounded-none overflow-hidden flex flex-col sm:flex-row items-stretch min-h-[260px] w-full hover:border-brand-charcoal/30 transition-all duration-300 relative group cursor-default"
-              >
-                {/* Left Side Client Image */}
-                <motion.div 
-                  custom={idx}
-                  variants={shouldReduceMotion ? {} : imageRevealVariants}
-                  className="w-full sm:w-[35%] min-h-[200px] sm:min-h-0 relative overflow-hidden bg-brand-lightgray shrink-0 border-b sm:border-b-0 sm:border-r border-[#E6E6E6]"
-                >
-                  <img 
-                    src={item.avatar} 
-                    alt={item.name} 
-                    width="200"
-                    height="300"
-                    className="absolute inset-0 w-full h-full object-cover filter grayscale transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-                    loading="lazy"
+              <div className="bg-white border border-[#E6E6E6] p-8 md:p-10 flex flex-col justify-between min-h-[220px] w-full hover:border-[#C8041C]/40 hover:shadow-[0_8px_30px_rgba(0,0,0,0.015)] transition-all duration-300 relative group rounded-xl">
+                
+                {/* Visual accent left line */}
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-0 bg-[#C8041C] group-hover:h-3/5 transition-all duration-300 rounded-r-md" />
+
+                <div className="space-y-5">
+                  {/* Oversized Quote Icon */}
+                  <span className="text-6xl font-serif font-black text-[#C8041C]/25 leading-none block select-none h-6 transition-colors duration-300 group-hover:text-[#C8041C]/60">
+                    “
+                  </span>
+                  
+                  {/* Quote Paragraph */}
+                  <p 
+                    className="text-xs sm:text-sm font-semibold text-[#212121]/80 leading-relaxed font-sans"
+                    dangerouslySetInnerHTML={{ __html: item.quote }}
                   />
-                </motion.div>
+                </div>
 
-                {/* Right Side Quote Content */}
-                <motion.div 
-                  custom={idx}
-                  variants={shouldReduceMotion ? {} : rightContentVariants}
-                  className="w-full sm:w-[65%] p-8 flex flex-col justify-between text-left space-y-6"
-                >
-                  <motion.div variants={shouldReduceMotion ? {} : quoteRevealVariants} className="space-y-4">
-                    {/* Red Quote Mark */}
-                    <span className="text-5xl font-serif font-black text-[#C8041C] leading-none block select-none h-6">
-                      “
-                    </span>
-                    <p className="text-xs sm:text-sm font-medium text-brand-charcoal/70 leading-relaxed font-sans">
-                      {item.quote}
-                    </p>
-                  </motion.div>
+                {/* Client Profile details */}
+                <div className="pt-6 mt-auto border-t border-[#E6E6E6]/60 flex flex-col space-y-1">
+                  <h4 className="text-xs font-black text-[#212121] uppercase tracking-wider leading-none">
+                    {item.name}
+                  </h4>
+                  <p className="text-[9px] font-mono font-bold tracking-widest text-[#C8041C] uppercase leading-none pt-1">
+                    {item.role}
+                  </p>
+                </div>
 
-                  <motion.div variants={shouldReduceMotion ? {} : nameRevealVariants} className="space-y-1">
-                    <h4 className="text-xs font-bold text-brand-charcoal uppercase tracking-wider leading-none">
-                      {item.name}
-                    </h4>
-                    <p className="text-[10px] text-brand-charcoal/45 uppercase tracking-wide font-medium block">
-                      {item.role}
-                    </p>
-                  </motion.div>
-                </motion.div>
+                {/* Bottom interactive border reveal */}
+                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#C8041C] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
 
-                {/* Bottom Red Accent Line */}
-                <motion.div 
-                  variants={{
-                    rest: { scaleX: 0 },
-                    hover: { scaleX: 1, transition: { duration: 0.3, ease: 'easeOut' } }
-                  }}
-                  className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#C8041C] origin-left"
-                />
-              </motion.div>
-            </div>
+              </div>
+            </ScrollReveal>
           ))}
         </div>
 
