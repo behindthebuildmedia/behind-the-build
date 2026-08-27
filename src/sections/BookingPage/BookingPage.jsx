@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
-import { ArrowRight, CheckCircle2, Loader } from 'lucide-react';
+import { ArrowRight, Loader } from 'lucide-react';
 import { servicesData } from '../../data/servicesData';
 
 export default function BookingPage({ currentPath }) {
@@ -221,66 +221,176 @@ export default function BookingPage({ currentPath }) {
     const emailVal = localStorage.getItem('success_email') || 'customer@email.com';
 
     return (
-      <div className="bg-brand-white text-[#212121] pt-28 pb-16 min-h-screen font-sans text-left flex items-center">
-        <div className="max-w-xl mx-auto px-6 md:px-12 w-full space-y-12">
+      <div className="bg-brand-white text-[#212121] pt-32 pb-24 min-h-screen font-sans text-left flex items-center select-none">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 w-full space-y-16">
           
-          <ScrollReveal delay={0} yOffset={15} className="flex justify-start">
-            <CheckCircle2 className="w-16 h-16 text-[#C8041C] stroke-[1.25px]" />
-          </ScrollReveal>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+            
+            {/* Left Column: Heading & Workflow */}
+            <div className="lg:col-span-7 space-y-12">
+              
+              {/* Success Indicator & Red Label */}
+              <ScrollReveal delay={0} yOffset={15} className="space-y-6">
+                <div className="w-16 h-16 rounded-full border border-[#C8041C] flex items-center justify-center text-[#C8041C]">
+                  <svg className="w-6 h-6 stroke-[2px] stroke-current fill-none" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                  </svg>
+                </div>
+                
+                <span className="text-[11px] font-mono font-black uppercase tracking-widest text-[#C8041C] block">
+                  BOOKING CONFIRMATION
+                </span>
+              </ScrollReveal>
 
-          <div className="space-y-4">
-            <ScrollReveal delay={0.12} yOffset={25}>
-              <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-[#212121] leading-none">
-                BOOKING SUCCESSFUL.<br />THANK YOU FOR CHOOSING<br />BEHIND THE BUILD.
-              </h1>
-            </ScrollReveal>
+              {/* Headline & Sub-headline */}
+              <div className="space-y-4">
+                <ScrollReveal delay={0.12} yOffset={25}>
+                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[#212121] leading-[1.05]">
+                    YOUR PROJECT<br />
+                    <span className="text-[#C8041C]">IS IN MOTION.</span>
+                  </h1>
+                </ScrollReveal>
 
-            <ScrollReveal delay={0.24} yOffset={15}>
-              <p className="text-xs sm:text-sm text-[#212121]/60 leading-relaxed font-semibold">
-                Your project booking has been successfully received.
-              </p>
-            </ScrollReveal>
+                <ScrollReveal delay={0.24} yOffset={15} className="space-y-2 pt-2">
+                  <h3 className="text-base font-bold text-[#212121]">
+                    Thank you for choosing Behind The Build.
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#212121]/60 leading-relaxed font-semibold max-w-xl">
+                    Your project details have been received. Our team will review your requirements and get back to you shortly.
+                  </p>
+                </ScrollReveal>
+              </div>
+
+              <hr className="border-[#E6E6E6]" />
+
+              {/* What Happens Next Block */}
+              <div className="space-y-8">
+                <ScrollReveal delay={0.3} yOffset={15}>
+                  <h4 className="text-xs font-mono font-black uppercase tracking-widest text-[#212121]/45">
+                    WHAT HAPPENS NEXT?
+                  </h4>
+                </ScrollReveal>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {/* Step 1 */}
+                  <ScrollReveal delay={0.35} yOffset={15} className="space-y-3">
+                    <span className="text-3xl font-mono font-black text-[#C8041C] block leading-none">01</span>
+                    <h5 className="text-xs font-black uppercase tracking-wider text-[#212121]">PROJECT REVIEW</h5>
+                    <p className="text-xs text-[#212121]/60 leading-relaxed font-semibold">
+                      Our team will review your project requirements.
+                    </p>
+                  </ScrollReveal>
+
+                  {/* Step 2 */}
+                  <ScrollReveal delay={0.4} yOffset={15} className="space-y-3">
+                    <span className="text-3xl font-mono font-black text-[#C8041C] block leading-none">02</span>
+                    <h5 className="text-xs font-black uppercase tracking-wider text-[#212121]">TEAM CONTACT</h5>
+                    <p className="text-xs text-[#212121]/60 leading-relaxed font-semibold">
+                      We'll contact you using the details provided.
+                    </p>
+                  </ScrollReveal>
+
+                  {/* Step 3 */}
+                  <ScrollReveal delay={0.45} yOffset={15} className="space-y-3">
+                    <span className="text-3xl font-mono font-black text-[#C8041C] block leading-none">03</span>
+                    <h5 className="text-xs font-black uppercase tracking-wider text-[#212121]">PROJECT START</h5>
+                    <p className="text-xs text-[#212121]/60 leading-relaxed font-semibold">
+                      Once everything is confirmed, we'll move forward with your project.
+                    </p>
+                  </ScrollReveal>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Right Column: Booking Details Card */}
+            <div className="lg:col-span-5 w-full">
+              <ScrollReveal delay={0.2} yOffset={25} className="border border-[#E6E6E6] bg-[#FAF9F9] p-8 space-y-6 rounded-xl w-full">
+                
+                <h4 className="text-[10px] font-mono font-black text-[#212121]/45 uppercase tracking-widest leading-none pb-2 border-b border-[#E6E6E6]">
+                  BOOKING DETAILS
+                </h4>
+
+                <div className="space-y-4 text-xs font-semibold text-[#212121]/80">
+                  
+                  {/* ID */}
+                  <div className="flex flex-col py-1 space-y-1">
+                    <span className="text-[9px] font-mono text-[#212121]/45 uppercase tracking-widest font-black">BOOKING ID</span>
+                    <span className="font-mono text-[#C8041C] text-sm font-bold">{bookingId}</span>
+                  </div>
+
+                  <hr className="border-[#E6E6E6]/60" />
+
+                  {/* Service */}
+                  <div className="flex flex-col py-1 space-y-1">
+                    <span className="text-[9px] font-mono text-[#212121]/45 uppercase tracking-widest font-black">SERVICE</span>
+                    <span className="text-[#212121] uppercase text-xs font-black tracking-wide">{serviceName}</span>
+                  </div>
+
+                  <hr className="border-[#E6E6E6]/60" />
+
+                  {/* Package */}
+                  <div className="flex flex-col py-1 space-y-1">
+                    <span className="text-[9px] font-mono text-[#212121]/45 uppercase tracking-widest font-black">PACKAGE</span>
+                    <span className="text-[#212121] uppercase text-xs font-black tracking-wide">{planName}</span>
+                  </div>
+
+                  <hr className="border-[#E6E6E6]/60" />
+
+                  {/* Price */}
+                  <div className="flex flex-col py-1 space-y-1">
+                    <span className="text-[9px] font-mono text-[#212121]/45 uppercase tracking-widest font-black">PRICE</span>
+                    <span className="text-[#C8041C] text-xs font-black tracking-wide">{amount}</span>
+                  </div>
+
+                  <hr className="border-[#E6E6E6]/60" />
+
+                  {/* Customer Email */}
+                  <div className="flex flex-col py-1 space-y-1">
+                    <span className="text-[9px] font-mono text-[#212121]/45 uppercase tracking-widest font-black">CUSTOMER EMAIL</span>
+                    <span className="text-[#212121] text-xs font-mono">{emailVal}</span>
+                  </div>
+
+                </div>
+
+              </ScrollReveal>
+            </div>
+
           </div>
 
-          {/* Details Block */}
-          <ScrollReveal delay={0.35} yOffset={15} className="border border-[#E6E6E6] bg-[#FAF9F9] p-6 space-y-4 rounded-xl">
-            <div className="space-y-2 text-xs font-semibold text-[#212121]/80">
-              <div className="flex justify-between pb-2 border-b border-[#E6E6E6]">
-                <span className="text-[#212121]/45 font-mono">BOOKING ID</span>
-                <span className="font-mono text-brand-red font-bold">{bookingId}</span>
-              </div>
-              <div className="flex justify-between py-1">
-                <span className="text-[#212121]/45">SERVICE</span>
-                <span>{serviceName}</span>
-              </div>
-              <div className="flex justify-between py-1">
-                <span className="text-[#212121]/45">PACKAGE</span>
-                <span>{planName}</span>
-              </div>
-              <div className="flex justify-between py-1">
-                <span className="text-[#212121]/45">PRICE</span>
-                <span className="font-bold text-[#212121]">{amount}</span>
-              </div>
-              <div className="flex justify-between pt-2 border-t border-[#E6E6E6]">
-                <span className="text-[#212121]/45">CUSTOMER EMAIL</span>
-                <span className="font-mono">{emailVal}</span>
-              </div>
-            </div>
-            
-            <p className="text-[10px] sm:text-xs text-[#212121]/50 leading-relaxed pt-2 font-semibold">
-              We've received your project details. Our team will review your requirements and contact you shortly.
-            </p>
-          </ScrollReveal>
+          <hr className="border-[#E6E6E6]" />
 
-          {/* Action Buttons */}
-          <ScrollReveal delay={0.45} yOffset={15} className="pt-2">
+          {/* Action CTAs */}
+          <ScrollReveal delay={0.5} yOffset={15} className="flex flex-col sm:flex-row items-center gap-6 pt-2">
             <button
               onClick={(e) => handleSpaNav(e, '/')}
-              className="bg-[#212121] text-brand-white hover:bg-[#C8041C] px-8 py-4 text-xs font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300 w-full sm:w-auto"
+              className="bg-[#212121] text-brand-white hover:bg-[#C8041C] px-10 py-5 text-xs font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300 w-full sm:w-auto rounded-full hover:scale-[1.03] hover:shadow-[0_8px_20px_rgba(200,4,28,0.25)] group"
             >
               <span>BACK TO HOME</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform stroke-[2.5px]" />
             </button>
+
+            <a
+              href="/#work"
+              onClick={(e) => {
+                e.preventDefault();
+                window.history.pushState(null, '', '/');
+                window.dispatchEvent(new Event('popstate'));
+                setTimeout(() => {
+                  const element = document.querySelector('#work');
+                  if (element) {
+                    const headerOffset = 80;
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                  }
+                }, 150);
+              }}
+              className="text-xs font-mono font-black uppercase tracking-widest text-[#212121] hover:text-[#C8041C] transition-colors flex items-center gap-1.5"
+            >
+              <span>VIEW OUR WORK</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </a>
           </ScrollReveal>
 
         </div>
