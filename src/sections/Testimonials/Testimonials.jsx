@@ -20,6 +20,11 @@ const testimonialsData = [
     quote: "Their execution is structured, reliable, and focused on <span class=\"text-[#C8041C]\">getting things done</span>. Behind The Build has been a valuable creative and operations partner for War Rooms.",
     name: "SASHI",
     role: "OPERATIONS HEAD, WAR ROOMS"
+  },
+  {
+    quote: "Behind The Build has been a key creative partner for our tech channel. Their <span class=\"text-[#C8041C]\">editorial pacing</span> and clean sound design make our tech reviews look incredibly premium.",
+    name: "TECHROXX",
+    role: "CREATOR & FOUNDER"
   }
 ];
 
@@ -58,7 +63,7 @@ export default function Testimonials() {
               key={idx} 
               delay={idx * 0.1}
               yOffset={20}
-              className="w-full"
+              className={idx === 4 ? "w-full md:col-span-2" : "w-full"}
             >
               <div className="bg-white border border-[#E6E6E6] p-8 md:p-10 flex flex-col justify-between min-h-[220px] w-full hover:border-[#C8041C]/40 hover:shadow-[0_8px_30px_rgba(0,0,0,0.015)] transition-all duration-300 relative group rounded-xl">
                 

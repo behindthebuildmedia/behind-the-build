@@ -9,27 +9,27 @@ const features = [
   {
     id: 'turn',
     title: <>FAST <span className="text-[#C8041C]">TURNAROUND</span></>,
-    desc: 'On-time delivery, every time.'
+    desc: 'On-time delivery without compromising quality.'
   },
   {
     id: 'brand',
     title: <>CONTENT FITS YOUR <span className="text-[#C8041C]">BRAND</span></>,
-    desc: 'Custom content aligned with your identity.'
+    desc: 'Content aligned with your identity and audience.'
   },
   {
     id: 'edit',
     title: <>PREMIUM <span className="text-[#C8041C]">EDITING</span></>,
-    desc: 'Cinematic edits that make an impact.'
+    desc: 'Cinematic edits built for impact.'
   },
   {
     id: 'pack',
     title: <><span className="text-[#C8041C]">FLEXIBLE</span> PACKAGES</>,
-    desc: 'Plans that grow with your needs.'
+    desc: 'Plans that grow with your requirements.'
   },
   {
     id: 'supp',
     title: <><span className="text-[#C8041C]">DEDICATED</span> SUPPORT</>,
-    desc: "We're with you at every step."
+    desc: 'A team that stays involved throughout the project.'
   }
 ];
 

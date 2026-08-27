@@ -1,4 +1,4 @@
-import { MessageSquare, Calendar, Camera } from 'lucide-react';
+import { MessageSquare, Calendar, Camera, Send } from 'lucide-react';
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
 
 export default function Process() {
@@ -28,12 +28,23 @@ export default function Process() {
     {
       num: '03',
       title: 'PRODUCTION',
-      desc: 'We bring the plan to life with high-quality content that connects and delivers measurable results.',
+      desc: 'We bring the plan to life with high-quality content built for impact.',
       icon: Camera,
       checklist: [
         'Professional content creation',
         'Quality review & refinement',
         'On-time delivery'
+      ]
+    },
+    {
+      num: '04',
+      title: 'DELIVERY',
+      desc: 'We deliver the polished assets, optimized and ready to launch.',
+      icon: Send,
+      checklist: [
+        'Final assets delivery',
+        'Platform optimization',
+        'Launch support'
       ]
     }
   ];
@@ -69,7 +80,7 @@ export default function Process() {
         </div>
 
         {/* Steps Grid */}
-        <div className="relative grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 pt-6">
+        <div className="relative grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 lg:gap-12 pt-6">
           
           {/* Vertical line behind step circular icons on mobile */}
           <div className="absolute left-[39px] top-12 bottom-12 w-[1px] bg-[#C8041C]/20 md:hidden z-0" />
@@ -99,7 +110,7 @@ export default function Process() {
 
                   {/* Horizontal red connector line (Desktop only) */}
                   {!isLast && (
-                    <div className="hidden md:block absolute left-[96px] right-[-48px] top-1/2 -translate-y-1/2 h-[1px] bg-[#E6E6E6] z-0 overflow-hidden">
+                    <div className="hidden md:block absolute left-[96px] right-[-24px] lg:right-[-36px] top-1/2 -translate-y-1/2 h-[1px] bg-[#E6E6E6] z-0 overflow-hidden">
                       <div className="w-full h-full bg-[#C8041C] origin-left transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out" />
                     </div>
                   )}
