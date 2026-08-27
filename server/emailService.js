@@ -302,49 +302,197 @@ export const sendTeamEmail = async (bookingData, bookingId) => {
     const recipient = process.env.COMPANY_EMAIL || "admin@behindthebuild.in";
 
     const teamSubject = `NEW BOOKING — [${bookingId}]`;
-    const teamText = `NEW PROJECT BOOKING
+    
+    // Fallback plain text email
+    const teamText = `NEW PROJECT BOOKING RECEIVED
 
-Booking ID:
-[${bookingId}]
+Booking ID: [${bookingId}]
+Customer Name: [${bookingData.client_name}]
+Customer Email: [${bookingData.email}]
+Customer Phone: [${bookingData.phone}]
+Company: [${bookingData.company_name || "None"}]
+Service: [${serviceName}]
+Package: [${planName}]
+Price: [${price}]
+Location: [${bookingData.region || bookingData.project_location || "Remote"}]
+Timeline: [${bookingData.timeline || bookingData.project_timeline || "Flexible"}]
+Project Details: [${bookingData.project_description || bookingData.project_details || "None"}]
+Created At: [${bookingData.created_at || new Date().toISOString()}]`;
 
-Customer:
-[${bookingData.client_name}]
+    // Premium HTML template
+    const teamHtml = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Inquiry Received | Behind The Build</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #FAF9F9; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #FAF9F9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+    <tr>
+      <td align="center" style="padding: 40px 0;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #FFFFFF; border: 1px solid #E6E6E6; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.015);">
+          
+          <!-- BLACK HEADER -->
+          <tr>
+            <td style="background-color: #212121; padding: 45px 35px; text-align: left;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td>
+                    <div style="font-family: monospace; font-size: 20px; font-weight: 900; letter-spacing: 3px; color: #FFFFFF; text-transform: uppercase; line-height: 1.1; margin-bottom: 30px;">
+                      BEHIND<br/>THE BUILD
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="font-family: monospace; font-size: 11px; font-weight: 900; letter-spacing: 3px; color: #C8041C; text-transform: uppercase; margin-bottom: 10px;">
+                      NEW BOOKING RECEIVED
+                    </div>
+                    <h1 style="font-size: 30px; font-weight: 900; color: #FFFFFF; text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: -0.5px;">
+                      NEW INQUIRY<br/><span style="color: #C8041C;">IS IN MOTION.</span>
+                    </h1>
+                    <div style="height: 3px; width: 50px; background-color: #C8041C; margin-top: 25px;"></div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
 
-Email:
-[${bookingData.email}]
+          <!-- NOTIFICATION INTRO -->
+          <tr>
+            <td style="padding: 40px 35px 20px 35px; background-color: #FFFFFF;">
+              <p style="font-size: 15px; font-weight: bold; color: #212121; margin: 0 0 12px 0;">
+                Hello Admin,
+              </p>
+              <p style="font-size: 13px; line-height: 1.6; color: #555555; margin: 0; font-weight: 500;">
+                A new project booking request has been successfully received from the website. Please find the customer details below:
+              </p>
+            </td>
+          </tr>
 
-Phone:
-[${bookingData.phone}]
+          <!-- BOOKING DETAILS TABLE CARD -->
+          <tr>
+            <td style="padding: 10px 35px 30px 35px; background-color: #FFFFFF;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border: 1px solid #E6E6E6; border-radius: 4px; overflow: hidden;">
+                <!-- Header -->
+                <tr>
+                  <td style="background-color: #212121; color: #FFFFFF; font-size: 11px; font-weight: 900; font-family: monospace; letter-spacing: 2px; padding: 12px 20px; text-transform: uppercase;">
+                    BOOKING DETAILS
+                  </td>
+                </tr>
+                <!-- Content Rows -->
+                <tr>
+                  <td style="background-color: #FAF9F9; padding: 15px 20px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                      
+                      <!-- Row 1: Booking ID -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td width="35%" style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase;">Booking ID</td>
+                        <td width="65%" style="padding: 10px 0; font-size: 12px; font-family: monospace; font-weight: bold; color: #C8041C;">${bookingId}</td>
+                      </tr>
+                      
+                      <!-- Row 2: Service -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Service</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${serviceName}</td>
+                      </tr>
 
-Company:
-[${bookingData.company_name || "None"}]
+                      <!-- Row 3: Package -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Package</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${planName}</td>
+                      </tr>
 
-Service:
-[${serviceName}]
+                      <!-- Row 4: Price -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Price</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #C8041C; border-top: 1px solid #E6E6E6;">${price}</td>
+                      </tr>
 
-Package:
-[${planName}]
+                      <!-- Row 5: Customer Name -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Customer Name</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.client_name}</td>
+                      </tr>
 
-Price:
-[${price}]
+                      <!-- Row 6: Customer Email -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Customer Email</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6; font-family: monospace;">${bookingData.email}</td>
+                      </tr>
 
-Location:
-[${bookingData.region || bookingData.project_location || "Remote"}]
+                      <!-- Row 7: Phone -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Phone Number</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.phone}</td>
+                      </tr>
 
-Timeline:
-[${bookingData.timeline || bookingData.project_timeline || "Flexible"}]
+                      <!-- Row 8: Company -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Company / Brand</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.company_name || "None"}</td>
+                      </tr>
 
-Project Details:
-[${bookingData.project_description || bookingData.project_details || "None"}]
+                      <!-- Row 9: Location -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Project Location</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.region || bookingData.project_location || "Remote"}</td>
+                      </tr>
 
-Created:
-[${bookingData.created_at || new Date().toISOString()}]`;
+                      <!-- Row 10: Timeline -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Project Timeline</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.timeline || bookingData.project_timeline || "Flexible"}</td>
+                      </tr>
+
+                      <!-- Row 11: Details -->
+                      <tr>
+                        <td valign="top" style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Project Details</td>
+                        <td style="padding: 10px 0; font-size: 12px; line-height: 1.5; color: #444444; font-weight: bold; border-top: 1px solid #E6E6E6;">${bookingData.project_description || bookingData.project_details || "None"}</td>
+                      </tr>
+
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- BLACK FOOTER -->
+          <tr>
+            <td style="background-color: #111111; padding: 45px 35px; text-align: center;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td>
+                    <div style="font-family: monospace; font-size: 15px; font-weight: 900; letter-spacing: 3px; color: #FFFFFF; text-transform: uppercase; margin-bottom: 5px;">
+                      BEHIND THE BUILD SYSTEM
+                    </div>
+                    <div style="font-size: 11px; color: #888888; font-style: italic; margin-bottom: 25px; font-weight: 500;">
+                      Because great products deserve to be seen.
+                    </div>
+                    <div style="font-size: 10px; color: #555555; font-weight: 500; letter-spacing: 0.5px;">
+                      &copy; 2026 Behind The Build. All rights reserved.
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
 
     const mailOptions = {
       from: `"Behind The Build System" <${process.env.EMAIL_USER}>`,
       to: recipient,
       subject: teamSubject,
       text: teamText,
+      html: teamHtml,
     };
 
     await transporter.sendMail(mailOptions);

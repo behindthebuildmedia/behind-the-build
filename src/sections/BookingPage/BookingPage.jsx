@@ -190,11 +190,31 @@ export default function BookingPage({ currentPath }) {
       }
 
       // Store success info
-      localStorage.setItem('success_booking_id', data.booking_id || data.bookingId || 'BTB-2026-0001');
+      const finalBookingId = data.booking_id || data.bookingId || 'BTB-2026-0001';
+      localStorage.setItem('success_booking_id', finalBookingId);
       localStorage.setItem('success_service', activeServiceResolved.name);
       localStorage.setItem('success_plan', selectedPlanResolved.planName);
       localStorage.setItem('success_amount', priceText);
       localStorage.setItem('success_email', formData.email.trim().toLowerCase());
+
+      // Trigger background email sending (Vercel-compatible serverless-safe async call)
+      if (data.emailPayload) {
+        const emailRequestUrl = `${API_URL}/api/bookings/send-emails`;
+        fetch(emailRequestUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            booking_id: finalBookingId,
+            emailPayload: data.emailPayload
+          })
+        }).then(emailResponse => {
+          console.log('[Background Email] Sent trigger result:', emailResponse.status);
+        }).catch(emailErr => {
+          console.error('[Background Email Exception] Trigger failed:', emailErr);
+        });
+      }
 
       // Redirect to booking-success
       window.history.pushState(null, '', '/booking-success');

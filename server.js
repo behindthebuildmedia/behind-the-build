@@ -387,7 +387,7 @@ app.post('/api/bookings', bookingRateLimiter, async (req, res) => {
     const returnedBookingId = (data && data.booking_id) || booking_id;
     console.log(`[Booking inserted into Supabase] Booking ID: ${returnedBookingId}`);
 
-    // 5. Send Email Notifications (non-blocking)
+    // 5. Build email payload
     const emailPayload = {
       client_name: normalizedFullName,
       company_name: normalizedCompanyName,
@@ -405,37 +405,13 @@ app.post('/api/bookings', bookingRateLimiter, async (req, res) => {
       created_at: now
     };
 
-    console.log("booking ID generated, email process started asynchronously");
-    sendClientEmail(emailPayload, booking_id)
-      .then(result => {
-        if (result.success) {
-          console.log("[Email] Client confirmation sent asynchronously");
-        } else {
-          console.error("[Email] Client email failed asynchronously:", result.error?.message || result.error);
-        }
-      })
-      .catch(err => {
-        console.error("[Email Exception] Client email failed asynchronously:", err.message || err);
-      });
-
-    sendTeamEmail(emailPayload, booking_id)
-      .then(result => {
-        if (result.success) {
-          console.log("[Email] Team notification sent to admin@behindthebuild.in asynchronously");
-        } else {
-          console.error("[Email] Team email failed asynchronously:", result.error?.message || result.error);
-        }
-      })
-      .catch(err => {
-        console.error("[Email Exception] Team email failed asynchronously:", err.message || err);
-      });
-
-    // 6. Return response immediately
-    console.log("API response returned");
+    // 6. Return response immediately (Database success achieved)
+    console.log("API response returned with emailPayload");
     return res.status(201).json({
       success: true,
-      booking_id: booking_id,
-      bookingId: booking_id,
+      booking_id: returnedBookingId,
+      bookingId: returnedBookingId,
+      emailPayload: emailPayload,
       message: 'Your project request has been received successfully.'
     });
 
@@ -445,6 +421,43 @@ app.post('/api/bookings', bookingRateLimiter, async (req, res) => {
       success: false,
       message: 'Unable to submit your project request. Please try again.',
       error: 'Unable to submit your project request. Please try again.'
+    });
+  }
+});
+
+// POST: Send confirmation and notification emails (fully awaited, serverless safe)
+app.post('/api/bookings/send-emails', async (req, res) => {
+  try {
+    const { booking_id, emailPayload } = req.body;
+    
+    if (!booking_id || !emailPayload) {
+      return res.status(400).json({
+        success: false,
+        message: 'Booking ID and email payload are required.'
+      });
+    }
+
+    console.log(`[Async Email Trigger] Starting email delivery for Booking ID: ${booking_id}`);
+    
+    // Await both client and team emails so the serverless function does not terminate early
+    const [clientRes, teamRes] = await Promise.all([
+      sendClientEmail(emailPayload, booking_id),
+      sendTeamEmail(emailPayload, booking_id)
+    ]);
+
+    console.log(`[Async Email Trigger] Finished. Client success: ${clientRes.success}, Team success: ${teamRes.success}`);
+
+    return res.status(200).json({
+      success: true,
+      clientEmail: clientRes.success,
+      teamEmail: teamRes.success
+    });
+  } catch (error) {
+    console.error(`[Async Email Trigger Exception] Error sending emails:`, error.message || error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to send emails.',
+      error: error.message
     });
   }
 });
