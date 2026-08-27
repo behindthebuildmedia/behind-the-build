@@ -38,8 +38,10 @@ const extractServiceDetails = (bookingData) => {
   let referenceLink = "None";
   let preferredStartDate = "Flexible";
 
-  if (bookingData.service && Array.isArray(bookingData.service) && bookingData.service.length > 0) {
-    const mainService = bookingData.service[0];
+  const servicesArr = bookingData.services || bookingData.service;
+
+  if (servicesArr && Array.isArray(servicesArr) && servicesArr.length > 0) {
+    const mainService = servicesArr[0];
     if (typeof mainService === "string") {
       serviceName = mainService;
     } else if (mainService && typeof mainService === "object") {
@@ -51,6 +53,8 @@ const extractServiceDetails = (bookingData) => {
     }
   } else if (typeof bookingData.service === "string") {
     serviceName = bookingData.service;
+  } else if (typeof bookingData.services === "string") {
+    serviceName = bookingData.services;
   }
 
   return { serviceName, planName, price, referenceLink, preferredStartDate };
@@ -71,7 +75,7 @@ export const sendClientEmail = async (bookingData, bookingId) => {
 
     const { serviceName, planName, price } = extractServiceDetails(bookingData);
 
-    const clientSubject = `Booking Confirmed — Behind The Build | ${bookingId}`;
+    const clientSubject = `Behind The Build — Booking Confirmed ${bookingId}`;
     const clientText = `Hi ${bookingData.client_name},
 
 Thank you for choosing Behind The Build.
@@ -87,11 +91,14 @@ ${serviceName}
 Plan:
 ${planName}
 
-Amount:
+Price:
 ${price}
 
+Company:
+${bookingData.company_name || "None"}
+
 Project Details:
-${bookingData.project_description || "None provided"}
+${bookingData.project_description || "None"}
 
 Our team will review your requirements and contact you shortly.
 
@@ -118,23 +125,44 @@ Because great products deserve to be seen.`;
 ===================================================== */
 export const sendTeamEmail = async (bookingData, bookingId) => {
   try {
-    const { serviceName, planName, price, referenceLink, preferredStartDate } = extractServiceDetails(bookingData);
+    const { serviceName, planName, price } = extractServiceDetails(bookingData);
     const recipient = process.env.EMAIL_TEAM_TO || "hello@behindthebuild.in";
 
-    const teamSubject = `New Booking — ${serviceName} | ${bookingId}`;
-    const teamText = `Booking ID: ${bookingId}
-Customer Name: ${bookingData.client_name}
-Customer Email: ${bookingData.email}
-Phone Number: ${bookingData.phone}
-Company / Brand: ${bookingData.company_name || "None"}
-Service: ${serviceName}
-Plan: ${planName}
-Price: ${price}
-Project Location: ${bookingData.region || "Remote"}
-Reference / Portfolio Link: ${referenceLink}
-Preferred Start Date: ${preferredStartDate}
-Project Details: ${bookingData.project_description || "None"}
-Submission Date & Time: ${bookingData.created_at || new Date().toISOString()}`;
+    const teamSubject = `NEW BOOKING — ${bookingId}`;
+    const teamText = `NEW SERVICE BOOKING
+
+Booking ID:
+${bookingId}
+
+Customer:
+${bookingData.client_name}
+
+Email:
+${bookingData.email}
+
+Phone:
+${bookingData.phone}
+
+Company:
+${bookingData.company_name || "None"}
+
+Service:
+${serviceName}
+
+Plan:
+${planName}
+
+Price:
+${price}
+
+Location:
+${bookingData.region || "Remote"}
+
+Project Details:
+${bookingData.project_description || "None"}
+
+Date:
+${bookingData.created_at || new Date().toISOString()}`;
 
     const mailOptions = {
       from: `"Behind The Build System" <${process.env.EMAIL_USER}>`,

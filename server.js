@@ -254,32 +254,15 @@ app.post('/api/bookings', bookingRateLimiter, async (req, res) => {
         error: 'A valid phone number (at least 7 digits) is required.'
       });
     }
-    if (!region || typeof region !== 'string' || !region.trim()) {
-      return res.status(400).json({
-        success: false,
-        message: 'Region is required.',
-        error: 'Region is required.'
-      });
-    }
+    const finalRegion = (region && typeof region === 'string') ? region.trim() : 'Remote';
+    const finalBudget = (budget && typeof budget === 'string') ? budget.trim() : 'Custom';
+    const finalTimeline = (timeline && typeof timeline === 'string') ? timeline.trim() : 'Flexible';
+
     if (!services || !Array.isArray(services) || services.length === 0) {
       return res.status(400).json({
         success: false,
         message: 'At least one selected service is required.',
         error: 'At least one selected service is required.'
-      });
-    }
-    if (!budget || typeof budget !== 'string' || !budget.trim()) {
-      return res.status(400).json({
-        success: false,
-        message: 'Budget estimate is required.',
-        error: 'Budget estimate is required.'
-      });
-    }
-    if (!timeline || typeof timeline !== 'string' || !timeline.trim()) {
-      return res.status(400).json({
-        success: false,
-        message: 'Timeline estimate is required.',
-        error: 'Timeline estimate is required.'
       });
     }
 
@@ -307,44 +290,77 @@ app.post('/api/bookings', bookingRateLimiter, async (req, res) => {
     const id = crypto.randomUUID();
     const now = new Date().toISOString();
 
-    const bookingData = {
-      id,
-      booking_id: booking_id,
-      client_name: client_name.trim(),
-      company_name: company_name ? company_name.trim() : null,
-      email: email.trim().toLowerCase(),
-      phone: phone.trim(),
-      region: region.trim(),
-      service: services, // mapped to singular 'service' column in db schema
-      budget: budget.trim(),
-      timeline: timeline.trim(),
-      project_description: project_description || null,
-      status: 'New',
-      source: 'Website',
-      created_at: now,
-      updated_at: now
-    };
+    const firstServiceObj = (services && Array.isArray(services) && services.length > 0) ? services[0] : {};
+    const serviceName = firstServiceObj.service || 'Brand Building';
+    const planName = firstServiceObj.plan || 'Custom';
+    const priceVal = firstServiceObj.price || finalBudget;
 
     let data;
     try {
-      const result = await supabase
-        .from('bookings')
-        .insert([bookingData])
+      // Try writing to project_bookings first
+      const pbResult = await supabase
+        .from('project_bookings')
+        .insert([
+          {
+            id,
+            booking_id,
+            full_name: client_name.trim(),
+            email: email.trim().toLowerCase(),
+            phone: phone.trim(),
+            company_name: company_name ? company_name.trim() : null,
+            service: serviceName,
+            plan: planName,
+            price: priceVal,
+            project_location: finalRegion,
+            project_details: project_description || 'None',
+            status: 'NEW',
+            created_at: now
+          }
+        ])
         .select()
         .single();
-      
-      data = result.data;
-      const sbError = result.error;
 
-      if (sbError) {
-        console.error(`[Supabase] Booking insertion failed: ${sbError.message}`);
-        return res.status(500).json({
-          success: false,
-          message: 'Unable to submit your project request. Please try again.'
-        });
+      if (pbResult.error) {
+        console.warn(`[Supabase] project_bookings insert failed, falling back to bookings: ${pbResult.error.message}`);
+        
+        // Fallback to bookings table
+        const bResult = await supabase
+          .from('bookings')
+          .insert([
+            {
+              id,
+              booking_id,
+              client_name: client_name.trim(),
+              company_name: company_name ? company_name.trim() : null,
+              email: email.trim().toLowerCase(),
+              phone: phone.trim(),
+              region: finalRegion,
+              service: services,
+              budget: finalBudget,
+              timeline: finalTimeline,
+              project_description: project_description || null,
+              status: 'NEW',
+              source: 'Website',
+              created_at: now,
+              updated_at: now
+            }
+          ])
+          .select()
+          .single();
+
+        if (bResult.error) {
+          console.error(`[Supabase Fallback] bookings insert failed: ${bResult.error.message}`);
+          return res.status(500).json({
+            success: false,
+            message: 'Unable to submit your project request. Please try again.'
+          });
+        }
+        data = bResult.data;
+      } else {
+        data = pbResult.data;
       }
     } catch (dbErr) {
-      console.error(`[Supabase] Booking insertion failed: ${dbErr.message}`);
+      console.error(`[Supabase Exception] DB insertion error: ${dbErr.message}`);
       return res.status(500).json({
         success: false,
         message: 'Unable to submit your project request. Please try again.'

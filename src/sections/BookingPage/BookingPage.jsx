@@ -165,7 +165,8 @@ export default function BookingPage({ currentPath }) {
       localStorage.setItem('success_booking_id', data.booking_id || data.bookingId || 'BTB-2026-00124');
       localStorage.setItem('success_service', activeServiceResolved.name);
       localStorage.setItem('success_plan', selectedPlanResolved.planName);
-      localStorage.setItem('success_amount', selectedPlanResolved.price);
+      localStorage.setItem('success_amount', selectedPlanResolved.price + (selectedPlanResolved.billing ? ` / ${selectedPlanResolved.billing}` : ''));
+      localStorage.setItem('success_email', formData.email.trim().toLowerCase());
 
       // Redirect to booking-success
       window.history.pushState(null, '', '/booking-success');
@@ -185,6 +186,7 @@ export default function BookingPage({ currentPath }) {
     const serviceName = localStorage.getItem('success_service') || 'Brand Building';
     const planName = localStorage.getItem('success_plan') || 'Growth';
     const amount = localStorage.getItem('success_amount') || 'Custom';
+    const emailVal = localStorage.getItem('success_email') || 'customer@email.com';
 
     return (
       <div className="bg-brand-white text-[#212121] pt-28 pb-16 min-h-screen font-sans text-left flex items-center">
@@ -197,13 +199,13 @@ export default function BookingPage({ currentPath }) {
           <div className="space-y-4">
             <ScrollReveal delay={0.12} yOffset={25}>
               <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-[#212121] leading-none">
-                THANK YOU.<br />YOUR PROJECT IS IN.
+                THANK YOU.<br />YOUR PROJECT IS NOW IN OUR HANDS.
               </h1>
             </ScrollReveal>
 
             <ScrollReveal delay={0.24} yOffset={15}>
               <p className="text-xs sm:text-sm text-[#212121]/60 leading-relaxed font-semibold">
-                We've received your booking details. Our team will review your requirements and get back to you shortly.
+                Your booking has been successfully received.
               </p>
             </ScrollReveal>
           </div>
@@ -223,44 +225,28 @@ export default function BookingPage({ currentPath }) {
                 <span className="text-[#212121]/45">PLAN</span>
                 <span>{planName}</span>
               </div>
-              <div className="flex justify-between pt-2 border-t border-[#E6E6E6]">
-                <span className="text-[#212121]/45">AMOUNT</span>
+              <div className="flex justify-between py-1">
+                <span className="text-[#212121]/45">PRICE</span>
                 <span className="font-bold text-[#212121]">{amount}</span>
+              </div>
+              <div className="flex justify-between pt-2 border-t border-[#E6E6E6]">
+                <span className="text-[#212121]/45">EMAIL</span>
+                <span className="font-mono">{emailVal}</span>
               </div>
             </div>
             
             <p className="text-[10px] sm:text-xs text-[#212121]/50 leading-relaxed pt-2">
-              * We've sent a confirmation email to your email address.
+              We've received your requirements and our team will contact you shortly.
             </p>
           </ScrollReveal>
 
           {/* Action Buttons */}
-          <ScrollReveal delay={0.45} yOffset={15} className="flex flex-col sm:flex-row gap-4 pt-2">
+          <ScrollReveal delay={0.45} yOffset={15} className="pt-2">
             <button
               onClick={(e) => handleSpaNav(e, '/')}
               className="bg-[#212121] text-brand-white hover:bg-[#C8041C] px-8 py-4 text-xs font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300 w-full sm:w-auto"
             >
               <span>BACK TO HOME</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                window.history.pushState(null, '', '/');
-                window.dispatchEvent(new Event('popstate'));
-                setTimeout(() => {
-                  const element = document.querySelector('#work');
-                  if (element) {
-                    const headerOffset = 80;
-                    const elementPosition = element.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-                  }
-                }, 150);
-              }}
-              className="border-2 border-[#212121] text-[#212121] hover:bg-[#212121] hover:text-brand-white px-8 py-4 text-xs font-mono font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300 w-full sm:w-auto"
-            >
-              <span>VIEW OUR WORK</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </ScrollReveal>
@@ -299,7 +285,7 @@ export default function BookingPage({ currentPath }) {
 
           <ScrollReveal delay={0.24} yOffset={15} duration={0.6} className="pt-2">
             <p className="text-xs sm:text-sm text-brand-charcoal/60 leading-relaxed font-semibold max-w-xl">
-              Tell us about your project and we'll get back to you shortly.
+              Tell us about your project and we'll get back to you with the next steps.
             </p>
           </ScrollReveal>
         </div>
@@ -310,7 +296,7 @@ export default function BookingPage({ currentPath }) {
         <ScrollReveal delay={0.1} yOffset={15} className="border border-[#E6E6E6] bg-[#FAF9F9] p-6 rounded-xl grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="space-y-1 flex flex-col justify-start">
             <span className="text-[9px] font-mono font-black text-[#212121]/45 uppercase tracking-widest block leading-none">
-              SELECTED SERVICE
+              SERVICE
             </span>
             {isDirectBook ? (
               <select
@@ -334,7 +320,7 @@ export default function BookingPage({ currentPath }) {
           
           <div className="space-y-1 flex flex-col justify-start">
             <span className="text-[9px] font-mono font-black text-[#212121]/45 uppercase tracking-widest block leading-none">
-              SELECTED PLAN
+              PLAN
             </span>
             {isDirectBook ? (
               <select
@@ -380,7 +366,7 @@ export default function BookingPage({ currentPath }) {
                 value={formData.name}
                 onChange={handleInputChange}
                 className="mt-2 bg-[#FAF9F9] border border-[#E6E6E6] px-4 py-3 rounded-lg text-sm text-brand-charcoal focus:outline-none focus:border-[#C8041C] transition-all font-semibold"
-                placeholder="e.g. Nikhil Sen"
+                placeholder="Your full name"
               />
               {formErrors.name && (
                 <span className="text-xs text-[#C8041C] mt-1 font-semibold">{formErrors.name}</span>
@@ -399,7 +385,7 @@ export default function BookingPage({ currentPath }) {
                 value={formData.email}
                 onChange={handleInputChange}
                 className="mt-2 bg-[#FAF9F9] border border-[#E6E6E6] px-4 py-3 rounded-lg text-sm text-brand-charcoal focus:outline-none focus:border-[#C8041C] transition-all font-semibold"
-                placeholder="e.g. nikhil@company.com"
+                placeholder="you@company.com"
               />
               {formErrors.email && (
                 <span className="text-xs text-[#C8041C] mt-1 font-semibold">{formErrors.email}</span>
@@ -418,7 +404,7 @@ export default function BookingPage({ currentPath }) {
                 value={formData.phone}
                 onChange={handleInputChange}
                 className="mt-2 bg-[#FAF9F9] border border-[#E6E6E6] px-4 py-3 rounded-lg text-sm text-brand-charcoal focus:outline-none focus:border-[#C8041C] transition-all font-semibold"
-                placeholder="e.g. +91 98765 43210"
+                placeholder="+91 XXXXX XXXXX"
               />
               {formErrors.phone && (
                 <span className="text-xs text-[#C8041C] mt-1 font-semibold">{formErrors.phone}</span>
@@ -437,7 +423,7 @@ export default function BookingPage({ currentPath }) {
                 value={formData.company}
                 onChange={handleInputChange}
                 className="mt-2 bg-[#FAF9F9] border border-[#E6E6E6] px-4 py-3 rounded-lg text-sm text-brand-charcoal focus:outline-none focus:border-[#C8041C] transition-all font-semibold"
-                placeholder="e.g. Acme Corp"
+                placeholder="Your company or brand"
               />
             </div>
 
@@ -453,7 +439,7 @@ export default function BookingPage({ currentPath }) {
                 value={formData.location}
                 onChange={handleInputChange}
                 className="mt-2 bg-[#FAF9F9] border border-[#E6E6E6] px-4 py-3 rounded-lg text-sm text-brand-charcoal focus:outline-none focus:border-[#C8041C] transition-all font-semibold"
-                placeholder="e.g. Bangalore / Remote"
+                placeholder="City / Remote"
               />
             </div>
 
@@ -492,7 +478,7 @@ export default function BookingPage({ currentPath }) {
             {/* Project Details / Requirements */}
             <div className="flex flex-col md:col-span-2">
               <label htmlFor="requirements" className="text-[10px] font-mono font-black uppercase tracking-wider text-brand-charcoal/65">
-                Project Details & Requirements *
+                Project Details *
               </label>
               <textarea
                 id="requirements"
@@ -501,7 +487,7 @@ export default function BookingPage({ currentPath }) {
                 value={formData.requirements}
                 onChange={handleInputChange}
                 className="mt-2 bg-[#FAF9F9] border border-[#E6E6E6] px-4 py-3 rounded-lg text-sm text-brand-charcoal focus:outline-none focus:border-[#C8041C] transition-all font-semibold resize-none"
-                placeholder="Describe your design parameters, video hooks, marketing goals, pages list..."
+                placeholder="Tell us about your project, requirements, timeline, goals, or anything else we should know."
               />
               {formErrors.requirements && (
                 <span className="text-xs text-[#C8041C] mt-1 font-semibold">{formErrors.requirements}</span>
@@ -539,7 +525,7 @@ export default function BookingPage({ currentPath }) {
                 </>
               ) : (
                 <>
-                  <span>CONFIRM BOOKING</span>
+                  <span>SUBMIT BOOKING</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </>
               )}
