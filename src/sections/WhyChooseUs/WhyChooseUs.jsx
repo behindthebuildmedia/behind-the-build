@@ -1,108 +1,103 @@
-import { motion } from 'framer-motion';
-import { Camera, Clock, Compass, Sliders, Layers, HeartHandshake, HelpCircle } from 'lucide-react';
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
-
-const iconMap = {
-  Camera,
-  Clock,
-  Compass,
-  Sliders,
-  Layers,
-  HeartHandshake
-};
 
 const features = [
   {
     id: 'prod',
-    title: 'PROFESSIONAL PRODUCTION',
-    desc: 'High-quality content that stands out.',
-    icon: 'Camera'
+    title: <>PROFESSIONAL <span className="text-[#C8041C]">PRODUCTION</span></>,
+    desc: 'High-quality content that stands out.'
   },
   {
     id: 'turn',
-    title: 'FAST TURNAROUND',
-    desc: 'On-time delivery, every time.',
-    icon: 'Clock'
+    title: <>FAST <span className="text-[#C8041C]">TURNAROUND</span></>,
+    desc: 'On-time delivery, every time.'
   },
   {
     id: 'brand',
-    title: 'CONTENT THAT FITS YOUR BRAND',
-    desc: 'Custom content aligned with your identity.',
-    icon: 'Compass'
+    title: <>CONTENT FITS YOUR <span className="text-[#C8041C]">BRAND</span></>,
+    desc: 'Custom content aligned with your identity.'
   },
   {
     id: 'edit',
-    title: 'PREMIUM EDITING',
-    desc: 'Cinematic edits that make an impact.',
-    icon: 'Sliders'
+    title: <>PREMIUM <span className="text-[#C8041C]">EDITING</span></>,
+    desc: 'Cinematic edits that make an impact.'
   },
   {
     id: 'pack',
-    title: 'FLEXIBLE PACKAGES',
-    desc: 'Plans that grow with your needs.',
-    icon: 'Layers'
+    title: <><span className="text-[#C8041C]">FLEXIBLE</span> PACKAGES</>,
+    desc: 'Plans that grow with your needs.'
   },
   {
     id: 'supp',
-    title: 'DEDICATED SUPPORT',
-    desc: "We're with you at every step.",
-    icon: 'HeartHandshake'
+    title: <><span className="text-[#C8041C]">DEDICATED</span> SUPPORT</>,
+    desc: "We're with you at every step."
   }
 ];
 
 export default function WhyChooseUs() {
   return (
-    <section id="why-choose-us" className="py-24 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
+    <section id="why-choose-us" className="py-20 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+        
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
-          {/* Left Column - Headline */}
-          <div className="lg:col-span-5 text-left space-y-6 lg:sticky lg:top-[15vh] self-start">
+          {/* Left Column - Headline & Supporting Statement */}
+          <div className="lg:col-span-5 text-left space-y-6 lg:sticky lg:top-[20vh] self-start pt-2">
             <div className="space-y-3">
-              <ScrollReveal yOffset={10} duration={0.45} delay={0}>
-                <span className="text-xs font-bold uppercase tracking-widest text-[#C8041C]">
+              <ScrollReveal yOffset={10} duration={0.4} delay={0}>
+                <span className="text-[11px] font-mono font-black uppercase tracking-widest text-[#C8041C] block">
                   WHY CHOOSE US
                 </span>
               </ScrollReveal>
-              <ScrollReveal yOffset={35} duration={0.8} delay={0.1}>
-                <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-brand-charcoal leading-[1.05]">
-                  WHY BRANDS
-                  <br />
+              
+              <ScrollReveal yOffset={15} duration={0.6} delay={0.1}>
+                <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-[#212121] leading-[1.05]">
+                  WHY BRANDS<br />
                   CHOOSE <span className="text-[#C8041C]">US.</span>
                 </h2>
               </ScrollReveal>
             </div>
+            
+            <ScrollReveal yOffset={15} duration={0.6} delay={0.2} className="max-w-md pt-1">
+              <p className="text-xs sm:text-sm text-[#212121]/60 leading-relaxed font-semibold">
+                Built for brands that want better content, sharper execution, and results that actually matter.
+              </p>
+            </ScrollReveal>
+            
+            <ScrollReveal yOffset={5} duration={0.4} delay={0.3} className="pt-2">
+              <div className="w-16 h-[2px] bg-[#C8041C]" />
+            </ScrollReveal>
           </div>
 
-          {/* Right Column - 2x3 Grid */}
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full text-left">
-            {features.map((feature, idx) => {
-              const Icon = iconMap[feature.icon] || HelpCircle;
-
-              return (
-                <ScrollReveal
-                  key={feature.id}
-                  delay={0.25 + idx * 0.1}
-                  className="bg-brand-white p-8 border border-[#E6E6E6] rounded-none flex flex-col items-start select-none relative group hover:border-[#C8041C]/35 hover:-translate-y-1 transition-all duration-300 cursor-default"
-                >
-                  {/* Icon Box */}
-                  <div className="w-10 h-10 bg-[#FAF9F9] border border-[#E6E6E6] flex items-center justify-center rounded-none shrink-0 transition-all duration-300 group-hover:bg-brand-white group-hover:border-[#C8041C]/20">
-                    <Icon className="w-4 h-4 text-brand-charcoal group-hover:text-[#C8041C] transform transition-all duration-300 group-hover:-translate-y-0.5" />
-                  </div>
+          {/* Right Column - Benefits Editorial Blocks */}
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full text-left pt-2">
+            {features.map((feature, idx) => (
+              <ScrollReveal
+                key={feature.id}
+                delay={0.1 + idx * 0.08}
+                yOffset={20}
+                className="w-full"
+              >
+                <div className="bg-white p-7 md:p-8 border border-[#E6E6E6] rounded-xl flex flex-col items-start relative group hover:border-[#212121] hover:-translate-y-1 transition-all duration-300 cursor-default shadow-[0_4px_12px_rgba(0,0,0,0.005)]">
+                  
+                  {/* Red Square Accent Element */}
+                  <div className="w-2.5 h-2.5 bg-[#C8041C] transition-transform duration-300 group-hover:scale-125" />
 
                   {/* Title & Description */}
-                  <h4 className="text-sm font-black text-brand-charcoal font-sans uppercase tracking-wider mt-6 transform transition-all duration-300 group-hover:translate-x-1">
+                  <h4 className="text-xs sm:text-sm font-black text-[#212121] font-sans uppercase tracking-wider mt-5">
                     {feature.title}
                   </h4>
-                  <p className="text-xs text-brand-charcoal/50 leading-relaxed font-sans font-normal mt-3">
+                  
+                  <p className="text-xs text-[#212121]/60 leading-relaxed font-semibold mt-2.5">
                     {feature.desc}
                   </p>
-                </ScrollReveal>
-              );
-            })}
+
+                </div>
+              </ScrollReveal>
+            ))}
           </div>
 
         </div>
+
       </div>
     </section>
   );
