@@ -61,9 +61,9 @@ const iconMap = {
 };
 
 const handleMap = {
-  Instagram: '@behindthebuild',
-  LinkedIn: 'Behind the Build',
-  YouTube: '@behindthebuild'
+  Instagram: '@behindthebuild_official',
+  LinkedIn: 'Behind The Build',
+  YouTube: 'Behind The Build'
 };
 
 export default function Connect() {

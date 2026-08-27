@@ -7,11 +7,11 @@ export const socialLinks = [
   {
     id: "02",
     name: "LinkedIn",
-    url: "https://www.linkedin.com/company/142877113/"
+    url: "https://www.linkedin.com/company/behind-the-build-official/posts/?viewAsMember=true"
   },
   {
     id: "03",
     name: "YouTube",
-    url: ""
+    url: "https://www.youtube.com/channel/UCSYVvK1307E2DyVbKGMGLQg"
   }
 ];

@@ -198,9 +198,9 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               {[
-                { label: 'Instagram', href: 'https://instagram.com/behindthebuild.co', icon: InstagramIcon },
-                { label: 'LinkedIn', href: 'https://linkedin.com/company/behindthebuild', icon: LinkedinIcon },
-                { label: 'YouTube', href: 'https://youtube.com/@behindthebuild', icon: YoutubeIcon }
+                { label: 'Instagram', href: 'https://www.instagram.com/behindthebuild_official/', icon: InstagramIcon },
+                { label: 'LinkedIn', href: 'https://www.linkedin.com/company/behind-the-build-official/posts/?viewAsMember=true', icon: LinkedinIcon },
+                { label: 'YouTube', href: 'https://www.youtube.com/channel/UCSYVvK1307E2DyVbKGMGLQg/', icon: YoutubeIcon }
               ].map((item, idx) => {
                 const IconComponent = item.icon;
                 return (

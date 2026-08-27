@@ -177,10 +177,9 @@ function App() {
       "url": "https://behindthebuild.in",
       "logo": "https://behindthebuild.in/favicon.png",
       "sameAs": [
-        "https://instagram.com/behindthebuild.co",
-        "https://linkedin.com/company/behindthebuild",
-        "https://youtube.com/@behindthebuild",
-        "https://twitter.com/behindthebuild"
+        "https://www.instagram.com/behindthebuild_official/",
+        "https://www.linkedin.com/company/behind-the-build-official/posts/?viewAsMember=true",
+        "https://www.youtube.com/channel/UCSYVvK1307E2DyVbKGMGLQg"
       ]
     });
 
