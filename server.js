@@ -493,6 +493,10 @@ app.get('/api/health', (req, res) => {
 });
 
 // Start Express server
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+}
+
+export default app;
