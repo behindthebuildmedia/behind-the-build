@@ -485,36 +485,6 @@ app.get('/api/system-status', async (req, res) => {
   });
 });
 
-app.get('/api/debug-env', async (req, res) => {
-  const envKeys = {
-    SUPABASE_URL: !!process.env.SUPABASE_URL,
-    SUPABASE_SECRET_KEY: !!process.env.SUPABASE_SECRET_KEY,
-    EMAIL_USER: !!process.env.EMAIL_USER,
-    EMAIL_PASS: !!process.env.EMAIL_PASS,
-    EMAIL_TEAM_TO: !!process.env.EMAIL_TEAM_TO,
-    PORT: process.env.PORT,
-    NODE_ENV: process.env.NODE_ENV,
-    VERCEL: process.env.VERCEL
-  };
-
-  let dbResult = { status: 'Not tested' };
-  try {
-    const { data, error } = await supabase.from('bookings').select('booking_id').limit(1);
-    if (error) {
-      dbResult = { status: 'Error', message: error.message, code: error.code };
-    } else {
-      dbResult = { status: 'Connected', count: data.length };
-    }
-  } catch (err) {
-    dbResult = { status: 'Exception', message: err.message };
-  }
-
-  res.status(200).json({
-    envKeys,
-    dbResult
-  });
-});
-
 // GET: Simple health check endpoint
 app.get('/api/health', (req, res) => {
   res.status(200).json({
