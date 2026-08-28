@@ -3,6 +3,26 @@ import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
 import { servicesData } from '../../data/servicesData';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 
+// Import service detail visuals
+import imgEditing from '../../assets/images/services/editing.webp';
+import imgSocial from '../../assets/images/services/social.webp';
+import imgCustom from '../../assets/images/services/custom.webp';
+import imgEvents from '../../assets/images/services/events.webp';
+import imgPhotography from '../../assets/images/services/photography.webp';
+import imgVideography from '../../assets/images/services/videography.webp';
+
+const serviceImages = {
+  'video-editing': imgEditing,
+  'social-media-marketing': imgSocial,
+  'design': imgCustom,
+  'website-design': imgCustom,
+  'tech-events-coverage': imgEvents,
+  'digital-marketing': imgSocial,
+  'photography': imgPhotography,
+  'videography': imgVideography,
+  'event-coverage': imgEvents
+};
+
 // Helper function to dynamically highlight brand keywords in red
 const highlightText = (text) => {
   if (!text) return "";
@@ -65,33 +85,63 @@ export default function ServicePage({ serviceKey }) {
 
   return (
     <div className="bg-brand-white text-[#212121] pt-32 pb-24 min-h-screen font-sans text-left select-none">
-      <div className="max-w-4xl mx-auto px-6 md:px-12 w-full space-y-16">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full space-y-12">
         
-        {/* HERO SECTION */}
-        <section className="space-y-4 pt-4">
-          <ScrollReveal delay={0} yOffset={10}>
-            <span className="text-[11px] font-mono font-black uppercase tracking-widest text-[#C8041C] block">
-              SERVICE {data.num}
-            </span>
-          </ScrollReveal>
-          
-          <ScrollReveal delay={0.1} yOffset={15}>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-[#212121] leading-[1.05]">
-              {data.name}
-            </h1>
-          </ScrollReveal>
-          
-          <ScrollReveal delay={0.2} yOffset={15} className="max-w-2xl pt-2">
-            <h2 className="text-lg sm:text-xl font-bold uppercase tracking-tight text-[#212121]/90 leading-relaxed">
-              "{highlightText(data.intro)}"
-            </h2>
-          </ScrollReveal>
+        {/* HERO TWO-COLUMN SECTION */}
+        <section className="pt-4 pb-4">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            
+            {/* Left Content Column */}
+            <div className="lg:col-span-5 space-y-6">
+              <ScrollReveal delay={0} yOffset={10}>
+                <span className="text-[11px] font-mono font-black uppercase tracking-widest text-[#C8041C] block">
+                  SERVICE {data.num}
+                </span>
+              </ScrollReveal>
+              
+              <ScrollReveal delay={0.1} yOffset={15}>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[#212121] leading-[1.05]">
+                  {data.name}
+                </h1>
+              </ScrollReveal>
+              
+              <ScrollReveal delay={0.2} yOffset={15} className="pt-2">
+                <h2 className="text-lg sm:text-xl font-bold uppercase tracking-tight text-[#212121]/90 leading-relaxed">
+                  "{highlightText(data.intro)}"
+                </h2>
+              </ScrollReveal>
+            </div>
+
+            {/* Right Media/Visual Column */}
+            <div className="lg:col-span-7">
+              <ScrollReveal delay={0.25} yOffset={20} duration={0.7} className="relative group w-full">
+                {/* Red Brand Border Detail */}
+                <div className="absolute -inset-2 border border-[#C8041C]/40 rounded-xl -z-10 transition-all duration-500 group-hover:inset-0 group-hover:border-[#C8041C]/80" />
+                
+                <img
+                  src={serviceImages[serviceKeyClean] || imgCustom}
+                  alt={data.name}
+                  className="w-full h-auto object-cover aspect-[4/3] rounded-lg grayscale hover:grayscale-0 transition-all duration-700 border border-[#212121]/15 shadow-sm"
+                  loading="eager"
+                />
+              </ScrollReveal>
+            </div>
+
+          </div>
         </section>
 
-        <hr className="border-[#E5E5E5] w-full" />
+        {/* Editorial Divider */}
+        <div className="relative py-4 flex items-center justify-between w-full">
+          <div className="h-[1px] bg-gradient-to-r from-[#C8041C] via-[#212121]/15 to-transparent w-full" />
+          <div className="absolute right-0 flex items-center gap-1.5 pl-4 bg-brand-white text-[9px] font-mono font-black text-[#212121]/30 tracking-widest uppercase">
+            <span>BTB</span>
+            <span className="w-1.5 h-1.5 bg-[#C8041C] rounded-full" />
+            <span>INCLUSIONS</span>
+          </div>
+        </div>
 
         {/* SERVICES INCLUDED */}
-        <section className="space-y-8">
+        <section className="space-y-6 pt-2">
           <ScrollReveal delay={0} yOffset={10}>
             <h3 className="text-[11px] font-mono font-black text-[#C8041C] uppercase tracking-widest block">
               WHAT'S INCLUDED
@@ -122,7 +172,15 @@ export default function ServicePage({ serviceKey }) {
           </div>
         </section>
 
-        <hr className="border-[#E5E5E5] w-full" />
+        {/* Editorial Divider */}
+        <div className="relative py-4 flex items-center justify-between w-full">
+          <div className="h-[1px] bg-gradient-to-r from-[#C8041C] via-[#212121]/15 to-transparent w-full" />
+          <div className="absolute right-0 flex items-center gap-1.5 pl-4 bg-brand-white text-[9px] font-mono font-black text-[#212121]/30 tracking-widest uppercase">
+            <span>BTB</span>
+            <span className="w-1.5 h-1.5 bg-[#C8041C] rounded-full" />
+            <span>PRICING PLAN</span>
+          </div>
+        </div>
 
         {/* PRICING SECTION */}
         <section className="space-y-12">
