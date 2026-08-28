@@ -10,21 +10,21 @@ export default function MediaDigital() {
       num: '01',
       title: 'VIDEO EDITING',
       desc: 'Professional short-form editing for brands, founders, products and technology companies.',
-      price: '₹6,000',
+      price: '₹7,999',
       path: '/services/video-editing'
     },
     {
       num: '02',
       title: 'SOCIAL MEDIA MARKETING',
       desc: 'Strategy, content and management designed to build a consistent digital presence.',
-      price: '₹5,000',
+      price: '₹5,999',
       path: '/services/social-media-marketing'
     },
     {
       num: '03',
       title: 'DESIGN',
       desc: 'Creative design systems that make your brand look consistent and recognizable.',
-      price: '₹5,000',
+      price: '₹5,999',
       path: '/services/design'
     },
     {
@@ -38,7 +38,7 @@ export default function MediaDigital() {
       num: '05',
       title: 'DIGITAL MARKETING',
       desc: 'Strategic digital marketing designed to grow your visibility, reach and audience.',
-      price: '₹5,000',
+      price: '₹5,999',
       path: '/services/digital-marketing'
     }
   ];

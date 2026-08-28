@@ -14,32 +14,55 @@ export const servicesData = {
       introductory: true,
       starter: {
         planName: "STARTER",
-        price: "₹6,000",
+        price: "₹7,999",
         billing: "month",
         features: [
-          "Captions",
+          "Basic editing",
           "Color grading",
-          "Minimal editing",
-          "3 videos per week",
-          "1 product video"
+          "Captions",
+          "2 reels per week",
+          "Content script",
+          "Duration: 1 month"
         ],
         buttonText: "SELECT PLAN →",
         highlighted: false
       },
       growth: {
         planName: "GROWTH",
-        price: "₹10,500",
-        billing: "2 months",
+        price: "₹13,999",
+        billing: "3 months",
         features: [
-          "Sound effects",
-          "Captions",
+          "Good editing",
           "Color grading",
-          "Premium editing",
-          "4 videos per week",
-          "2 product videos"
+          "Captions",
+          "Sound effects",
+          "Content script",
+          "1 product video",
+          "3 reels per week + 1 long-form video",
+          "Duration: 3 months"
         ],
         buttonText: "SELECT PLAN →",
         highlighted: true
+      },
+      premium: {
+        planName: "PREMIUM",
+        price: "₹19,999",
+        billing: "5 months",
+        features: [
+          "Premium editing",
+          "After Effects",
+          "Motion graphics",
+          "Sound effects",
+          "Captions",
+          "Color grading",
+          "Content script",
+          "Product shoot",
+          "2 product videos",
+          "4 reels per week + 2 long-form videos",
+          "Duration: 5 months"
+        ],
+        buttonText: "SELECT PLAN →",
+        highlighted: false
       }
     },
     faq: [
@@ -65,7 +88,7 @@ export const servicesData = {
       introductory: true,
       starter: {
         planName: "STARTER",
-        price: "₹5,000",
+        price: "₹5,999",
         billing: "month",
         features: [
           "Management of 2 accounts",
@@ -79,7 +102,7 @@ export const servicesData = {
       },
       growth: {
         planName: "GROWTH",
-        price: "₹9,000",
+        price: "₹10,999",
         billing: "2 months",
         features: [
           "Management of 4 accounts",
@@ -90,6 +113,21 @@ export const servicesData = {
         ],
         buttonText: "SELECT PLAN →",
         highlighted: true
+      },
+      premium: {
+        planName: "PREMIUM",
+        price: "₹16,999",
+        billing: "3 months",
+        features: [
+          "Management of all major accounts",
+          "35 posts per month",
+          "Premium dynamic content & copywriting",
+          "Full monthly analytics dashboard",
+          "Dedicated community manager",
+          "Custom campaign strategies"
+        ],
+        buttonText: "SELECT PLAN →",
+        highlighted: false
       }
     },
     faq: [
@@ -116,7 +154,7 @@ export const servicesData = {
       introductory: true,
       starter: {
         planName: "STARTER",
-        price: "₹5,000",
+        price: "₹5,999",
         billing: "",
         features: [
           "Custom Logo Design",
@@ -130,7 +168,7 @@ export const servicesData = {
       },
       growth: {
         planName: "GROWTH",
-        price: "₹9,000",
+        price: "₹10,999",
         billing: "2 months",
         features: [
           "Logo & Branding Kit",
@@ -142,6 +180,21 @@ export const servicesData = {
         ],
         buttonText: "SELECT PLAN →",
         highlighted: true
+      },
+      premium: {
+        planName: "PREMIUM",
+        price: "₹16,999",
+        billing: "3 months",
+        features: [
+          "Full Corporate Brand Identity Guidelines",
+          "Custom Presentation & Deck Design",
+          "Unlimited Social Cover Layouts",
+          "25 Custom Thumbnails",
+          "18 Instagram Carousels per month",
+          "Print Ready Stationery & Merch assets"
+        ],
+        buttonText: "SELECT PLAN →",
+        highlighted: false
       }
     },
     faq: [
@@ -187,6 +240,20 @@ export const servicesData = {
         ],
         buttonText: "SELECT PLAN →",
         highlighted: true
+      },
+      premium: {
+        planName: "PREMIUM",
+        price: "₹25,000",
+        billing: "Full Day",
+        features: [
+          "200+ edited high-resolution photos",
+          "Full Event Aftermovie & Highlight Edit",
+          "5 engaging social reels/shorts",
+          "On-site secondary camera/gimbal setup",
+          "Fast 48-hour raw footage deliverable"
+        ],
+        buttonText: "SELECT PLAN →",
+        highlighted: false
       }
     },
     faq: [
@@ -213,7 +280,7 @@ export const servicesData = {
       introductory: true,
       starter: {
         planName: "STARTER",
-        price: "₹5,000",
+        price: "₹5,999",
         billing: "month",
         features: [
           "SEO Audit & Keyword Map",
@@ -228,7 +295,7 @@ export const servicesData = {
       },
       growth: {
         planName: "GROWTH",
-        price: "₹9,000",
+        price: "₹11,999",
         billing: "2 months",
         features: [
           "Full SEO & SEM operations",
@@ -240,6 +307,21 @@ export const servicesData = {
         ],
         buttonText: "SELECT PLAN →",
         highlighted: true
+      },
+      premium: {
+        planName: "PREMIUM",
+        price: "₹18,999",
+        billing: "3 months",
+        features: [
+          "Omnichannel Paid Ads Strategy & Executions",
+          "Full Conversion Funnel Engineering & CRO",
+          "5+ Ad Platforms Managed (Meta, Google, LinkedIn, etc)",
+          "Weekly Growth Consulting & Reporting Calls",
+          "Advanced Retargeting & LTV Analytics setup",
+          "Dedicated Growth Marketer assignment"
+        ],
+        buttonText: "SELECT PLAN →",
+        highlighted: false
       }
     },
     faq: [

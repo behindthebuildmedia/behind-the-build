@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as Icons from 'lucide-react';
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
+import { servicesData } from '../../data/servicesData';
 
 export default function PlanBuilder({ onSuccess }) {
   const [formData, setFormData] = useState({
@@ -70,6 +71,26 @@ export default function PlanBuilder({ onSuccess }) {
     setIsSubmitting(true);
     setSubmissionError(null);
 
+    const serviceSlugMap = {
+      'VIDEO EDITING': 'video-editing',
+      'SOCIAL MEDIA MARKETING': 'social-media-marketing',
+      'DESIGN': 'design',
+      'TECH EVENT COVERAGE': 'tech-events-coverage',
+      'DIGITAL MARKETING': 'digital-marketing'
+    };
+    const mappedSlug = serviceSlugMap[formData.service];
+    const serviceData = servicesData[mappedSlug];
+    let priceNum = 0;
+    if (serviceData && serviceData.pricing) {
+      const planKey = formData.plan.toLowerCase(); // 'starter', 'growth', 'premium'
+      const planObj = serviceData.pricing[planKey];
+      if (planObj && planObj.price) {
+        priceNum = parseInt(planObj.price.replace(/[^\d]/g, ''), 10) || 0;
+      }
+    }
+    const workShare = priceNum > 0 ? (priceNum * 0.6).toFixed(2) : '0.00';
+    const agencyShare = priceNum > 0 ? (priceNum * 0.4).toFixed(2) : '0.00';
+
     const bookingPayload = {
       client_name: formData.name,
       company_name: formData.company || null,
@@ -82,7 +103,9 @@ export default function PlanBuilder({ onSuccess }) {
           plan: formData.plan
         }
       ],
-      budget: formData.plan === 'STARTER' ? 'Starter Price' : formData.plan === 'GROWTH' ? 'Growth Price' : 'Custom Budget',
+      budget: formData.plan === 'STARTER' ? 'Starter Price' : formData.plan === 'GROWTH' ? 'Growth Price' : formData.plan === 'PREMIUM' ? 'Premium Price' : 'Custom Budget',
+      work_revenue_share: workShare,
+      agency_revenue_share: agencyShare,
       timeline: 'Monthly Deliverables',
       project_description: `Location: ${formData.location}\n\nRequirements:\n${formData.requirements || 'None'}`
     };
@@ -274,6 +297,7 @@ export default function PlanBuilder({ onSuccess }) {
                 >
                   <option value="STARTER">STARTER</option>
                   <option value="GROWTH">GROWTH</option>
+                  <option value="PREMIUM">PREMIUM</option>
                   <option value="CUSTOM">CUSTOM / NOT SURE</option>
                 </select>
               </div>

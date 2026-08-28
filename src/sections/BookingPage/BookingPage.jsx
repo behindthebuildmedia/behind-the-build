@@ -46,7 +46,9 @@ export default function BookingPage({ currentPath }) {
 
   let selectedPlan = null;
   if (activeService && activeService.pricing) {
-    if (planParam === 'growth') {
+    if (planParam === 'premium') {
+      selectedPlan = activeService.pricing.premium;
+    } else if (planParam === 'growth') {
       selectedPlan = activeService.pricing.growth;
     } else {
       selectedPlan = activeService.pricing.starter;
@@ -60,7 +62,11 @@ export default function BookingPage({ currentPath }) {
 
   const selectedPlanResolved = isDirectBook
     ? (activeServiceResolved && activeServiceResolved.pricing
-        ? (selectedPlanSlug === 'growth' ? activeServiceResolved.pricing.growth : activeServiceResolved.pricing.starter)
+        ? (selectedPlanSlug === 'premium' 
+            ? activeServiceResolved.pricing.premium 
+            : (selectedPlanSlug === 'growth' 
+                ? activeServiceResolved.pricing.growth 
+                : activeServiceResolved.pricing.starter))
         : null)
     : selectedPlan;
 
@@ -159,6 +165,8 @@ export default function BookingPage({ currentPath }) {
       monthly_price: formattedMonthlyPrice,
       duration: formData.timeline,
       total_price: formattedTotalPrice,
+      work_revenue_share: (totalPriceNum * 0.60).toFixed(2),
+      agency_revenue_share: (totalPriceNum * 0.40).toFixed(2),
       location_type: formData.locationType,
       event_location: formData.locationType === 'Remote' ? 'Not applicable' : formData.eventLocation.trim(),
 
@@ -542,6 +550,7 @@ export default function BookingPage({ currentPath }) {
               >
                 <option value="starter">STARTER</option>
                 <option value="growth">GROWTH</option>
+                <option value="premium">PREMIUM</option>
               </select>
             ) : (
               <span className="text-sm font-black text-brand-charcoal uppercase block mt-1.5 leading-none">
@@ -698,12 +707,6 @@ export default function BookingPage({ currentPath }) {
                 <option value="4 Months">4 Months</option>
                 <option value="5 Months">5 Months</option>
                 <option value="6 Months">6 Months</option>
-                <option value="7 Months">7 Months</option>
-                <option value="8 Months">8 Months</option>
-                <option value="9 Months">9 Months</option>
-                <option value="10 Months">10 Months</option>
-                <option value="11 Months">11 Months</option>
-                <option value="12 Months">12 Months</option>
               </select>
               {formErrors.timeline && (
                 <span className="text-xs text-[#C8041C] mt-1 font-semibold">{formErrors.timeline}</span>

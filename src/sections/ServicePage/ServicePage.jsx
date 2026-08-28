@@ -208,16 +208,23 @@ export default function ServicePage({ serviceKey }) {
           {/* Standard Pricing Cards */}
           {data.pricing && data.pricing.starter && (
             <div className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto items-stretch">
+              <div className={`grid grid-cols-1 ${data.pricing.premium ? 'md:grid-cols-3 max-w-5xl' : 'md:grid-cols-2 max-w-3xl'} gap-8 mx-auto items-stretch`}>
                 {/* STARTER CARD */}
                 <ScrollReveal delay={0.1} className="w-full flex h-full">
-                  <PricingCard plan={data.pricing.starter} onCta={handleCtaClick} isGrowth={false} cardNum="01" />
+                  <PricingCard plan={data.pricing.starter} onCta={handleCtaClick} cardNum="01" />
                 </ScrollReveal>
 
                 {/* GROWTH CARD */}
                 <ScrollReveal delay={0.18} className="w-full flex h-full">
-                  <PricingCard plan={data.pricing.growth} onCta={handleCtaClick} isGrowth={true} cardNum="02" />
+                  <PricingCard plan={data.pricing.growth} onCta={handleCtaClick} cardNum="02" />
                 </ScrollReveal>
+
+                {/* PREMIUM CARD */}
+                {data.pricing.premium && (
+                  <ScrollReveal delay={0.26} className="w-full flex h-full">
+                    <PricingCard plan={data.pricing.premium} onCta={handleCtaClick} cardNum="03" />
+                  </ScrollReveal>
+                )}
               </div>
 
               {/* Optional Custom note */}
@@ -309,7 +316,7 @@ export default function ServicePage({ serviceKey }) {
 }
 
 // Pricing Card Subcomponent
-function PricingCard({ plan, onCta, isGrowth, cardNum }) {
+function PricingCard({ plan, onCta, cardNum }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -317,7 +324,7 @@ function PricingCard({ plan, onCta, isGrowth, cardNum }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={`relative bg-brand-white border-2 p-8 flex flex-col justify-between min-h-[480px] w-full transition-all duration-300 rounded-xl transform ${
-        isGrowth 
+        plan.highlighted 
           ? 'border-[#C8041C] shadow-[0_12px_40px_rgba(200,4,28,0.04)]' 
           : 'border-[#212121]/15 hover:border-[#212121]/30'
       } ${isHovered ? '-translate-y-1.5 shadow-[0_16px_40px_rgba(200,4,28,0.06)] border-[#C8041C]/80' : ''}`}
@@ -330,7 +337,7 @@ function PricingCard({ plan, onCta, isGrowth, cardNum }) {
               <span className="text-[11px] font-mono font-black tracking-widest text-[#212121]/45 uppercase block">
                 {plan.planName}
               </span>
-              {isGrowth && (
+              {plan.highlighted && (
                 <span className="inline-block text-[8px] font-mono font-bold bg-[#C8041C] text-brand-white px-2 py-0.5 tracking-wider uppercase">
                   RECOMMENDED
                 </span>
@@ -369,7 +376,7 @@ function PricingCard({ plan, onCta, isGrowth, cardNum }) {
         <button
           onClick={(e) => onCta(e, plan.planName)}
           className={`w-full py-4 text-xs font-mono font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 border-2 rounded-full ${
-            isGrowth || isHovered
+            plan.highlighted || isHovered
               ? 'bg-[#C8041C] border-[#C8041C] text-brand-white hover:scale-[1.02] shadow-[0_4px_12px_rgba(200,4,28,0.2)]'
               : 'border-[#212121] bg-brand-white text-[#212121] hover:bg-[#212121] hover:text-brand-white'
           }`}
