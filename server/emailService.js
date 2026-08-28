@@ -76,6 +76,13 @@ export const sendClientEmail = async (bookingData, bookingId) => {
 
     const clientSubject = `Behind The Build — Booking Confirmed [${bookingId}]`;
     
+    const monthlyPriceText = bookingData.monthly_price || price;
+    const durationText = bookingData.duration || bookingData.timeline || bookingData.project_timeline || "1 Month";
+    const totalPriceText = bookingData.total_price || price;
+    const locationTypeText = bookingData.location_type || "Remote";
+    const eventLocationText = bookingData.event_location || "Not applicable";
+    const isEventLocation = locationTypeText === 'Event Location';
+
     // Fallback plain text email
     const clientText = `Hi ${bookingData.client_name},
 
@@ -87,10 +94,13 @@ BOOKING DETAILS:
 Booking ID: [${bookingId}]
 Service: [${serviceName}]
 Package: [${planName}]
-Price: [${price}]
-Company: [${bookingData.company_name || "None"}]
-Project Location: [${bookingData.region || bookingData.project_location || "Remote"}]
-Project Timeline: [${bookingData.timeline || bookingData.project_timeline || "Flexible"}]
+Monthly Price: [${monthlyPriceText}]
+Duration: [${durationText}]
+Total Price: [${totalPriceText}]
+Location Type: [${locationTypeText}]
+${isEventLocation ? `Event Location: [${eventLocationText}]\n` : ''}Customer Name: [${bookingData.client_name}]
+Company / Brand: [${bookingData.company_name || "None"}]
+Phone Number: [${bookingData.phone || "None"}]
 Project Details: [${bookingData.project_description || bookingData.project_details || "None"}]
 
 WHAT HAPPENS NEXT?
@@ -190,31 +200,57 @@ Because great products deserve to be seen.`;
                         <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${planName}</td>
                       </tr>
 
-                      <!-- Row 4: Price -->
+                      <!-- Row 4: Monthly Price -->
                       <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Price</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #C8041C; border-top: 1px solid #E6E6E6;">${price}</td>
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Monthly Price</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${monthlyPriceText}</td>
                       </tr>
 
-                      <!-- Row 5: Company -->
+                      <!-- Row 5: Duration -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Duration</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${durationText}</td>
+                      </tr>
+
+                      <!-- Row 6: Total Price -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Total Price</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #C8041C; border-top: 1px solid #E6E6E6;">${totalPriceText}</td>
+                      </tr>
+
+                      <!-- Row 7: Location Type -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Location Type</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${locationTypeText}</td>
+                      </tr>
+
+                      <!-- Row 8: Event Location (only if applicable) -->
+                      ${isEventLocation ? `
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Event Location</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${eventLocationText}</td>
+                      </tr>
+                      ` : ''}
+
+                      <!-- Row 9: Customer Name -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Customer Name</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.client_name}</td>
+                      </tr>
+
+                      <!-- Row 10: Company -->
                       <tr style="border-bottom: 1px solid #E6E6E6;">
                         <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Company / Brand</td>
                         <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.company_name || "None"}</td>
                       </tr>
 
-                      <!-- Row 6: Location -->
+                      <!-- Row 11: Phone -->
                       <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Project Location</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.region || bookingData.project_location || "Remote"}</td>
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Phone Number</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.phone || "None"}</td>
                       </tr>
 
-                      <!-- Row 7: Timeline -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Project Timeline</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.timeline || bookingData.project_timeline || "Flexible"}</td>
-                      </tr>
-
-                      <!-- Row 8: Details -->
+                      <!-- Row 12: Details -->
                       <tr>
                         <td valign="top" style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Project Details</td>
                         <td style="padding: 10px 0; font-size: 12px; line-height: 1.5; color: #444444; font-weight: bold; border-top: 1px solid #E6E6E6;">${bookingData.project_description || bookingData.project_details || "None"}</td>
@@ -304,8 +340,14 @@ export const sendTeamEmail = async (bookingData, bookingId) => {
     const { serviceName, planName, price } = extractServiceDetails(bookingData);
     const recipient = process.env.EMAIL_TEAM_TO || process.env.COMPANY_EMAIL || "admin@behindthebuild.in";
 
-    const teamSubject = `NEW BOOKING — [${bookingId}]`;
+    const teamSubject = `New Booking — ${serviceName.toUpperCase()} — [${bookingId}]`;
     
+    const monthlyPriceText = bookingData.monthly_price || price;
+    const durationText = bookingData.duration || bookingData.timeline || bookingData.project_timeline || "1 Month";
+    const totalPriceText = bookingData.total_price || price;
+    const locationTypeText = bookingData.location_type || "Remote";
+    const eventLocationText = bookingData.event_location || "Not applicable";
+
     // Fallback plain text email
     const teamText = `NEW PROJECT BOOKING RECEIVED
 
@@ -316,9 +358,11 @@ Customer Phone: [${bookingData.phone}]
 Company: [${bookingData.company_name || "None"}]
 Service: [${serviceName}]
 Package: [${planName}]
-Price: [${price}]
-Location: [${bookingData.region || bookingData.project_location || "Remote"}]
-Timeline: [${bookingData.timeline || bookingData.project_timeline || "Flexible"}]
+Monthly Price: [${monthlyPriceText}]
+Duration: [${durationText}]
+Total Price: [${totalPriceText}]
+Location Type: [${locationTypeText}]
+Event Location: [${eventLocationText}]
 Project Details: [${bookingData.project_description || bookingData.project_details || "None"}]
 Created At: [${bookingData.created_at || new Date().toISOString()}]`;
 
@@ -407,53 +451,66 @@ Created At: [${bookingData.created_at || new Date().toISOString()}]`;
                         <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${planName}</td>
                       </tr>
 
-                      <!-- Row 4: Price -->
+                      <!-- Row 4: Monthly Price -->
                       <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Price</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #C8041C; border-top: 1px solid #E6E6E6;">${price}</td>
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Monthly Price</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${monthlyPriceText}</td>
                       </tr>
 
-                      <!-- Row 5: Customer Name -->
+                      <!-- Row 5: Duration -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Duration</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${durationText}</td>
+                      </tr>
+
+                      <!-- Row 6: Total Price -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Total Price</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #C8041C; border-top: 1px solid #E6E6E6;">${totalPriceText}</td>
+                      </tr>
+
+                      <!-- Row 7: Location Type -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Location Type</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${locationTypeText}</td>
+                      </tr>
+
+                      <!-- Row 8: Event Location -->
+                      <tr style="border-bottom: 1px solid #E6E6E6;">
+                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Event Location</td>
+                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${eventLocationText}</td>
+                      </tr>
+
+                      <!-- Row 9: Customer Name -->
                       <tr style="border-bottom: 1px solid #E6E6E6;">
                         <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Customer Name</td>
                         <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.client_name}</td>
                       </tr>
 
-                      <!-- Row 6: Customer Email -->
+                      <!-- Row 10: Customer Email -->
                       <tr style="border-bottom: 1px solid #E6E6E6;">
                         <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Customer Email</td>
                         <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6; font-family: monospace;">${bookingData.email}</td>
                       </tr>
 
-                      <!-- Row 7: Phone -->
+                      <!-- Row 11: Phone Number -->
                       <tr style="border-bottom: 1px solid #E6E6E6;">
                         <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Phone Number</td>
                         <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.phone}</td>
                       </tr>
 
-                      <!-- Row 8: Company -->
+                      <!-- Row 12: Company -->
                       <tr style="border-bottom: 1px solid #E6E6E6;">
                         <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Company / Brand</td>
                         <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.company_name || "None"}</td>
                       </tr>
 
-                      <!-- Row 9: Location -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Project Location</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.region || bookingData.project_location || "Remote"}</td>
-                      </tr>
-
-                      <!-- Row 10: Timeline -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Project Timeline</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.timeline || bookingData.project_timeline || "Flexible"}</td>
-                      </tr>
-
-                      <!-- Row 11: Details -->
+                      <!-- Row 13: Details -->
                       <tr>
                         <td valign="top" style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Project Details</td>
                         <td style="padding: 10px 0; font-size: 12px; line-height: 1.5; color: #444444; font-weight: bold; border-top: 1px solid #E6E6E6;">${bookingData.project_description || bookingData.project_details || "None"}</td>
                       </tr>
+                      <!-- End of details rows -->
 
                     </table>
                   </td>

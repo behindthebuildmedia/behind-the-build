@@ -211,7 +211,13 @@ app.post('/api/bookings', bookingRateLimiter, async (req, res) => {
       timeline,
       project_timeline,
       project_description,
-      project_details
+      project_details,
+      // New fields from corrected booking form
+      monthly_price,
+      duration,
+      total_price,
+      location_type,
+      event_location
     } = req.body;
 
     const normalizedFullName = (full_name || client_name || '').trim();
@@ -233,7 +239,7 @@ app.post('/api/bookings', bookingRateLimiter, async (req, res) => {
       isInvalidString(normalizedCompanyName, 100) ||
       isInvalidString(normalizedEmail, 100) ||
       isInvalidString(normalizedPhone, 30) ||
-      isInvalidString(normalizedRegion, 50) ||
+      isInvalidString(normalizedRegion, 300) || // Relaxed to 300 to allow event addresses
       isInvalidString(normalizedTimeline, 50) ||
       isInvalidString(normalizedDetails, 2000)
     ) {
@@ -396,13 +402,19 @@ app.post('/api/bookings', bookingRateLimiter, async (req, res) => {
       region: normalizedRegion,
       project_location: normalizedRegion,
       services,
-      budget: priceVal,
-      price: priceVal,
-      timeline: normalizedTimeline,
-      project_timeline: normalizedTimeline,
+      budget: total_price || priceVal,
+      price: total_price || priceVal,
+      timeline: duration || normalizedTimeline,
+      project_timeline: duration || normalizedTimeline,
       project_description: normalizedDetails,
       project_details: normalizedDetails,
-      created_at: now
+      created_at: now,
+      // Corrected fields mappings
+      monthly_price: monthly_price || priceVal,
+      duration: duration || normalizedTimeline,
+      total_price: total_price || priceVal,
+      location_type: location_type || (normalizedRegion === 'Remote' ? 'Remote' : 'Event Location'),
+      event_location: event_location || (normalizedRegion === 'Remote' ? 'Not applicable' : normalizedRegion)
     };
 
     // 6. Return response immediately (Database success achieved)
