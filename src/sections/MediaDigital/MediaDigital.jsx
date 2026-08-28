@@ -17,7 +17,7 @@ export default function MediaDigital() {
       num: '02',
       title: 'SOCIAL MEDIA MARKETING',
       desc: 'Strategy, content and management designed to build a consistent digital presence.',
-      price: '₹5,999',
+      price: '₹4,999',
       path: '/services/social-media-marketing'
     },
     {
@@ -38,7 +38,7 @@ export default function MediaDigital() {
       num: '05',
       title: 'DIGITAL MARKETING',
       desc: 'Strategic digital marketing designed to grow your visibility, reach and audience.',
-      price: '₹5,999',
+      price: '₹4,999',
       path: '/services/digital-marketing'
     }
   ];

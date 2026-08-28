@@ -15,7 +15,7 @@ export const servicesData = {
       starter: {
         planName: "STARTER",
         price: "₹7,999",
-        billing: "month",
+        billing: "1 Month",
         features: [
           "Basic editing",
           "Color grading",
@@ -30,7 +30,7 @@ export const servicesData = {
       growth: {
         planName: "GROWTH",
         price: "₹13,999",
-        billing: "3 months",
+        billing: "3 Months",
         features: [
           "Good editing",
           "Color grading",
@@ -47,7 +47,7 @@ export const servicesData = {
       premium: {
         planName: "PREMIUM",
         price: "₹19,999",
-        billing: "5 months",
+        billing: "5 Months",
         features: [
           "Premium editing",
           "After Effects",
@@ -88,8 +88,8 @@ export const servicesData = {
       introductory: true,
       starter: {
         planName: "STARTER",
-        price: "₹5,999",
-        billing: "month",
+        price: "₹4,999",
+        billing: "1 Month",
         features: [
           "Management of 2 accounts",
           "12 posts per month",
@@ -102,8 +102,8 @@ export const servicesData = {
       },
       growth: {
         planName: "GROWTH",
-        price: "₹10,999",
-        billing: "2 months",
+        price: "₹11,999",
+        billing: "3 Months",
         features: [
           "Management of 4 accounts",
           "20 posts per month",
@@ -116,8 +116,8 @@ export const servicesData = {
       },
       premium: {
         planName: "PREMIUM",
-        price: "₹16,999",
-        billing: "3 months",
+        price: "₹17,999",
+        billing: "5 Months",
         features: [
           "Management of all major accounts",
           "35 posts per month",
@@ -155,7 +155,7 @@ export const servicesData = {
       starter: {
         planName: "STARTER",
         price: "₹5,999",
-        billing: "",
+        billing: "1 Month",
         features: [
           "Custom Logo Design",
           "Business Card Design",
@@ -168,8 +168,8 @@ export const servicesData = {
       },
       growth: {
         planName: "GROWTH",
-        price: "₹10,999",
-        billing: "2 months",
+        price: "₹12,999",
+        billing: "3 Months",
         features: [
           "Logo & Branding Kit",
           "Social Media Templates",
@@ -183,8 +183,8 @@ export const servicesData = {
       },
       premium: {
         planName: "PREMIUM",
-        price: "₹16,999",
-        billing: "3 months",
+        price: "₹18,999",
+        billing: "5 Months",
         features: [
           "Full Corporate Brand Identity Guidelines",
           "Custom Presentation & Deck Design",
@@ -219,7 +219,7 @@ export const servicesData = {
       starter: {
         planName: "STARTER",
         price: "₹8,000",
-        billing: "Up to 3 hours",
+        billing: "upto 3 hours",
         features: [
           "50 edited photos",
           "1 highlight video",
@@ -231,7 +231,7 @@ export const servicesData = {
       growth: {
         planName: "GROWTH",
         price: "₹15,000",
-        billing: "Up to 6 hours",
+        billing: "upto 6 hours",
         features: [
           "100 edited photos",
           "1 full event coverage video",
@@ -244,7 +244,7 @@ export const servicesData = {
       premium: {
         planName: "PREMIUM",
         price: "₹25,000",
-        billing: "Full Day",
+        billing: "upto 8 hours",
         features: [
           "200+ edited high-resolution photos",
           "Full Event Aftermovie & Highlight Edit",
@@ -280,8 +280,8 @@ export const servicesData = {
       introductory: true,
       starter: {
         planName: "STARTER",
-        price: "₹5,999",
-        billing: "month",
+        price: "₹4,999",
+        billing: "1 Month",
         features: [
           "SEO Audit & Keyword Map",
           "Ad campaign strategy",
@@ -296,7 +296,7 @@ export const servicesData = {
       growth: {
         planName: "GROWTH",
         price: "₹11,999",
-        billing: "2 months",
+        billing: "3 Months",
         features: [
           "Full SEO & SEM operations",
           "Conversion funnel engineering",
@@ -311,7 +311,7 @@ export const servicesData = {
       premium: {
         planName: "PREMIUM",
         price: "₹18,999",
-        billing: "3 months",
+        billing: "5 Months",
         features: [
           "Omnichannel Paid Ads Strategy & Executions",
           "Full Conversion Funnel Engineering & CRO",

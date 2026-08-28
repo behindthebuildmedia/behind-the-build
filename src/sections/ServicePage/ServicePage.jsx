@@ -211,18 +211,18 @@ export default function ServicePage({ serviceKey }) {
               <div className={`grid grid-cols-1 ${data.pricing.premium ? 'md:grid-cols-3 max-w-5xl' : 'md:grid-cols-2 max-w-3xl'} gap-8 mx-auto items-stretch`}>
                 {/* STARTER CARD */}
                 <ScrollReveal delay={0.1} className="w-full flex h-full">
-                  <PricingCard plan={data.pricing.starter} onCta={handleCtaClick} cardNum="01" />
+                  <PricingCard plan={data.pricing.starter} onCta={handleCtaClick} />
                 </ScrollReveal>
 
                 {/* GROWTH CARD */}
                 <ScrollReveal delay={0.18} className="w-full flex h-full">
-                  <PricingCard plan={data.pricing.growth} onCta={handleCtaClick} cardNum="02" />
+                  <PricingCard plan={data.pricing.growth} onCta={handleCtaClick} />
                 </ScrollReveal>
 
                 {/* PREMIUM CARD */}
                 {data.pricing.premium && (
                   <ScrollReveal delay={0.26} className="w-full flex h-full">
-                    <PricingCard plan={data.pricing.premium} onCta={handleCtaClick} cardNum="03" />
+                    <PricingCard plan={data.pricing.premium} onCta={handleCtaClick} />
                   </ScrollReveal>
                 )}
               </div>
@@ -316,7 +316,7 @@ export default function ServicePage({ serviceKey }) {
 }
 
 // Pricing Card Subcomponent
-function PricingCard({ plan, onCta, cardNum }) {
+function PricingCard({ plan, onCta }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -343,11 +343,6 @@ function PricingCard({ plan, onCta, cardNum }) {
                 </span>
               )}
             </div>
-            
-            {/* Red Package Numbering */}
-            <span className="text-2xl font-mono font-black text-[#C8041C]/30 group-hover:text-[#C8041C] leading-none">
-              {cardNum}
-            </span>
           </div>
           
           <div className="space-y-1">
