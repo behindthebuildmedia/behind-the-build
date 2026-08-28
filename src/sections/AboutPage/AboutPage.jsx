@@ -36,11 +36,11 @@ export default function AboutPage() {
   };
 
   return (
-    <div className="bg-brand-white text-[#212121] pt-28 pb-16 min-h-screen font-sans text-left">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full space-y-28">
+    <div className="bg-brand-white text-[#212121] pt-32 pb-16 min-h-screen font-sans text-left">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full space-y-12 md:space-y-14">
         
         {/* 1. ABOUT PAGE HERO */}
-        <section className="space-y-6 pt-8 select-none relative">
+        <section className="space-y-4 pt-2 md:pt-4 select-none relative">
           <ScrollReveal delay={0} yOffset={10}>
             <span className="text-xs font-mono font-black uppercase tracking-widest text-[#C8041C] block">
               ABOUT BEHIND THE BUILD
@@ -113,7 +113,7 @@ export default function AboutPage() {
         </section>
 
         {/* 3. OUR VISION */}
-        <section className="bg-[#FAF9F9] border border-[#E6E6E6] p-8 sm:p-12 lg:p-16 space-y-8 select-none relative overflow-hidden">
+        <section className="bg-[#FAF9F9] border border-[#E6E6E6] p-8 sm:p-12 lg:p-14 space-y-6 select-none relative overflow-hidden">
           <ScrollReveal delay={0} yOffset={15}>
             <span className="text-xs font-mono font-black text-[#C8041C] uppercase tracking-widest block">
               OUR VISION
@@ -202,8 +202,8 @@ export default function AboutPage() {
         </section>
 
         {/* 6. WHAT WE'RE BUILDING */}
-        <section className="space-y-16">
-          <div className="space-y-4">
+        <section className="space-y-8">
+          <div className="space-y-3">
             <ScrollReveal delay={0} yOffset={15}>
               <span className="text-xs font-mono font-black text-[#C8041C] uppercase tracking-widest block">
                 WHAT WE'RE BUILDING
@@ -296,10 +296,10 @@ export default function AboutPage() {
         </section>
 
         {/* 8. FINAL CTA */}
-        <section className="py-20 border-t border-[#E5E5E5] w-full text-center space-y-8 select-none">
+        <section className="py-12 md:py-16 border-t border-[#E5E5E5] w-full text-center space-y-6 select-none">
           <ScrollReveal delay={0} yOffset={15}>
             <h3 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-[#212121] leading-none">
-              HAVE SOMETHING<br />WORTH BUILDING?
+               HAVE SOMETHING<br />WORTH BUILDING?
             </h3>
           </ScrollReveal>
           <ScrollReveal delay={0.1} yOffset={15}>

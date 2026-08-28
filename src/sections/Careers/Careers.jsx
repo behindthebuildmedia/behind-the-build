@@ -5,6 +5,20 @@ import { ArrowRight, ChevronDown } from 'lucide-react';
 export default function Careers() {
   const [activeJob, setActiveJob] = useState(null);
 
+  const mailtoSubject = encodeURIComponent("General Job Application — Behind The Build");
+  const mailtoBody = encodeURIComponent(
+    "Hello Behind The Build Team,\n\n" +
+    "I would like to apply for an opportunity at Behind The Build.\n\n" +
+    "Name:\n" +
+    "Role:\n" +
+    "Phone:\n" +
+    "Portfolio / LinkedIn:\n" +
+    "Additional information:\n\n" +
+    "Thank you,\n" +
+    "[Your Name]"
+  );
+  const generalMailto = `mailto:admin@behindthebuild.in?subject=${mailtoSubject}&body=${mailtoBody}`;
+
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = "Careers | Behind the Build";
@@ -63,11 +77,11 @@ export default function Careers() {
   };
 
   return (
-    <div className="bg-brand-white text-[#212121] pt-28 pb-16 min-h-screen font-sans text-left">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full space-y-24">
+    <div className="bg-brand-white text-[#212121] pt-32 pb-16 min-h-screen font-sans text-left">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full space-y-12 md:space-y-14">
         
         {/* HERO SECTION */}
-        <section className="space-y-6 pt-8 select-none">
+        <section className="space-y-4 pt-2 md:pt-4 select-none">
           <ScrollReveal delay={0} yOffset={10}>
             <span className="text-xs font-mono font-black uppercase tracking-widest text-[#C8041C] block">
               JOIN THE TEAM
@@ -191,7 +205,7 @@ export default function Careers() {
         </section>
 
         {/* GENERAL APPLICATION CTA */}
-        <section className="py-16 md:py-20 border-t border-[#E5E5E5] w-full text-center space-y-8 select-none">
+        <section className="py-12 md:py-16 border-t border-[#E5E5E5] w-full text-center space-y-6 select-none">
           <ScrollReveal delay={0} yOffset={15}>
             <h3 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-[#212121] leading-none">
               DON'T SEE YOUR ROLE?
@@ -204,7 +218,7 @@ export default function Careers() {
           </ScrollReveal>
           <ScrollReveal delay={0.2} yOffset={15} className="pt-4">
             <a
-              href="mailto:admin@behindthebuild.in?subject=[GENERAL APPLICATION] Creative Talents"
+              href={generalMailto}
               className="bg-[#C8041C] text-brand-white hover:bg-[#C8041C]/90 px-8 py-4 text-xs font-mono font-bold uppercase tracking-widest inline-flex items-center gap-2.5 transition-all duration-300 hover:scale-[1.03] active:scale-95 mx-auto"
             >
               <span>SEND GENERAL APPLICATION</span>
