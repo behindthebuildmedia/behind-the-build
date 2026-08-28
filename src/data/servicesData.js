@@ -254,9 +254,12 @@ export const servicesData = {
     name: 'DIGITAL MARKETING',
     intro: "Strategic digital marketing designed to grow your visibility, reach and audience.",
     servicesList: [
-      { name: "Social Media Management", desc: "Complete operations across your channels." },
-      { name: "Content Strategy", desc: "Script planning, hook design, and release maps." },
-      { name: "Content Creation", desc: "Copywriting, graphic templates, and media formats." }
+      { name: "Search Engine Optimization (SEO)", desc: "Improve organic visibility and search rankings." },
+      { name: "Search Engine Marketing (SEM)", desc: "Paid search campaigns designed to reach high-intent audiences." },
+      { name: "Performance Marketing", desc: "Data-driven campaigns focused on measurable conversions and growth." },
+      { name: "Paid Advertising", desc: "Campaign strategy and management across relevant digital advertising platforms." },
+      { name: "Conversion Optimization", desc: "Improve landing pages, funnels and user journeys to increase conversions." },
+      { name: "Analytics & Growth Strategy", desc: "Track performance, identify opportunities and continuously optimize campaigns." }
     ],
     pricing: {
       introductory: true,
@@ -265,13 +268,12 @@ export const servicesData = {
         price: "₹5,000",
         billing: "month",
         features: [
-          "Management of 2 social media accounts",
-          "12 posts per month",
-          "Basic content creation",
-          "Simple hashtag strategy",
-          "1-month content strategy",
-          "Content calendar & scheduling",
-          "Monthly performance report"
+          "SEO Audit & Keyword Map",
+          "Ad campaign strategy",
+          "Analytics dashboard integration",
+          "Monthly conversions tracking report",
+          "1 ad platform configuration",
+          "Campaign setup & target kickoff"
         ],
         buttonText: "SELECT PLAN →",
         highlighted: false
@@ -281,14 +283,12 @@ export const servicesData = {
         price: "₹9,000",
         billing: "2 months",
         features: [
-          "Management of 4 social media accounts",
-          "20 posts per month",
-          "Advanced content creation",
-          "Advanced hashtag strategy",
-          "2-month content strategy",
-          "Content calendar & scheduling",
-          "Community management",
-          "Monthly performance reports"
+          "Full SEO & SEM operations",
+          "Conversion funnel engineering",
+          "Up to 3 ad platforms managed",
+          "Bi-weekly reporting dashboard updates",
+          "A/B landing page campaign assets",
+          "Advanced growth consultations"
         ],
         buttonText: "SELECT PLAN →",
         highlighted: true
@@ -296,8 +296,12 @@ export const servicesData = {
     },
     faq: [
       {
-        question: "How do we get started with marketing plans?",
-        answer: "Choose Starter or Growth to begin our setup. We will schedule a kickoff session to align on accounts and strategy."
+        question: "Do you configure Google Ads and Meta campaigns?",
+        answer: "Yes, we handle complete creation, tracking setup, copy design, asset mapping, and bid optimization across Google, Meta, and LinkedIn ads."
+      },
+      {
+        question: "How long does it take to see results?",
+        answer: "Paid campaigns (SEM/Meta) usually show initial conversion traffic within 24-48 hours. Organic SEO optimizations take between 3-6 months to rank and capture sustainable traffic."
       }
     ]
   }
