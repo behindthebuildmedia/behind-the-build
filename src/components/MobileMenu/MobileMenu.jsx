@@ -92,7 +92,6 @@ export default function MobileMenu({ isOpen, onClose, onNavClick, activeSection 
                           { label: 'VIDEO EDITING', path: '/services/video-editing' },
                           { label: 'SOCIAL MEDIA MARKETING', path: '/services/social-media-marketing' },
                           { label: 'DESIGN', path: '/services/design' },
-                          { label: 'WEBSITE DESIGN', path: '/services/website-design' },
                           { label: 'TECH EVENT COVERAGE', path: '/services/tech-event-coverage' },
                           { label: 'DIGITAL MARKETING', path: '/services/digital-marketing' }
                         ].map((subItem) => (

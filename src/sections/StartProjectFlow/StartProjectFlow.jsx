@@ -480,18 +480,12 @@ export default function StartProjectFlow({ currentPath }) {
     },
     {
       num: '04',
-      title: 'WEBSITE DESIGN',
-      desc: 'Modern, responsive websites built to present your brand and convert visitors.',
-      path: '/start-a-project/website-design'
-    },
-    {
-      num: '05',
       title: 'TECH EVENT COVERAGE',
       desc: 'Professional photo and video coverage for launches, conferences, campus and technology events.',
       path: '/start-a-project/event-coverage'
     },
     {
-      num: '06',
+      num: '05',
       title: 'DIGITAL MARKETING',
       desc: 'Strategic digital marketing designed to grow your visibility, reach and audience.',
       path: '/start-a-project/digital-marketing'

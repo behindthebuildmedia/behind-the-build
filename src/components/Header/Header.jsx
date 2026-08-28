@@ -229,7 +229,6 @@ export default function Header({ onHomeRedirect }) {
                             { label: 'VIDEO EDITING', path: '/services/video-editing', subtitle: 'Video Editing & Production' },
                             { label: 'SOCIAL MEDIA MARKETING', path: '/services/social-media-marketing', subtitle: 'Social-First Growth' },
                             { label: 'DESIGN', path: '/services/design', subtitle: 'Brand & Creative Identity' },
-                            { label: 'WEBSITE DESIGN', path: '/services/website-design', subtitle: 'Responsive UI/UX Web' },
                             { label: 'TECH EVENT COVERAGE', path: '/services/tech-event-coverage', subtitle: 'Conference Photo & Video' },
                             { label: 'DIGITAL MARKETING', path: '/services/digital-marketing', subtitle: 'Growth Strategy & Performance Ads' }
                           ].map((subItem) => (

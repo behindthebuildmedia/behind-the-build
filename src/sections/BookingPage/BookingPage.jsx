@@ -520,7 +520,6 @@ export default function BookingPage({ currentPath }) {
                 <option value="video-editing">VIDEO EDITING</option>
                 <option value="social-media-marketing">SOCIAL MEDIA MARKETING</option>
                 <option value="design">DESIGN</option>
-                <option value="website-design">WEBSITE DESIGN</option>
                 <option value="tech-events-coverage">TECH EVENT COVERAGE</option>
                 <option value="digital-marketing">DIGITAL MARKETING</option>
               </select>

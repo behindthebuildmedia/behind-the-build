@@ -137,9 +137,10 @@ export default function Footer() {
             <ul className="space-y-3">
               {[
                 { label: 'Video Editing', path: '/services/video-editing' },
-                { label: 'Social Media', path: '/services/social-media-marketing' },
-                { label: 'Website Design', path: '/services/website-design' },
-                { label: 'Events Coverage', path: '/services/tech-events-coverage' }
+                { label: 'Social Media Marketing', path: '/services/social-media-marketing' },
+                { label: 'Design', path: '/services/design' },
+                { label: 'Tech Event Coverage', path: '/services/tech-event-coverage' },
+                { label: 'Digital Marketing', path: '/services/digital-marketing' }
               ].map((item, idx) => (
                 <li key={idx}>
                   <a 

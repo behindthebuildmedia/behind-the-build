@@ -151,60 +151,8 @@ export const servicesData = {
       }
     ]
   },
-  'website-design': {
-    num: '04',
-    label: 'WEBSITE DESIGN',
-    name: 'WEBSITE DESIGN',
-    intro: "Modern, responsive websites built to present your brand and convert visitors.",
-    servicesList: [
-      { name: "Portfolio Websites", desc: "Editorial visual displays presenting past accomplishments." },
-      { name: "E-commerce Websites", desc: "Seamless storefronts managing checkouts and inventory." },
-      { name: "Commercial Websites", desc: "Business platforms describing complex service packages." }
-    ],
-    pricing: {
-      introductory: true,
-      starter: {
-        planName: "STARTER",
-        price: "₹12,999",
-        billing: "",
-        features: [
-          "Up to 5 pages",
-          "Responsive design",
-          "Basic SEO setup",
-          "Contact form",
-          "Social media integration",
-          "Google Analytics setup"
-        ],
-        buttonText: "SELECT PLAN →",
-        highlighted: false
-      },
-      growth: {
-        planName: "GROWTH",
-        price: "₹21,999",
-        billing: "",
-        features: [
-          "Up to 10 pages",
-          "Responsive design",
-          "Advanced SEO setup",
-          "Contact form",
-          "Social media integration",
-          "Google Analytics setup",
-          "Custom functionality",
-          "Content creation"
-        ],
-        buttonText: "SELECT PLAN →",
-        highlighted: true
-      }
-    },
-    faq: [
-      {
-        question: "Do you handle domain configuration?",
-        answer: "Yes, we map domains, set up hosting on fast platforms like Vercel, and configure DNS parameters."
-      }
-    ]
-  },
   'tech-events-coverage': {
-    num: '05',
+    num: '04',
     label: 'TECH EVENT COVERAGE',
     name: 'TECH EVENT COVERAGE',
     intro: "Professional photo and video coverage for launches, conferences, campus and technology events.",
@@ -249,7 +197,7 @@ export const servicesData = {
     ]
   },
   'digital-marketing': {
-    num: '06',
+    num: '05',
     label: 'DIGITAL MARKETING',
     name: 'DIGITAL MARKETING',
     intro: "Strategic digital marketing designed to grow your visibility, reach and audience.",

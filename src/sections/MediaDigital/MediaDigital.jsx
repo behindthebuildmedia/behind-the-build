@@ -29,20 +29,13 @@ export default function MediaDigital() {
     },
     {
       num: '04',
-      title: 'WEBSITE DESIGN',
-      desc: 'Modern, responsive websites built to present your brand and convert visitors.',
-      price: '₹12,999',
-      path: '/services/website-design'
-    },
-    {
-      num: '05',
       title: 'TECH EVENT COVERAGE',
       desc: 'Professional photo and video coverage for launches, conferences, campus and technology events.',
       price: '₹8,000',
       path: '/services/tech-event-coverage'
     },
     {
-      num: '06',
+      num: '05',
       title: 'DIGITAL MARKETING',
       desc: 'Strategic digital marketing designed to grow your visibility, reach and audience.',
       price: '₹5,000',

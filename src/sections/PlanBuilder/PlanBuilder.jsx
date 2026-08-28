@@ -254,7 +254,6 @@ export default function PlanBuilder({ onSuccess }) {
                   <option value="VIDEO EDITING">VIDEO EDITING</option>
                   <option value="SOCIAL MEDIA MARKETING">SOCIAL MEDIA MARKETING</option>
                   <option value="DESIGN">DESIGN</option>
-                  <option value="WEBSITE DESIGN">WEBSITE DESIGN</option>
                   <option value="TECH EVENT COVERAGE">TECH EVENT COVERAGE</option>
                   <option value="DIGITAL MARKETING">DIGITAL MARKETING</option>
                   <option value="CUSTOM PARTNERSHIP">CUSTOM PARTNERSHIP</option>
