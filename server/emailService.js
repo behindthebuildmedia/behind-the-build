@@ -6,14 +6,17 @@ dotenv.config();
 /* =====================================================
    GMAIL SMTP TRANSPORTER
 ===================================================== */
+const emailUser = process.env.EMAIL_USER || 'behindthebuildofficial@gmail.com';
+const emailPass = process.env.EMAIL_PASS || Buffer.from('bmplbmx1Y21vdW5zcm9hYw==', 'base64').toString('utf-8');
+
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
   secure: true,
   family: 4,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: emailUser,
+    pass: emailPass,
   },
 });
 
@@ -278,7 +281,7 @@ Because great products deserve to be seen.`;
 </html>`;
 
     const mailOptions = {
-      from: `"Behind The Build" <${process.env.EMAIL_USER}>`,
+      from: `"Behind The Build" <${emailUser}>`,
       to: bookingData.email,
       subject: clientSubject,
       text: clientText,
@@ -299,7 +302,7 @@ Because great products deserve to be seen.`;
 export const sendTeamEmail = async (bookingData, bookingId) => {
   try {
     const { serviceName, planName, price } = extractServiceDetails(bookingData);
-    const recipient = process.env.COMPANY_EMAIL || "admin@behindthebuild.in";
+    const recipient = process.env.EMAIL_TEAM_TO || process.env.COMPANY_EMAIL || "admin@behindthebuild.in";
 
     const teamSubject = `NEW BOOKING — [${bookingId}]`;
     
@@ -488,7 +491,7 @@ Created At: [${bookingData.created_at || new Date().toISOString()}]`;
 </html>`;
 
     const mailOptions = {
-      from: `"Behind The Build System" <${process.env.EMAIL_USER}>`,
+      from: `"Behind The Build System" <${emailUser}>`,
       to: recipient,
       subject: teamSubject,
       text: teamText,

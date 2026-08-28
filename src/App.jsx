@@ -105,8 +105,16 @@ function App() {
       title = "Booking Confirmed | Behind the Build";
       desc = `Thank you for choosing Behind the Build. Your project request (ID: ${submitted_booking_id}) has been received. Our creative team will contact you in 60 minutes.`;
       path = "/confirmation";
-    } else if (window.location.pathname.startsWith('/case-studies/')) {
-      path = window.location.pathname;
+    } else if (currentPath === '/start-a-project' || currentPath.startsWith('/start-a-project/')) {
+      title = "Start a Project | Behind the Build";
+      desc = "Start a creative media project with Behind the Build. Choose from video editing, social media marketing, design, website design, event coverage, and digital marketing.";
+      path = currentPath;
+    } else if (currentPath === '/project-submitted') {
+      title = "Project Inquiry Received | Behind the Build";
+      desc = "Thank you for reaching out to Behind the Build. We've received your project details and will get back to you shortly.";
+      path = currentPath;
+    } else if (currentPath.startsWith('/case-studies/')) {
+      path = currentPath;
     } else {
       path = "/";
     }
