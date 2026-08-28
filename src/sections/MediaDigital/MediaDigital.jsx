@@ -17,28 +17,28 @@ export default function MediaDigital() {
       num: '02',
       title: 'SOCIAL MEDIA MARKETING',
       desc: 'Strategy, content and management designed to build a consistent digital presence.',
-      price: '₹4,999',
+      price: '₹6,999',
       path: '/services/social-media-marketing'
     },
     {
       num: '03',
       title: 'DESIGN',
       desc: 'Creative design systems that make your brand look consistent and recognizable.',
-      price: '₹5,999',
+      price: '₹6,999',
       path: '/services/design'
     },
     {
       num: '04',
       title: 'TECH EVENT COVERAGE',
       desc: 'Professional photo and video coverage for launches, conferences, campus and technology events.',
-      price: '₹8,000',
+      price: '₹9,000',
       path: '/services/tech-event-coverage'
     },
     {
       num: '05',
       title: 'DIGITAL MARKETING',
       desc: 'Strategic digital marketing designed to grow your visibility, reach and audience.',
-      price: '₹4,999',
+      price: '₹7,999',
       path: '/services/digital-marketing'
     }
   ];

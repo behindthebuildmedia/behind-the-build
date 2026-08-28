@@ -76,13 +76,6 @@ export default function BookingPage({ currentPath }) {
   };
 
   const getDurationOptions = () => {
-    if (activeServiceResolved && activeServiceResolved.name === 'TECH EVENT COVERAGE') {
-      return [
-        { label: 'Upto 3 Hours', value: 'upto 3 hours' },
-        { label: 'Upto 6 Hours', value: 'upto 6 hours' },
-        { label: 'Upto 8 Hours', value: 'upto 8 hours' }
-      ];
-    }
     return [
       { label: '1 Month', value: '1 Month' },
       { label: '3 Months', value: '3 Months' },
@@ -111,23 +104,12 @@ export default function BookingPage({ currentPath }) {
   useEffect(() => {
     if (!isSuccessPage && activeServiceResolved) {
       const planName = isDirectBook ? selectedPlanSlug : planParam;
-      
-      let durationVal = '1 Month';
-      if (activeServiceResolved.name === 'TECH EVENT COVERAGE') {
-        const durationMap = {
-          starter: 'upto 3 hours',
-          growth: 'upto 6 hours',
-          premium: 'upto 8 hours'
-        };
-        durationVal = durationMap[planName] || 'upto 3 hours';
-      } else {
-        const durationMap = {
-          starter: '1 Month',
-          growth: '3 Months',
-          premium: '5 Months'
-        };
-        durationVal = durationMap[planName] || '1 Month';
-      }
+      const durationMap = {
+        starter: '1 Month',
+        growth: '3 Months',
+        premium: '5 Months'
+      };
+      const durationVal = durationMap[planName] || '1 Month';
 
       setFormData(prev => {
         if (prev.timeline !== durationVal) {
@@ -588,22 +570,12 @@ export default function BookingPage({ currentPath }) {
                 onChange={(e) => {
                   const planVal = e.target.value;
                   setSelectedPlanSlug(planVal);
-                  let durationVal = '1 Month';
-                  if (activeServiceResolved && activeServiceResolved.name === 'TECH EVENT COVERAGE') {
-                    const durationMap = {
-                      starter: 'upto 3 hours',
-                      growth: 'upto 6 hours',
-                      premium: 'upto 8 hours'
-                    };
-                    durationVal = durationMap[planVal] || 'upto 3 hours';
-                  } else {
-                    const durationMap = {
-                      starter: '1 Month',
-                      growth: '3 Months',
-                      premium: '5 Months'
-                    };
-                    durationVal = durationMap[planVal] || '1 Month';
-                  }
+                  const durationMap = {
+                    starter: '1 Month',
+                    growth: '3 Months',
+                    premium: '5 Months'
+                  };
+                  const durationVal = durationMap[planVal] || '1 Month';
                   setFormData(prev => ({ ...prev, timeline: durationVal }));
                 }}
                 className="mt-2 bg-[#FAF9F9] border border-[#E6E6E6] px-3 py-1.5 rounded text-xs font-black text-brand-charcoal uppercase focus:outline-none focus:border-[#C8041C] transition-all cursor-pointer w-full max-w-[120px]"
@@ -748,23 +720,12 @@ export default function BookingPage({ currentPath }) {
                 value={formData.timeline}
                 onChange={(e) => {
                   const timelineVal = e.target.value;
-                  let targetPlan = 'starter';
-                  
-                  if (activeServiceResolved && activeServiceResolved.name === 'TECH EVENT COVERAGE') {
-                    const planMap = {
-                      'upto 3 hours': 'starter',
-                      'upto 6 hours': 'growth',
-                      'upto 8 hours': 'premium'
-                    };
-                    targetPlan = planMap[timelineVal] || 'starter';
-                  } else {
-                    const planMap = {
-                      '1 Month': 'starter',
-                      '3 Months': 'growth',
-                      '5 Months': 'premium'
-                    };
-                    targetPlan = planMap[timelineVal] || 'starter';
-                  }
+                  const planMap = {
+                    '1 Month': 'starter',
+                    '3 Months': 'growth',
+                    '5 Months': 'premium'
+                  };
+                  const targetPlan = planMap[timelineVal] || 'starter';
 
                   if (isDirectBook) {
                     setSelectedPlanSlug(targetPlan);
