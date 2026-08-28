@@ -10,14 +10,17 @@ import imgCustom from '../../assets/images/services/custom.webp';
 import imgEvents from '../../assets/images/services/events.webp';
 import imgPhotography from '../../assets/images/services/photography.webp';
 import imgVideography from '../../assets/images/services/videography.webp';
+import imgLaunch from '../../assets/images/process/launch.webp';
+import imgPlanning from '../../assets/images/process/planning.webp';
 
 const serviceImages = {
   'video-editing': imgEditing,
   'social-media-marketing': imgSocial,
   'design': imgCustom,
-  'website-design': imgCustom,
+  'website-design': imgLaunch,
   'tech-events-coverage': imgEvents,
-  'digital-marketing': imgSocial,
+  'tech-event-coverage': imgEvents,
+  'digital-marketing': imgPlanning,
   'photography': imgPhotography,
   'videography': imgVideography,
   'event-coverage': imgEvents
