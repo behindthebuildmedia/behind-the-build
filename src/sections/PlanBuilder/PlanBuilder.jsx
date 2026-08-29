@@ -111,8 +111,7 @@ export default function PlanBuilder({ onSuccess }) {
     };
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || '';
-      const requestUrl = `${API_URL}/api/bookings`;
+      const requestUrl = '/api/bookings';
       
       const response = await fetch(requestUrl, {
         method: 'POST',

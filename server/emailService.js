@@ -20,16 +20,11 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-/* =====================================================
-   VERIFY SMTP CONNECTION
-===================================================== */
-transporter.verify((error) => {
-  if (error) {
-    console.error("❌ Gmail SMTP connection failed:", error.message || error);
-  } else {
-    console.log("✅ Gmail SMTP connection successful");
-  }
-});
+
+// Note: transporter.verify() is intentionally skipped — in Vercel serverless
+// functions it runs on every cold start and can delay responses. Errors from
+// SMTP are caught per-request in sendClientEmail / sendTeamEmail.
+
 
 /* =====================================================
    HELPER TO EXTRACT SINGLE SERVICE DETAILS

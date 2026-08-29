@@ -214,8 +214,9 @@ export default function BookingPage({ currentPath }) {
       console.log("Booking submission started");
       console.log("Booking payload:", bookingPayload);
 
-      const API_URL = import.meta.env.VITE_API_URL || '';
-      const requestUrl = `${API_URL}/api/bookings`;
+      // Always use relative URL — in production this routes to Vercel serverless functions,
+      // in development Vite proxy forwards /api/* to localhost:5000
+      const requestUrl = '/api/bookings';
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => {
@@ -267,7 +268,7 @@ export default function BookingPage({ currentPath }) {
 
       // Trigger background email sending (Vercel-compatible serverless-safe async call)
       if (data.emailPayload) {
-        const emailRequestUrl = `${API_URL}/api/bookings/send-emails`;
+        const emailRequestUrl = '/api/bookings/send-emails';
         fetch(emailRequestUrl, {
           method: 'POST',
           headers: {
