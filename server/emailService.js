@@ -1,30 +1,94 @@
+import { Resend } from "resend";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 /* =====================================================
-   GMAIL SMTP TRANSPORTER
+   EMAIL PROVIDER CONFIGURATION
+   
+   Primary:  Resend API (proper DKIM/SPF for behindthebuild.in)
+   Fallback: Gmail SMTP (if Resend is not configured)
 ===================================================== */
-const emailUser = process.env.EMAIL_USER || 'behindthebuildofficial@gmail.com';
-const emailPass = process.env.EMAIL_PASS || Buffer.from('bmplbmx1Y21vdW5zcm9hYw==', 'base64').toString('utf-8');
 
-const transporter = nodemailer.createTransport({
+const RESEND_API_KEY = process.env.RESEND_API_KEY || null;
+const SENDER_EMAIL = process.env.EMAIL_FROM || "admin@behindthebuild.in";
+const SENDER_NAME = "Behind The Build";
+const REPLY_TO_EMAIL = process.env.EMAIL_REPLY_TO || "admin@behindthebuild.in";
+const TEAM_EMAIL = process.env.EMAIL_TEAM_TO || process.env.COMPANY_EMAIL || "admin@behindthebuild.in";
+
+// Resend client (primary — authenticated sending from behindthebuild.in)
+const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
+
+// Gmail SMTP fallback (used only if Resend API key is not configured)
+const gmailUser = process.env.EMAIL_USER || 'behindthebuildofficial@gmail.com';
+const gmailPass = process.env.EMAIL_PASS || Buffer.from('bmplbmx1Y21vdW5zcm9hYw==', 'base64').toString('utf-8');
+
+const gmailTransporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
   secure: true,
   family: 4,
   auth: {
-    user: emailUser,
-    pass: emailPass,
+    user: gmailUser,
+    pass: gmailPass,
   },
 });
 
+if (resend) {
+  console.log("[Email] Using Resend API for transactional emails");
+} else {
+  console.log("[Email] Resend API key not configured — using Gmail SMTP fallback");
+}
 
-// Note: transporter.verify() is intentionally skipped — in Vercel serverless
-// functions it runs on every cold start and can delay responses. Errors from
-// SMTP are caught per-request in sendClientEmail / sendTeamEmail.
+/* =====================================================
+   CORE SEND FUNCTION (Resend primary, Gmail fallback)
+===================================================== */
+const sendEmail = async ({ from, to, replyTo, subject, text, html }) => {
+  // Try Resend first
+  if (resend) {
+    try {
+      const result = await resend.emails.send({
+        from,
+        to: Array.isArray(to) ? to : [to],
+        reply_to: replyTo,
+        subject,
+        text,
+        html,
+      });
 
+      if (result.error) {
+        console.error("[Resend] API error:", result.error);
+        throw new Error(result.error.message || "Resend API error");
+      }
+
+      console.log("[Resend] Email sent successfully:", result.data?.id);
+      return { success: true, provider: "resend", id: result.data?.id };
+    } catch (resendErr) {
+      console.error("[Resend] Failed, falling back to Gmail SMTP:", resendErr.message);
+      // Fall through to Gmail SMTP
+    }
+  }
+
+  // Gmail SMTP fallback
+  try {
+    const mailOptions = {
+      from: `"${SENDER_NAME}" <${gmailUser}>`,
+      to,
+      replyTo: replyTo || REPLY_TO_EMAIL,
+      subject,
+      text,
+      html,
+    };
+
+    await gmailTransporter.sendMail(mailOptions);
+    console.log("[Gmail SMTP] Email sent successfully");
+    return { success: true, provider: "gmail-smtp" };
+  } catch (gmailErr) {
+    console.error("[Gmail SMTP] Email failed:", gmailErr.message);
+    return { success: false, provider: "gmail-smtp", error: gmailErr.message };
+  }
+};
 
 /* =====================================================
    HELPER TO EXTRACT SINGLE SERVICE DETAILS
@@ -33,8 +97,6 @@ const extractServiceDetails = (bookingData) => {
   let serviceName = bookingData.serviceName || bookingData.service || "Brand Building";
   let planName = bookingData.planName || bookingData.plan || "Custom";
   let price = bookingData.price || "Custom Price";
-  let referenceLink = bookingData.referenceLink || "None";
-  let preferredStartDate = bookingData.preferredStartDate || "Flexible";
 
   const servicesArr = bookingData.services;
 
@@ -46,211 +108,125 @@ const extractServiceDetails = (bookingData) => {
       serviceName = mainService.service || serviceName;
       planName = mainService.plan || planName;
       price = mainService.price || price;
-      referenceLink = mainService.referenceLink || referenceLink;
-      preferredStartDate = mainService.preferredStartDate || preferredStartDate;
     }
   }
 
-  return { serviceName, planName, price, referenceLink, preferredStartDate };
+  return { serviceName, planName, price };
 };
 
 /* =====================================================
-   CUSTOMER EMAIL
+   HELPER: Build a detail row for the HTML email
+===================================================== */
+const detailRow = (label, value) => `
+  <tr>
+    <td style="padding:10px 0;font-size:13px;color:#555555;border-bottom:1px solid #EEEEEE;width:40%;vertical-align:top;">${label}</td>
+    <td style="padding:10px 0;font-size:13px;color:#212121;font-weight:600;border-bottom:1px solid #EEEEEE;vertical-align:top;">${value}</td>
+  </tr>`;
+
+/* =====================================================
+   CUSTOMER CONFIRMATION EMAIL
 ===================================================== */
 export const sendClientEmail = async (bookingData, bookingId) => {
   try {
     if (!bookingData.email || !bookingData.email.includes("@")) {
       console.error("[Email] Client email failed: Invalid recipient", bookingData.email);
-      return {
-        success: false,
-        error: "Invalid client email address",
-      };
+      return { success: false, error: "Invalid client email address" };
     }
 
     const { serviceName, planName, price } = extractServiceDetails(bookingData);
-
-    const clientSubject = `Behind The Build — Booking Confirmed [${bookingId}]`;
-    
-    const monthlyPriceText = bookingData.monthly_price || price;
+    const customerName = bookingData.client_name || "there";
     const durationText = bookingData.duration || bookingData.timeline || bookingData.project_timeline || "1 Month";
     const totalPriceText = bookingData.total_price || price;
     const locationTypeText = bookingData.location_type || "Remote";
     const eventLocationText = bookingData.event_location || "Not applicable";
-    const isEventLocation = locationTypeText === 'Event Location';
+    const isEventLocation = locationTypeText === "Event Location";
+    const projectDetails = bookingData.project_description || bookingData.project_details || "None";
 
-    // Fallback plain text email
-    const clientText = `Hi ${bookingData.client_name},
+    // ------------------------------------------------------------------
+    // Subject — clean, professional, transactional
+    // ------------------------------------------------------------------
+    const subject = `Booking Confirmed — ${bookingId}`;
+
+    // ------------------------------------------------------------------
+    // Plain-text version (important for deliverability)
+    // ------------------------------------------------------------------
+    const text = `Hi ${customerName},
 
 Thank you for choosing Behind The Build.
 
-Your booking has been successfully received. Our team will review your requirements and get back to you shortly.
+Your booking has been received successfully. Our team will review your requirements and get back to you shortly.
 
-BOOKING DETAILS:
-Booking ID: [${bookingId}]
-Service: [${serviceName}]
-Package: [${planName}]
-Monthly Price: [${monthlyPriceText}]
-Duration: [${durationText}]
-Total Price: [${totalPriceText}]
-Location Type: [${locationTypeText}]
-${isEventLocation ? `Event Location: [${eventLocationText}]\n` : ''}Customer Name: [${bookingData.client_name}]
-Company / Brand: [${bookingData.company_name || "None"}]
-Phone Number: [${bookingData.phone || "None"}]
-Project Details: [${bookingData.project_description || bookingData.project_details || "None"}]
+Booking Details
+---------------
+Booking ID: ${bookingId}
+Service: ${serviceName}
+Package: ${planName}
+Duration: ${durationText}
+Amount: ${totalPriceText}
+Location: ${locationTypeText}${isEventLocation ? ` — ${eventLocationText}` : ""}
 
-WHAT HAPPENS NEXT?
+What happens next?
 Our team will review your project details and contact you via email or phone within 24 hours.
 
-NEED HELP?
-If you have any questions, simply reply to this email and our team will assist you.
+If you have any questions, reply to this email and we will assist you.
 
+Regards,
 Behind The Build
-Because great products deserve to be seen.`;
+admin@behindthebuild.in
+https://behindthebuild.in`;
 
-    // Premium HTML template
-    const clientHtml = `<!DOCTYPE html>
-<html>
+    // ------------------------------------------------------------------
+    // HTML version — clean, light, transactional (NOT promotional)
+    // ------------------------------------------------------------------
+    const html = `<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Booking Confirmed | Behind The Build</title>
+  <title>Booking Confirmed</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #FAF9F9; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
-  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #FAF9F9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+<body style="margin:0;padding:0;background-color:#F7F7F7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F7F7;">
     <tr>
-      <td align="center" style="padding: 40px 0;">
-        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #FFFFFF; border: 1px solid #E6E6E6; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.015);">
-          
-          <!-- BLACK HEADER -->
+      <td align="center" style="padding:40px 16px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background-color:#FFFFFF;border-radius:6px;overflow:hidden;">
+
+          <!-- HEADER -->
           <tr>
-            <td style="background-color: #212121; padding: 45px 35px; text-align: left;">
-              <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                  <td>
-                    <div style="font-family: monospace; font-size: 20px; font-weight: 900; letter-spacing: 3px; color: #FFFFFF; text-transform: uppercase; line-height: 1.1; margin-bottom: 30px;">
-                      BEHIND<br/>THE BUILD
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div style="font-family: monospace; font-size: 11px; font-weight: 900; letter-spacing: 3px; color: #C8041C; text-transform: uppercase; margin-bottom: 10px;">
-                      BOOKING CONFIRMED
-                    </div>
-                    <h1 style="font-size: 30px; font-weight: 900; color: #FFFFFF; text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: -0.5px;">
-                      YOUR PROJECT<br/><span style="color: #C8041C;">IS IN MOTION.</span>
-                    </h1>
-                    <div style="height: 3px; width: 50px; background-color: #C8041C; margin-top: 25px;"></div>
-                  </td>
-                </tr>
-              </table>
+            <td style="padding:32px 32px 24px 32px;border-bottom:1px solid #EEEEEE;">
+              <p style="margin:0;font-size:18px;font-weight:700;color:#212121;letter-spacing:0.5px;">Behind The Build</p>
             </td>
           </tr>
 
-          <!-- CUSTOMER GREETING & INTRO -->
+          <!-- GREETING -->
           <tr>
-            <td style="padding: 40px 35px 20px 35px; background-color: #FFFFFF;">
-              <p style="font-size: 15px; font-weight: bold; color: #212121; margin: 0 0 12px 0;">
-                Hi ${bookingData.client_name},
-              </p>
-              <p style="font-size: 13px; line-height: 1.6; color: #555555; margin: 0; font-weight: 500;">
-                Thank you for choosing Behind The Build.
-              </p>
-              <p style="font-size: 13px; line-height: 1.6; color: #555555; margin: 8px 0 0 0; font-weight: 500;">
-                Your booking has been successfully received. Our team will review your project requirements and get back to you shortly.
+            <td style="padding:28px 32px 16px 32px;">
+              <p style="margin:0 0 14px 0;font-size:15px;color:#212121;font-weight:600;">Hi ${customerName},</p>
+              <p style="margin:0;font-size:14px;line-height:1.6;color:#444444;">
+                Thank you for choosing Behind The Build. Your booking has been received successfully. Our team will review your requirements and get back to you shortly.
               </p>
             </td>
           </tr>
 
-          <!-- BOOKING DETAILS TABLE CARD -->
+          <!-- BOOKING DETAILS -->
           <tr>
-            <td style="padding: 10px 35px 30px 35px; background-color: #FFFFFF;">
-              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border: 1px solid #E6E6E6; border-radius: 4px; overflow: hidden;">
-                <!-- Header -->
+            <td style="padding:8px 32px 24px 32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #EEEEEE;border-radius:4px;overflow:hidden;">
                 <tr>
-                  <td style="background-color: #212121; color: #FFFFFF; font-size: 11px; font-weight: 900; font-family: monospace; letter-spacing: 2px; padding: 12px 20px; text-transform: uppercase;">
-                    BOOKING DETAILS
+                  <td style="padding:12px 16px;background-color:#FAFAFA;border-bottom:1px solid #EEEEEE;">
+                    <p style="margin:0;font-size:12px;font-weight:700;color:#212121;text-transform:uppercase;letter-spacing:1px;">Booking Details</p>
                   </td>
                 </tr>
-                <!-- Content Rows -->
                 <tr>
-                  <td style="background-color: #FAF9F9; padding: 15px 20px;">
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                      
-                      <!-- Row 1: Booking ID -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td width="35%" style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase;">Booking ID</td>
-                        <td width="65%" style="padding: 10px 0; font-size: 12px; font-family: monospace; font-weight: bold; color: #C8041C;">${bookingId}</td>
-                      </tr>
-                      
-                      <!-- Row 2: Service -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Service</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${serviceName}</td>
-                      </tr>
-
-                      <!-- Row 3: Package -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Package</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${planName}</td>
-                      </tr>
-
-                      <!-- Row 4: Monthly Price -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Monthly Price</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${monthlyPriceText}</td>
-                      </tr>
-
-                      <!-- Row 5: Duration -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Duration</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${durationText}</td>
-                      </tr>
-
-                      <!-- Row 6: Total Price -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Total Price</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #C8041C; border-top: 1px solid #E6E6E6;">${totalPriceText}</td>
-                      </tr>
-
-                      <!-- Row 7: Location Type -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Location Type</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${locationTypeText}</td>
-                      </tr>
-
-                      <!-- Row 8: Event Location (only if applicable) -->
-                      ${isEventLocation ? `
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Event Location</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${eventLocationText}</td>
-                      </tr>
-                      ` : ''}
-
-                      <!-- Row 9: Customer Name -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Customer Name</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.client_name}</td>
-                      </tr>
-
-                      <!-- Row 10: Company -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Company / Brand</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.company_name || "None"}</td>
-                      </tr>
-
-                      <!-- Row 11: Phone -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Phone Number</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.phone || "None"}</td>
-                      </tr>
-
-                      <!-- Row 12: Details -->
-                      <tr>
-                        <td valign="top" style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Project Details</td>
-                        <td style="padding: 10px 0; font-size: 12px; line-height: 1.5; color: #444444; font-weight: bold; border-top: 1px solid #E6E6E6;">${bookingData.project_description || bookingData.project_details || "None"}</td>
-                      </tr>
-
+                  <td style="padding:4px 16px;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                      ${detailRow("Booking ID", `<span style="font-family:monospace;color:#C8041C;">${bookingId}</span>`)}
+                      ${detailRow("Service", serviceName)}
+                      ${detailRow("Package", planName)}
+                      ${detailRow("Duration", durationText)}
+                      ${detailRow("Amount", `<strong>${totalPriceText}</strong>`)}
+                      ${detailRow("Location", isEventLocation ? `Event — ${eventLocationText}` : "Remote")}
+                      ${detailRow("Project Details", projectDetails)}
                     </table>
                   </td>
                 </tr>
@@ -258,280 +234,159 @@ Because great products deserve to be seen.`;
             </td>
           </tr>
 
-          <!-- WHAT HAPPENS NEXT & HELP -->
+          <!-- WHAT HAPPENS NEXT -->
           <tr>
-            <td style="padding: 35px; background-color: #FAF9F9; border-top: 1px solid #E6E6E6; border-bottom: 1px solid #E6E6E6;">
-              <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                  <td>
-                    <h3 style="font-size: 12px; font-weight: 900; font-family: monospace; letter-spacing: 2px; color: #212121; margin: 0 0 10px 0; text-transform: uppercase;">
-                      WHAT HAPPENS NEXT?
-                    </h3>
-                    <p style="font-size: 12px; line-height: 1.6; color: #555555; margin: 0 0 25px 0; font-weight: 500;">
-                      Our team will review your project details and contact you via email or phone within 24 hours.
-                    </p>
-                    
-                    <h3 style="font-size: 12px; font-weight: 900; font-family: monospace; letter-spacing: 2px; color: #212121; margin: 0 0 10px 0; text-transform: uppercase;">
-                      NEED HELP?
-                    </h3>
-                    <p style="font-size: 12px; line-height: 1.6; color: #555555; margin: 0; font-weight: 500;">
-                      If you have any questions, simply reply to this email and our team will assist you.
-                    </p>
-                  </td>
-                </tr>
-              </table>
+            <td style="padding:8px 32px 28px 32px;">
+              <p style="margin:0 0 6px 0;font-size:13px;font-weight:700;color:#212121;">What happens next?</p>
+              <p style="margin:0;font-size:13px;line-height:1.6;color:#555555;">
+                Our team will review your project details and contact you via email or phone within 24 hours. If you have any questions, simply reply to this email.
+              </p>
             </td>
           </tr>
 
-          <!-- BLACK FOOTER -->
+          <!-- FOOTER -->
           <tr>
-            <td style="background-color: #111111; padding: 45px 35px; text-align: center;">
-              <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                  <td>
-                    <div style="font-family: monospace; font-size: 15px; font-weight: 900; letter-spacing: 3px; color: #FFFFFF; text-transform: uppercase; margin-bottom: 5px;">
-                      BEHIND THE BUILD
-                    </div>
-                    <div style="font-size: 11px; color: #888888; font-style: italic; margin-bottom: 25px; font-weight: 500;">
-                      Because great products deserve to be seen.
-                    </div>
-                    <div style="font-size: 10px; color: #555555; font-weight: 500; letter-spacing: 0.5px;">
-                      &copy; 2026 Behind The Build. All rights reserved.
-                    </div>
-                  </td>
-                </tr>
-              </table>
+            <td style="padding:20px 32px;border-top:1px solid #EEEEEE;background-color:#FAFAFA;">
+              <p style="margin:0 0 4px 0;font-size:13px;font-weight:600;color:#212121;">Behind The Build</p>
+              <p style="margin:0;font-size:12px;color:#888888;line-height:1.5;">
+                admin@behindthebuild.in<br>
+                <a href="https://behindthebuild.in" style="color:#888888;text-decoration:none;">behindthebuild.in</a>
+              </p>
             </td>
           </tr>
 
         </table>
+
+        <!-- OUTSIDE FOOTER -->
+        <p style="margin:16px 0 0 0;font-size:11px;color:#AAAAAA;text-align:center;">
+          This is a transactional email confirming your booking with Behind The Build.
+        </p>
+
       </td>
     </tr>
   </table>
 </body>
 </html>`;
 
-    const mailOptions = {
-      from: `"Behind The Build" <${emailUser}>`,
+    // ------------------------------------------------------------------
+    // Send
+    // ------------------------------------------------------------------
+    const result = await sendEmail({
+      from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
       to: bookingData.email,
-      subject: clientSubject,
-      text: clientText,
-      html: clientHtml,
-    };
+      replyTo: REPLY_TO_EMAIL,
+      subject,
+      text,
+      html,
+    });
 
-    await transporter.sendMail(mailOptions);
-    return { success: true };
+    return result;
   } catch (error) {
     console.error("[Email] Client email failed:", error.message || error);
-    return { success: false, error };
+    return { success: false, error: error.message || error };
   }
 };
 
 /* =====================================================
-   COMPANY EMAIL
+   TEAM/ADMIN NOTIFICATION EMAIL
 ===================================================== */
 export const sendTeamEmail = async (bookingData, bookingId) => {
   try {
     const { serviceName, planName, price } = extractServiceDetails(bookingData);
-    const recipient = process.env.EMAIL_TEAM_TO || process.env.COMPANY_EMAIL || "admin@behindthebuild.in";
 
-    const teamSubject = `New Booking — ${serviceName.toUpperCase()} — [${bookingId}]`;
-    
-    const monthlyPriceText = bookingData.monthly_price || price;
     const durationText = bookingData.duration || bookingData.timeline || bookingData.project_timeline || "1 Month";
     const totalPriceText = bookingData.total_price || price;
     const locationTypeText = bookingData.location_type || "Remote";
     const eventLocationText = bookingData.event_location || "Not applicable";
+    const projectDetails = bookingData.project_description || bookingData.project_details || "None";
 
-    // Fallback plain text email
-    const teamText = `NEW PROJECT BOOKING RECEIVED
+    const subject = `New Booking — ${serviceName} — ${bookingId}`;
 
-Booking ID: [${bookingId}]
-Customer Name: [${bookingData.client_name}]
-Customer Email: [${bookingData.email}]
-Customer Phone: [${bookingData.phone}]
-Company: [${bookingData.company_name || "None"}]
-Service: [${serviceName}]
-Package: [${planName}]
-Monthly Price: [${monthlyPriceText}]
-Duration: [${durationText}]
-Total Price: [${totalPriceText}]
-Location Type: [${locationTypeText}]
-Event Location: [${eventLocationText}]
-Project Details: [${bookingData.project_description || bookingData.project_details || "None"}]
-Created At: [${bookingData.created_at || new Date().toISOString()}]`;
+    // ------------------------------------------------------------------
+    // Plain-text version
+    // ------------------------------------------------------------------
+    const text = `New booking received.
 
-    // Premium HTML template
-    const teamHtml = `<!DOCTYPE html>
-<html>
+Booking ID: ${bookingId}
+Customer: ${bookingData.client_name}
+Email: ${bookingData.email}
+Phone: ${bookingData.phone}
+Company: ${bookingData.company_name || "None"}
+Service: ${serviceName}
+Package: ${planName}
+Duration: ${durationText}
+Amount: ${totalPriceText}
+Location: ${locationTypeText}
+Event Location: ${eventLocationText}
+Project Details: ${projectDetails}
+Created: ${bookingData.created_at || new Date().toISOString()}`;
+
+    // ------------------------------------------------------------------
+    // HTML version — simple admin notification
+    // ------------------------------------------------------------------
+    const html = `<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New Inquiry Received | Behind The Build</title>
+  <title>New Booking Received</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #FAF9F9; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
-  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #FAF9F9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+<body style="margin:0;padding:0;background-color:#F7F7F7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F7F7;">
     <tr>
-      <td align="center" style="padding: 40px 0;">
-        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #FFFFFF; border: 1px solid #E6E6E6; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.015);">
-          
-          <!-- BLACK HEADER -->
+      <td align="center" style="padding:40px 16px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background-color:#FFFFFF;border-radius:6px;overflow:hidden;">
+
+          <!-- HEADER -->
           <tr>
-            <td style="background-color: #212121; padding: 45px 35px; text-align: left;">
-              <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                  <td>
-                    <div style="font-family: monospace; font-size: 20px; font-weight: 900; letter-spacing: 3px; color: #FFFFFF; text-transform: uppercase; line-height: 1.1; margin-bottom: 30px;">
-                      BEHIND<br/>THE BUILD
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div style="font-family: monospace; font-size: 11px; font-weight: 900; letter-spacing: 3px; color: #C8041C; text-transform: uppercase; margin-bottom: 10px;">
-                      NEW BOOKING RECEIVED
-                    </div>
-                    <h1 style="font-size: 30px; font-weight: 900; color: #FFFFFF; text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: -0.5px;">
-                      NEW INQUIRY<br/><span style="color: #C8041C;">IS IN MOTION.</span>
-                    </h1>
-                    <div style="height: 3px; width: 50px; background-color: #C8041C; margin-top: 25px;"></div>
-                  </td>
-                </tr>
+            <td style="padding:24px 32px;border-bottom:1px solid #EEEEEE;">
+              <p style="margin:0 0 4px 0;font-size:16px;font-weight:700;color:#212121;">New Booking Received</p>
+              <p style="margin:0;font-size:13px;color:#C8041C;font-family:monospace;font-weight:600;">${bookingId}</p>
+            </td>
+          </tr>
+
+          <!-- CUSTOMER INFO -->
+          <tr>
+            <td style="padding:20px 32px 8px 32px;">
+              <p style="margin:0 0 4px 0;font-size:12px;font-weight:700;color:#888888;text-transform:uppercase;letter-spacing:1px;">Customer</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 32px 16px 32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                ${detailRow("Name", bookingData.client_name)}
+                ${detailRow("Email", `<a href="mailto:${bookingData.email}" style="color:#212121;">${bookingData.email}</a>`)}
+                ${detailRow("Phone", bookingData.phone || "None")}
+                ${detailRow("Company", bookingData.company_name || "None")}
               </table>
             </td>
           </tr>
 
-          <!-- NOTIFICATION INTRO -->
+          <!-- BOOKING INFO -->
           <tr>
-            <td style="padding: 40px 35px 20px 35px; background-color: #FFFFFF;">
-              <p style="font-size: 15px; font-weight: bold; color: #212121; margin: 0 0 12px 0;">
-                Hello Admin,
-              </p>
-              <p style="font-size: 13px; line-height: 1.6; color: #555555; margin: 0; font-weight: 500;">
-                A new project booking request has been successfully received from the website. Please find the customer details below:
-              </p>
+            <td style="padding:8px 32px 8px 32px;">
+              <p style="margin:0 0 4px 0;font-size:12px;font-weight:700;color:#888888;text-transform:uppercase;letter-spacing:1px;">Booking</p>
             </td>
           </tr>
-
-          <!-- BOOKING DETAILS TABLE CARD -->
           <tr>
-            <td style="padding: 10px 35px 30px 35px; background-color: #FFFFFF;">
-              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border: 1px solid #E6E6E6; border-radius: 4px; overflow: hidden;">
-                <!-- Header -->
-                <tr>
-                  <td style="background-color: #212121; color: #FFFFFF; font-size: 11px; font-weight: 900; font-family: monospace; letter-spacing: 2px; padding: 12px 20px; text-transform: uppercase;">
-                    BOOKING DETAILS
-                  </td>
-                </tr>
-                <!-- Content Rows -->
-                <tr>
-                  <td style="background-color: #FAF9F9; padding: 15px 20px;">
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                      
-                      <!-- Row 1: Booking ID -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td width="35%" style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase;">Booking ID</td>
-                        <td width="65%" style="padding: 10px 0; font-size: 12px; font-family: monospace; font-weight: bold; color: #C8041C;">${bookingId}</td>
-                      </tr>
-                      
-                      <!-- Row 2: Service -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Service</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${serviceName}</td>
-                      </tr>
-
-                      <!-- Row 3: Package -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Package</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${planName}</td>
-                      </tr>
-
-                      <!-- Row 4: Monthly Price -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Monthly Price</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${monthlyPriceText}</td>
-                      </tr>
-
-                      <!-- Row 5: Duration -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Duration</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${durationText}</td>
-                      </tr>
-
-                      <!-- Row 6: Total Price -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Total Price</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #C8041C; border-top: 1px solid #E6E6E6;">${totalPriceText}</td>
-                      </tr>
-
-                      <!-- Row 7: Location Type -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Location Type</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${locationTypeText}</td>
-                      </tr>
-
-                      <!-- Row 8: Event Location -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Event Location</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${eventLocationText}</td>
-                      </tr>
-
-                      <!-- Row 9: Customer Name -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Customer Name</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.client_name}</td>
-                      </tr>
-
-                      <!-- Row 10: Customer Email -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Customer Email</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6; font-family: monospace;">${bookingData.email}</td>
-                      </tr>
-
-                      <!-- Row 11: Phone Number -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Phone Number</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.phone}</td>
-                      </tr>
-
-                      <!-- Row 12: Company -->
-                      <tr style="border-bottom: 1px solid #E6E6E6;">
-                        <td style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Company / Brand</td>
-                        <td style="padding: 10px 0; font-size: 12px; font-weight: bold; color: #212121; border-top: 1px solid #E6E6E6;">${bookingData.company_name || "None"}</td>
-                      </tr>
-
-                      <!-- Row 13: Details -->
-                      <tr>
-                        <td valign="top" style="padding: 10px 0; font-size: 11px; font-weight: bold; color: #212121; text-transform: uppercase; border-top: 1px solid #E6E6E6;">Project Details</td>
-                        <td style="padding: 10px 0; font-size: 12px; line-height: 1.5; color: #444444; font-weight: bold; border-top: 1px solid #E6E6E6;">${bookingData.project_description || bookingData.project_details || "None"}</td>
-                      </tr>
-                      <!-- End of details rows -->
-
-                    </table>
-                  </td>
-                </tr>
+            <td style="padding:0 32px 16px 32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                ${detailRow("Service", serviceName)}
+                ${detailRow("Package", planName)}
+                ${detailRow("Duration", durationText)}
+                ${detailRow("Amount", `<strong>${totalPriceText}</strong>`)}
+                ${detailRow("Location", locationTypeText)}
+                ${detailRow("Event Location", eventLocationText)}
+                ${detailRow("Project Details", projectDetails)}
+                ${detailRow("Submitted", bookingData.created_at || new Date().toISOString())}
               </table>
             </td>
           </tr>
 
-          <!-- BLACK FOOTER -->
+          <!-- FOOTER -->
           <tr>
-            <td style="background-color: #111111; padding: 45px 35px; text-align: center;">
-              <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                  <td>
-                    <div style="font-family: monospace; font-size: 15px; font-weight: 900; letter-spacing: 3px; color: #FFFFFF; text-transform: uppercase; margin-bottom: 5px;">
-                      BEHIND THE BUILD SYSTEM
-                    </div>
-                    <div style="font-size: 11px; color: #888888; font-style: italic; margin-bottom: 25px; font-weight: 500;">
-                      Because great products deserve to be seen.
-                    </div>
-                    <div style="font-size: 10px; color: #555555; font-weight: 500; letter-spacing: 0.5px;">
-                      &copy; 2026 Behind The Build. All rights reserved.
-                    </div>
-                  </td>
-                </tr>
-              </table>
+            <td style="padding:16px 32px;border-top:1px solid #EEEEEE;background-color:#FAFAFA;">
+              <p style="margin:0;font-size:11px;color:#AAAAAA;">Behind The Build — Automated Booking Notification</p>
             </td>
           </tr>
 
@@ -542,18 +397,21 @@ Created At: [${bookingData.created_at || new Date().toISOString()}]`;
 </body>
 </html>`;
 
-    const mailOptions = {
-      from: `"Behind The Build System" <${emailUser}>`,
-      to: recipient,
-      subject: teamSubject,
-      text: teamText,
-      html: teamHtml,
-    };
+    // ------------------------------------------------------------------
+    // Send
+    // ------------------------------------------------------------------
+    const result = await sendEmail({
+      from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
+      to: TEAM_EMAIL,
+      replyTo: bookingData.email, // Reply goes to customer
+      subject,
+      text,
+      html,
+    });
 
-    await transporter.sendMail(mailOptions);
-    return { success: true };
+    return result;
   } catch (error) {
     console.error("[Email] Team email failed:", error.message || error);
-    return { success: false, error };
+    return { success: false, error: error.message || error };
   }
 };

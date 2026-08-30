@@ -486,13 +486,13 @@ app.get('/api/system-status', async (req, res) => {
     // Ignore error, falls back to Disconnected
   }
 
-  const emailConfigured = process.env.RESEND_API_KEY ? 'Configured' : 'Unconfigured';
-  const smtpStatus = 'Not Configured'; // using API SDK, not SMTP
+  const resendConfigured = process.env.RESEND_API_KEY ? true : false;
+  const gmailConfigured = process.env.EMAIL_USER || process.env.EMAIL_PASS ? true : false;
+  const emailProvider = resendConfigured ? 'Resend' : (gmailConfigured ? 'Gmail SMTP (fallback)' : 'Unconfigured');
 
   return res.status(200).json({
     database: dbStatus,
-    email: emailConfigured,
-    smtp: smtpStatus,
+    email: emailProvider,
     supabase: dbStatus
   });
 });
