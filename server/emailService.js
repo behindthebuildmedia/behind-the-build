@@ -6,88 +6,202 @@ dotenv.config();
 
 /* =====================================================
    EMAIL PROVIDER CONFIGURATION
-   
-   Primary:  Resend API (proper DKIM/SPF for behindthebuild.in)
-   Fallback: Gmail SMTP (if Resend is not configured)
+
+   Priority order:
+   1. Zoho SMTP  — sends FROM admin@behindthebuild.in with full
+                    SPF/DKIM/DMARC alignment (DNS already configured)
+   2. Resend API — sends FROM admin@behindthebuild.in with Resend
+                    DKIM (requires resend._domainkey DNS CNAME record)
+   3. Gmail SMTP — last resort fallback, sends from Gmail address
+                    (will likely land in spam due to domain mismatch)
 ===================================================== */
 
-const RESEND_API_KEY = process.env.RESEND_API_KEY || null;
 const SENDER_EMAIL = process.env.EMAIL_FROM || "admin@behindthebuild.in";
 const SENDER_NAME = "Behind The Build";
 const REPLY_TO_EMAIL = process.env.EMAIL_REPLY_TO || "admin@behindthebuild.in";
 const TEAM_EMAIL = process.env.EMAIL_TEAM_TO || process.env.COMPANY_EMAIL || "admin@behindthebuild.in";
 
-// Resend client (primary — authenticated sending from behindthebuild.in)
+/* ---------- Provider 1: Zoho SMTP ---------- */
+const zohoUser = process.env.ZOHO_USER || process.env.EMAIL_FROM || null;
+const zohoPass = process.env.ZOHO_PASS || null;
+
+let zohoTransporter = null;
+if (zohoUser && zohoPass) {
+  zohoTransporter = nodemailer.createTransport({
+    host: "smtp.zoho.in",
+    port: 465,
+    secure: true,
+    family: 4,
+    auth: {
+      user: zohoUser,
+      pass: zohoPass,
+    },
+  });
+  console.log(`[Email] Zoho SMTP configured for ${zohoUser}`);
+}
+
+/* ---------- Provider 2: Resend API ---------- */
+const RESEND_API_KEY = process.env.RESEND_API_KEY || null;
 const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
-
-// Gmail SMTP fallback (used only if Resend API key is not configured)
-const gmailUser = process.env.EMAIL_USER || 'behindthebuildofficial@gmail.com';
-const gmailPass = process.env.EMAIL_PASS || Buffer.from('bmplbmx1Y21vdW5zcm9hYw==', 'base64').toString('utf-8');
-
-const gmailTransporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  family: 4,
-  auth: {
-    user: gmailUser,
-    pass: gmailPass,
-  },
-});
-
 if (resend) {
-  console.log("[Email] Using Resend API for transactional emails");
-} else {
-  console.log("[Email] Resend API key not configured — using Gmail SMTP fallback");
+  console.log("[Email] Resend API configured");
+}
+
+/* ---------- Provider 3: Gmail SMTP (explicit opt-in only) ---------- */
+const gmailUser = process.env.EMAIL_USER || null;
+const gmailPass = process.env.EMAIL_PASS || null;
+
+let gmailTransporter = null;
+if (gmailUser && gmailPass) {
+  gmailTransporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    family: 4,
+    auth: {
+      user: gmailUser,
+      pass: gmailPass,
+    },
+  });
+  console.log(`[Email] Gmail SMTP configured for ${gmailUser}`);
+}
+
+/* ---------- Provider status (for diagnostics) ---------- */
+export const getEmailProviderInfo = () => {
+  if (zohoTransporter) {
+    return {
+      configured: true,
+      primary: "zoho-smtp",
+      sender: zohoUser,
+      replyTo: REPLY_TO_EMAIL,
+      dnsReady: true,
+      note: "Zoho SMTP — SPF/DKIM/DMARC aligned for behindthebuild.in",
+    };
+  }
+  if (resend) {
+    return {
+      configured: true,
+      primary: "resend",
+      sender: SENDER_EMAIL,
+      replyTo: REPLY_TO_EMAIL,
+      dnsReady: false,
+      note: "Resend API — verify resend._domainkey DNS CNAME record exists and is verified",
+    };
+  }
+  if (gmailTransporter) {
+    return {
+      configured: true,
+      primary: "gmail-smtp",
+      sender: gmailUser,
+      replyTo: REPLY_TO_EMAIL,
+      dnsReady: false,
+      note: "Gmail SMTP — sends from Gmail address, not admin@behindthebuild.in; likely spam",
+    };
+  }
+  return {
+    configured: false,
+    primary: "none",
+    sender: SENDER_EMAIL,
+    replyTo: REPLY_TO_EMAIL,
+    dnsReady: false,
+    note: "No email provider configured — set RESEND_API_KEY or ZOHO_USER + ZOHO_PASS in Vercel environment variables",
+  };
+};
+
+const activeProviderInfo = getEmailProviderInfo();
+if (!activeProviderInfo.configured) {
+  console.error("[Email] CRITICAL: No email provider configured. Set RESEND_API_KEY in Vercel production environment variables.");
+} else if (activeProviderInfo.primary === "gmail-smtp") {
+  console.warn("[Email] WARNING: Gmail SMTP sends from a Gmail address — customer emails will land in spam.");
 }
 
 /* =====================================================
-   CORE SEND FUNCTION (Resend primary, Gmail fallback)
+   CORE SEND FUNCTION (Zoho → Resend → Gmail)
 ===================================================== */
-const sendEmail = async ({ from, to, replyTo, subject, text, html }) => {
-  // Try Resend first
+const sendEmail = async ({ from, to, replyTo, subject, text, html, headers }) => {
+
+  // ---- Try Zoho SMTP first (full SPF/DKIM/DMARC alignment) ----
+  if (zohoTransporter) {
+    try {
+      const mailOptions = {
+        from: `"${SENDER_NAME}" <${zohoUser}>`,
+        to,
+        replyTo: replyTo || REPLY_TO_EMAIL,
+        subject,
+        text,
+        html,
+        headers,
+      };
+
+      await zohoTransporter.sendMail(mailOptions);
+      console.log("[Zoho SMTP] Email sent successfully");
+      return { success: true, provider: "zoho-smtp" };
+    } catch (zohoErr) {
+      console.error("[Zoho SMTP] Failed:", zohoErr.message);
+      // Fall through to next provider
+    }
+  }
+
+  // ---- Try Resend API (authenticated domain sending) ----
   if (resend) {
     try {
-      const result = await resend.emails.send({
+      const resendPayload = {
         from,
         to: Array.isArray(to) ? to : [to],
         reply_to: replyTo,
         subject,
         text,
         html,
-      });
+      };
+
+      // Add optional headers if provided (e.g. List-Unsubscribe, X-Entity-Ref-ID)
+      if (headers && Object.keys(headers).length > 0) {
+        resendPayload.headers = headers;
+      }
+
+      const result = await resend.emails.send(resendPayload);
 
       if (result.error) {
-        console.error("[Resend] API error:", result.error);
+        console.error("[Resend] API error:", JSON.stringify(result.error));
         throw new Error(result.error.message || "Resend API error");
       }
 
-      console.log("[Resend] Email sent successfully:", result.data?.id);
+      console.log("[Resend] Email sent successfully. ID:", result.data?.id);
       return { success: true, provider: "resend", id: result.data?.id };
     } catch (resendErr) {
-      console.error("[Resend] Failed, falling back to Gmail SMTP:", resendErr.message);
-      // Fall through to Gmail SMTP
+      console.error("[Resend] Failed:", resendErr.message);
+      // Fall through to Gmail
     }
   }
 
-  // Gmail SMTP fallback
-  try {
-    const mailOptions = {
-      from: `"${SENDER_NAME}" <${gmailUser}>`,
-      to,
-      replyTo: replyTo || REPLY_TO_EMAIL,
-      subject,
-      text,
-      html,
-    };
+  // ---- Gmail SMTP (explicit opt-in only — not recommended for production) ----
+  if (gmailTransporter) {
+    try {
+      const mailOptions = {
+        from: `"${SENDER_NAME}" <${gmailUser}>`,
+        to,
+        replyTo: replyTo || REPLY_TO_EMAIL,
+        subject,
+        text,
+        html,
+        headers,
+      };
 
-    await gmailTransporter.sendMail(mailOptions);
-    console.log("[Gmail SMTP] Email sent successfully");
-    return { success: true, provider: "gmail-smtp" };
-  } catch (gmailErr) {
-    console.error("[Gmail SMTP] Email failed:", gmailErr.message);
-    return { success: false, provider: "gmail-smtp", error: gmailErr.message };
+      await gmailTransporter.sendMail(mailOptions);
+      console.log("[Gmail SMTP] Email sent (warning: may land in spam — Gmail address ≠ behindthebuild.in)");
+      return { success: true, provider: "gmail-smtp" };
+    } catch (gmailErr) {
+      console.error("[Gmail SMTP] Email failed:", gmailErr.message);
+      return { success: false, provider: "gmail-smtp", error: gmailErr.message };
+    }
   }
+
+  console.error("[Email] All providers failed or unconfigured — email not sent. Set RESEND_API_KEY in Vercel environment.");
+  return {
+    success: false,
+    provider: "none",
+    error: "No email provider configured. Set RESEND_API_KEY in Vercel environment variables.",
+  };
 };
 
 /* =====================================================
@@ -140,93 +254,97 @@ export const sendClientEmail = async (bookingData, bookingId) => {
     const locationTypeText = bookingData.location_type || "Remote";
     const eventLocationText = bookingData.event_location || "Not applicable";
     const isEventLocation = locationTypeText === "Event Location";
+    const locationDisplay = isEventLocation ? eventLocationText : "Remote";
     const projectDetails = bookingData.project_description || bookingData.project_details || "None";
 
-    // ------------------------------------------------------------------
     // Subject — clean, professional, transactional
-    // ------------------------------------------------------------------
-    const subject = `Booking Confirmed — ${bookingId}`;
+    const subject = `Booking Request Received — Behind The Build [${bookingId}]`;
 
-    // ------------------------------------------------------------------
-    // Plain-text version (important for deliverability)
-    // ------------------------------------------------------------------
+    // Plain-text version (critical for deliverability)
     const text = `Hi ${customerName},
 
-Thank you for choosing Behind The Build.
+Thank you for submitting your project request to Behind The Build.
 
-Your booking has been received successfully. Our team will review your requirements and get back to you shortly.
+We have received your booking request and our team will review the details and contact you shortly.
 
-Booking Details
----------------
 Booking ID: ${bookingId}
+
+PROJECT DETAILS
+---------------
 Service: ${serviceName}
 Package: ${planName}
 Duration: ${durationText}
-Amount: ${totalPriceText}
-Location: ${locationTypeText}${isEventLocation ? ` — ${eventLocationText}` : ""}
+Price: ${totalPriceText}
+Location: ${locationDisplay}
+Project requirements: ${projectDetails}
 
-What happens next?
-Our team will review your project details and contact you via email or phone within 24 hours.
-
-If you have any questions, reply to this email and we will assist you.
+We will contact you using the email address or phone number provided in your request.
 
 Regards,
 Behind The Build
 admin@behindthebuild.in
-https://behindthebuild.in`;
+https://behindthebuild.in
 
-    // ------------------------------------------------------------------
-    // HTML version — clean, light, transactional (NOT promotional)
-    // ------------------------------------------------------------------
+---
+This is a transactional confirmation email for your booking request with Behind The Build.`;
+
+    // HTML version — clean, lightweight, professional, transactional
     const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Booking Confirmed</title>
+  <title>Booking Request Received — Behind The Build</title>
 </head>
-<body style="margin:0;padding:0;background-color:#F7F7F7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F7F7;">
+<body style="margin:0;padding:0;background-color:#F5F5F5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F5F5F5;">
     <tr>
       <td align="center" style="padding:40px 16px;">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background-color:#FFFFFF;border-radius:6px;overflow:hidden;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background-color:#FFFFFF;border-radius:6px;overflow:hidden;border:1px solid #E8E8E8;">
 
           <!-- HEADER -->
           <tr>
-            <td style="padding:32px 32px 24px 32px;border-bottom:1px solid #EEEEEE;">
-              <p style="margin:0;font-size:18px;font-weight:700;color:#212121;letter-spacing:0.5px;">Behind The Build</p>
+            <td style="padding:28px 32px 20px 32px;border-bottom:3px solid #111111;">
+              <p style="margin:0;font-size:17px;font-weight:700;color:#111111;letter-spacing:0.3px;">Behind The Build</p>
+            </td>
+          </tr>
+
+          <!-- BOOKING ID BADGE -->
+          <tr>
+            <td style="padding:20px 32px 0 32px;">
+              <p style="margin:0;font-size:12px;color:#888888;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Booking Reference</p>
+              <p style="margin:4px 0 0 0;font-size:16px;font-weight:700;color:#111111;font-family:monospace;">${bookingId}</p>
             </td>
           </tr>
 
           <!-- GREETING -->
           <tr>
-            <td style="padding:28px 32px 16px 32px;">
-              <p style="margin:0 0 14px 0;font-size:15px;color:#212121;font-weight:600;">Hi ${customerName},</p>
-              <p style="margin:0;font-size:14px;line-height:1.6;color:#444444;">
-                Thank you for choosing Behind The Build. Your booking has been received successfully. Our team will review your requirements and get back to you shortly.
+            <td style="padding:20px 32px 8px 32px;">
+              <p style="margin:0 0 10px 0;font-size:15px;color:#111111;font-weight:600;">Hi ${customerName},</p>
+              <p style="margin:0;font-size:14px;line-height:1.65;color:#444444;">
+                Thank you for submitting your project request to Behind The Build. We have received your booking and our team will review the details and contact you shortly.
               </p>
             </td>
           </tr>
 
-          <!-- BOOKING DETAILS -->
+          <!-- PROJECT DETAILS -->
           <tr>
-            <td style="padding:8px 32px 24px 32px;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #EEEEEE;border-radius:4px;overflow:hidden;">
+            <td style="padding:16px 32px 24px 32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #E8E8E8;border-radius:4px;overflow:hidden;">
                 <tr>
-                  <td style="padding:12px 16px;background-color:#FAFAFA;border-bottom:1px solid #EEEEEE;">
-                    <p style="margin:0;font-size:12px;font-weight:700;color:#212121;text-transform:uppercase;letter-spacing:1px;">Booking Details</p>
+                  <td style="padding:11px 16px;background-color:#F8F8F8;border-bottom:1px solid #E8E8E8;">
+                    <p style="margin:0;font-size:11px;font-weight:700;color:#555555;text-transform:uppercase;letter-spacing:1px;">Project Details</p>
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding:4px 16px;">
+                  <td style="padding:4px 16px 8px 16px;">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                      ${detailRow("Booking ID", `<span style="font-family:monospace;color:#C8041C;">${bookingId}</span>`)}
                       ${detailRow("Service", serviceName)}
                       ${detailRow("Package", planName)}
                       ${detailRow("Duration", durationText)}
-                      ${detailRow("Amount", `<strong>${totalPriceText}</strong>`)}
-                      ${detailRow("Location", isEventLocation ? `Event — ${eventLocationText}` : "Remote")}
-                      ${detailRow("Project Details", projectDetails)}
+                      ${detailRow("Price", totalPriceText)}
+                      ${detailRow("Location", locationDisplay)}
+                      ${detailRow("Project requirements", `<span style="white-space:pre-wrap;">${projectDetails}</span>`)}
                     </table>
                   </td>
                 </tr>
@@ -234,22 +352,21 @@ https://behindthebuild.in`;
             </td>
           </tr>
 
-          <!-- WHAT HAPPENS NEXT -->
+          <!-- NEXT STEPS -->
           <tr>
-            <td style="padding:8px 32px 28px 32px;">
-              <p style="margin:0 0 6px 0;font-size:13px;font-weight:700;color:#212121;">What happens next?</p>
+            <td style="padding:0 32px 28px 32px;">
               <p style="margin:0;font-size:13px;line-height:1.6;color:#555555;">
-                Our team will review your project details and contact you via email or phone within 24 hours. If you have any questions, simply reply to this email.
+                We will contact you using the email address or phone number provided in your request.
               </p>
             </td>
           </tr>
 
           <!-- FOOTER -->
           <tr>
-            <td style="padding:20px 32px;border-top:1px solid #EEEEEE;background-color:#FAFAFA;">
-              <p style="margin:0 0 4px 0;font-size:13px;font-weight:600;color:#212121;">Behind The Build</p>
-              <p style="margin:0;font-size:12px;color:#888888;line-height:1.5;">
-                admin@behindthebuild.in<br>
+            <td style="padding:18px 32px;border-top:1px solid #E8E8E8;background-color:#F8F8F8;">
+              <p style="margin:0 0 3px 0;font-size:13px;font-weight:700;color:#111111;">Behind The Build</p>
+              <p style="margin:0;font-size:12px;color:#888888;line-height:1.6;">
+                <a href="mailto:admin@behindthebuild.in" style="color:#888888;text-decoration:none;">admin@behindthebuild.in</a><br>
                 <a href="https://behindthebuild.in" style="color:#888888;text-decoration:none;">behindthebuild.in</a>
               </p>
             </td>
@@ -257,9 +374,8 @@ https://behindthebuild.in`;
 
         </table>
 
-        <!-- OUTSIDE FOOTER -->
-        <p style="margin:16px 0 0 0;font-size:11px;color:#AAAAAA;text-align:center;">
-          This is a transactional email confirming your booking with Behind The Build.
+        <p style="margin:14px 0 0 0;font-size:11px;color:#BBBBBB;text-align:center;">
+          This is a transactional confirmation email for your booking request with Behind The Build.
         </p>
 
       </td>
@@ -268,9 +384,12 @@ https://behindthebuild.in`;
 </body>
 </html>`;
 
-    // ------------------------------------------------------------------
-    // Send
-    // ------------------------------------------------------------------
+    // Headers to improve deliverability
+    const emailHeaders = {
+      "X-Entity-Ref-ID": bookingId,
+      "List-Unsubscribe": "<mailto:admin@behindthebuild.in?subject=unsubscribe>",
+    };
+
     const result = await sendEmail({
       from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
       to: bookingData.email,
@@ -278,7 +397,14 @@ https://behindthebuild.in`;
       subject,
       text,
       html,
+      headers: emailHeaders,
     });
+
+    if (result.success) {
+      console.log(`[Email] Customer confirmation sent to ${bookingData.email} via ${result.provider}. Booking: ${bookingId}`);
+    } else {
+      console.error(`[Email] Customer confirmation FAILED for ${bookingData.email}. Booking: ${bookingId}. Error: ${result.error}`);
+    }
 
     return result;
   } catch (error) {
@@ -302,9 +428,7 @@ export const sendTeamEmail = async (bookingData, bookingId) => {
 
     const subject = `New Booking — ${serviceName} — ${bookingId}`;
 
-    // ------------------------------------------------------------------
     // Plain-text version
-    // ------------------------------------------------------------------
     const text = `New booking received.
 
 Booking ID: ${bookingId}
@@ -321,9 +445,7 @@ Event Location: ${eventLocationText}
 Project Details: ${projectDetails}
 Created: ${bookingData.created_at || new Date().toISOString()}`;
 
-    // ------------------------------------------------------------------
     // HTML version — simple admin notification
-    // ------------------------------------------------------------------
     const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -331,17 +453,17 @@ Created: ${bookingData.created_at || new Date().toISOString()}`;
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>New Booking Received</title>
 </head>
-<body style="margin:0;padding:0;background-color:#F7F7F7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F7F7;">
+<body style="margin:0;padding:0;background-color:#F5F5F5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F5F5F5;">
     <tr>
       <td align="center" style="padding:40px 16px;">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background-color:#FFFFFF;border-radius:6px;overflow:hidden;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background-color:#FFFFFF;border-radius:6px;overflow:hidden;border:1px solid #E8E8E8;">
 
           <!-- HEADER -->
           <tr>
-            <td style="padding:24px 32px;border-bottom:1px solid #EEEEEE;">
+            <td style="padding:24px 32px;border-bottom:1px solid #E8E8E8;">
               <p style="margin:0 0 4px 0;font-size:16px;font-weight:700;color:#212121;">New Booking Received</p>
-              <p style="margin:0;font-size:13px;color:#C8041C;font-family:monospace;font-weight:600;">${bookingId}</p>
+              <p style="margin:0;font-size:13px;font-family:monospace;font-weight:600;color:#212121;">${bookingId}</p>
             </td>
           </tr>
 
@@ -374,7 +496,7 @@ Created: ${bookingData.created_at || new Date().toISOString()}`;
                 ${detailRow("Service", serviceName)}
                 ${detailRow("Package", planName)}
                 ${detailRow("Duration", durationText)}
-                ${detailRow("Amount", `<strong>${totalPriceText}</strong>`)}
+                ${detailRow("Amount", totalPriceText)}
                 ${detailRow("Location", locationTypeText)}
                 ${detailRow("Event Location", eventLocationText)}
                 ${detailRow("Project Details", projectDetails)}
@@ -385,7 +507,7 @@ Created: ${bookingData.created_at || new Date().toISOString()}`;
 
           <!-- FOOTER -->
           <tr>
-            <td style="padding:16px 32px;border-top:1px solid #EEEEEE;background-color:#FAFAFA;">
+            <td style="padding:16px 32px;border-top:1px solid #E8E8E8;background-color:#F8F8F8;">
               <p style="margin:0;font-size:11px;color:#AAAAAA;">Behind The Build — Automated Booking Notification</p>
             </td>
           </tr>
@@ -397,9 +519,6 @@ Created: ${bookingData.created_at || new Date().toISOString()}`;
 </body>
 </html>`;
 
-    // ------------------------------------------------------------------
-    // Send
-    // ------------------------------------------------------------------
     const result = await sendEmail({
       from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
       to: TEAM_EMAIL,
@@ -408,6 +527,12 @@ Created: ${bookingData.created_at || new Date().toISOString()}`;
       text,
       html,
     });
+
+    if (result.success) {
+      console.log(`[Email] Admin notification sent to ${TEAM_EMAIL} via ${result.provider}. Booking: ${bookingId}`);
+    } else {
+      console.error(`[Email] Admin notification FAILED. Booking: ${bookingId}. Error: ${result.error}`);
+    }
 
     return result;
   } catch (error) {
