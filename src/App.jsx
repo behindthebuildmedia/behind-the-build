@@ -24,7 +24,7 @@ const StartProjectFlow = lazy(() => import('./sections/StartProjectFlow/StartPro
 const BookingPage = lazy(() => import('./sections/BookingPage/BookingPage'));
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [submitted_booking_id, setSubmitted_booking_id] = useState(null);
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 

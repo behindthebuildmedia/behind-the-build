@@ -5,12 +5,12 @@ export default function Loader({ onComplete }) {
   const [step, setStep] = useState(1);
 
   useEffect(() => {
-    const t2 = setTimeout(() => setStep(2), 180);
-    const t3 = setTimeout(() => setStep(3), 360);
-    const t4 = setTimeout(() => setStep(4), 540);
+    const t2 = setTimeout(() => setStep(2), 220);
+    const t3 = setTimeout(() => setStep(3), 480);
+    const t4 = setTimeout(() => setStep(4), 900);
     const t5 = setTimeout(() => {
       onComplete();
-    }, 750);
+    }, 1250);
 
     return () => {
       clearTimeout(t2);
@@ -47,7 +47,7 @@ export default function Loader({ onComplete }) {
       initial={{ opacity: 1 }}
       exit={{ 
         opacity: 0,
-        transition: { duration: 0.35, ease: 'easeInOut' }
+        transition: { duration: 0.4, ease: 'easeInOut' }
       }}
       className="fixed inset-0 bg-brand-white z-[9999] flex flex-col items-center justify-center select-none overflow-hidden"
     >
@@ -67,10 +67,10 @@ export default function Loader({ onComplete }) {
             opacity: step >= 2 ? 0.25 : 1,
             y: 0 
           }}
-          transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
+          transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
           className="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-brand-charcoal font-sans"
         >
-          YOU BUILT IT.
+          YOU BUILD IT.
         </motion.h2>
 
         {/* Line 2 */}
@@ -81,7 +81,7 @@ export default function Loader({ onComplete }) {
               opacity: step >= 3 ? 0.25 : 1,
               y: 0 
             }}
-            transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
+            transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
             className="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-brand-charcoal font-sans"
           >
             WE BRING IT.
