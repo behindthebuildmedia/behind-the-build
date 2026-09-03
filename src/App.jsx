@@ -22,6 +22,7 @@ const Careers = lazy(() => import('./sections/Careers/Careers'));
 const AboutPage = lazy(() => import('./sections/AboutPage/AboutPage'));
 const StartProjectFlow = lazy(() => import('./sections/StartProjectFlow/StartProjectFlow'));
 const BookingPage = lazy(() => import('./sections/BookingPage/BookingPage'));
+const NotFound = lazy(() => import('./sections/NotFound/NotFound'));
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -143,7 +144,7 @@ function App() {
       path = "/";
     }
 
-    const canonicalUrl = `https://behindthebuild.in${path}`;
+    const canonicalUrl = `https://www.behindthebuild.in${path}`;
 
     // 2. Update dynamic title & meta tags
     document.title = title;
@@ -282,7 +283,11 @@ function App() {
           </Suspense>
         ) : currentPath.startsWith('/services/') ? (
           <Suspense fallback={<div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">LOADING SERVICE...</div>}>
-            <ServicePage serviceKey={currentPath.split('/').pop()} />
+            {['video-editing', 'social-media-marketing', 'design', 'tech-event-coverage', 'tech-events-coverage', 'event-coverage', 'digital-marketing'].includes(currentPath.split('/').pop()) ? (
+              <ServicePage serviceKey={currentPath.split('/').pop()} />
+            ) : (
+              <NotFound onHomeRedirect={handleHomeRedirect} />
+            )}
           </Suspense>
         ) : currentPath === '/careers' ? (
           <Suspense fallback={<div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">LOADING CAREERS...</div>}>
@@ -306,7 +311,7 @@ function App() {
               setSubmitted_booking_id(null);
             }}
           />
-        ) : (
+        ) : ['/', '/work', '/build-your-plan', '/services', '/our-process', '/process', '/contact'].includes(currentPath) ? (
           <>
             <Hero />
             <Suspense fallback={<div className="min-h-[200px]" />}>
@@ -319,6 +324,10 @@ function App() {
               <FinalCTA />
             </Suspense>
           </>
+        ) : (
+          <Suspense fallback={<div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">LOADING...</div>}>
+            <NotFound onHomeRedirect={handleHomeRedirect} />
+          </Suspense>
         )}
       </main>
 
