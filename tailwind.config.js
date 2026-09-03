@@ -17,7 +17,7 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['NimbusSanL', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
       },
       letterSpacing: {
         tightest: '-0.03em',
