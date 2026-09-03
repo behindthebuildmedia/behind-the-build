@@ -12,12 +12,16 @@ import imgPhotography from '../../assets/images/services/photography.webp';
 import imgVideography from '../../assets/images/services/videography.webp';
 import imgPlanning from '../../assets/images/process/planning.webp';
 
-// Import existing service videos
-import videoEditingMp4 from '../../../videos/video editing serivce.mp4';
-import socialMediaMp4 from '../../../videos/social media serivce.mp4';
-import designMp4 from '../../../videos/design service.mp4';
-import techEventMp4 from '../../../videos/event serivce.mp4';
-import digitalMarketingMp4 from '../../../videos/digital marketing serivce.mp4';
+// Dynamic per-route service video loaders (ensures zero global video loading)
+const serviceVideoLoaders = {
+  'video-editing': () => import('../../../videos/video editing serivce.mp4'),
+  'social-media-marketing': () => import('../../../videos/social media serivce.mp4'),
+  'design': () => import('../../../videos/design service.mp4'),
+  'tech-events-coverage': () => import('../../../videos/event serivce.mp4'),
+  'tech-event-coverage': () => import('../../../videos/event serivce.mp4'),
+  'digital-marketing': () => import('../../../videos/digital marketing serivce.mp4'),
+  'event-coverage': () => import('../../../videos/event serivce.mp4'),
+};
 
 const serviceImages = {
   'video-editing': imgEditing,
@@ -29,16 +33,6 @@ const serviceImages = {
   'photography': imgPhotography,
   'videography': imgVideography,
   'event-coverage': imgEvents
-};
-
-const serviceVideos = {
-  'video-editing': videoEditingMp4,
-  'social-media-marketing': socialMediaMp4,
-  'design': designMp4,
-  'tech-events-coverage': techEventMp4,
-  'tech-event-coverage': techEventMp4,
-  'digital-marketing': digitalMarketingMp4,
-  'event-coverage': techEventMp4
 };
 
 // Helper function to dynamically highlight brand keywords in red
@@ -78,11 +72,31 @@ export default function ServicePage({ serviceKey }) {
     : serviceKey;
   const data = servicesData[serviceKeyClean] || servicesData['video-editing'];
   const [openFaq, setOpenFaq] = useState(null);
+  const [videoUrl, setVideoUrl] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = `${data.name} | Behind the Build`;
   }, [data]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loader = serviceVideoLoaders[serviceKeyClean];
+    if (loader) {
+      loader()
+        .then((mod) => {
+          if (isMounted) setVideoUrl(mod.default);
+        })
+        .catch(() => {
+          if (isMounted) setVideoUrl(null);
+        });
+    } else {
+      setVideoUrl(null);
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [serviceKeyClean]);
 
   const handleSpaNav = (e, path) => {
     e.preventDefault();
@@ -137,17 +151,25 @@ export default function ServicePage({ serviceKey }) {
                 <div className="absolute -inset-2 border border-[#C8041C]/40 rounded-xl -z-10 transition-all duration-500 group-hover:inset-0 group-hover:border-[#C8041C]/80" />
 
                 <div className="w-full aspect-[4/3] rounded-lg overflow-hidden border border-[#212121]/15 shadow-sm bg-brand-lightgray relative">
-                  <video
-                    key={serviceKeyClean}
-                    src={serviceVideos[serviceKeyClean]}
-                    poster={serviceImages[serviceKeyClean] || imgCustom}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700"
-                  />
+                  {videoUrl ? (
+                    <video
+                      key={videoUrl}
+                      src={videoUrl}
+                      poster={serviceImages[serviceKeyClean] || imgCustom}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700"
+                    />
+                  ) : (
+                    <img
+                      src={serviceImages[serviceKeyClean] || imgCustom}
+                      alt={data.name}
+                      className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700"
+                    />
+                  )}
                 </div>
               </ScrollReveal>
             </div>

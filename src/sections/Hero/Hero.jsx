@@ -151,52 +151,38 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
         
         {/* Left Side: Headline Content (spans more columns for wide editorial layout) */}
-        <motion.div
-          variants={containerVariants}
-          initial="initial"
-          animate="animate"
-          className="lg:col-span-9 flex flex-col items-start text-left z-10"
-        >
+        <div className="lg:col-span-9 flex flex-col items-start text-left z-10">
           {/* Eyebrow Positioning Line */}
-          <motion.span
-            variants={eyebrowVariants}
-            className="text-xs font-mono font-bold uppercase tracking-widest text-brand-red mb-4 block"
-          >
+          <span className="animate-hero-eyebrow text-xs font-mono font-bold uppercase tracking-widest text-brand-red mb-4 block">
             BUILDING BRANDS FOR WHAT'S NEXT.
-          </motion.span>
+          </span>
 
           {/* Main Headline line-by-line mask reveal */}
           <h1 className="font-sans text-4xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-brand-charcoal leading-[1.05] uppercase">
             <span className="block overflow-hidden pb-1">
-              <motion.span variants={lineMaskVariants1} className="block">
+              <span className="animate-hero-line-1 block">
                 YOU BUILD IT.
-              </motion.span>
+              </span>
             </span>
             <span className="block overflow-hidden pb-1">
-              <motion.span variants={lineMaskVariants2} className="block">
+              <span className="animate-hero-line-2 block">
                 WE <span className="text-brand-red">BRING IT</span>
-              </motion.span>
+              </span>
             </span>
             <span className="block overflow-hidden pb-1">
-              <motion.span variants={lineMaskVariants3} className="block">
+              <span className="animate-hero-line-3 block">
                 TO THE WORLD.
-              </motion.span>
+              </span>
             </span>
           </h1>
 
           {/* Description (Tagline) - Reduced font size and tighter spacing */}
-          <motion.p
-            variants={fadeUpVariants}
-            className="mt-6 text-sm sm:text-base text-brand-charcoal/60 max-w-md font-sans font-normal leading-relaxed"
-          >
+          <p className="animate-hero-fade mt-6 text-sm sm:text-base text-brand-charcoal/60 max-w-md font-sans font-normal leading-relaxed">
             Media, content, digital and design for ambitious brands, startups and technology companies.
-          </motion.p>
+          </p>
 
           {/* CTA Buttons */}
-          <motion.div
-            variants={fadeUpVariants}
-            className="mt-10 flex flex-wrap items-center gap-6"
-          >
+          <div className="animate-hero-fade mt-10 flex flex-wrap items-center gap-6">
             <MagneticButton>
               <a
                 href="#services"
@@ -224,13 +210,10 @@ export default function Hero() {
               <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               <span className="absolute bottom-3 left-0 w-full h-[1px] bg-brand-charcoal/20 group-hover:bg-brand-red transition-colors" />
             </a>
-          </motion.div>
+          </div>
 
           {/* Stats Bar */}
-          <motion.div
-            variants={fadeUpVariants}
-            className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-brand-charcoal/5 grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-4 sm:gap-8 w-full"
-          >
+          <div className="animate-hero-fade mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-brand-charcoal/5 grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-4 sm:gap-8 w-full">
             {/* Projects Delivered */}
             <div className="flex flex-col items-start min-w-[80px] sm:min-w-[100px]">
               <Briefcase className="w-4 h-4 sm:w-5 sm:h-5 text-brand-red mb-1.5 sm:mb-2" />
@@ -264,8 +247,8 @@ export default function Hero() {
               <span className="text-xl sm:text-3xl font-bold tracking-tight text-brand-charcoal">5+</span>
               <span className="text-[11px] sm:text-xs text-brand-charcoal/50 mt-0.5 sm:mt-1">Client Brands</span>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   );

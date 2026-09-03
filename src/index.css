@@ -13,6 +13,54 @@ html {
   scrollbar-color: #212121 #FAF9F9;
 }
 
+/* GPU-Accelerated Hero Line Reveal Animations */
+@keyframes heroLineReveal {
+  0% {
+    transform: translateY(108%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes heroFadeUp {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-hero-line-1 {
+  animation: heroLineReveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
+  will-change: transform, opacity;
+}
+
+.animate-hero-line-2 {
+  animation: heroLineReveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
+  will-change: transform, opacity;
+}
+
+.animate-hero-line-3 {
+  animation: heroLineReveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.36s both;
+  will-change: transform, opacity;
+}
+
+.animate-hero-eyebrow {
+  animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.02s both;
+  will-change: transform, opacity;
+}
+
+.animate-hero-fade {
+  animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+  will-change: transform, opacity;
+}
+
 body {
   margin: 0;
   padding: 0;

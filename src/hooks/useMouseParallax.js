@@ -20,19 +20,25 @@ export function useMouseParallax(active = true, damping = 25, stiffness = 120) {
 
     if (isTouchDevice) return;
 
+    let rafId = null;
     const handleMouseMove = (e) => {
-      const { innerWidth, innerHeight } = window;
-      // Get percentage position normalized around 0 (-0.5 to 0.5)
-      const x = (e.clientX / innerWidth) - 0.5;
-      const y = (e.clientY / innerHeight) - 0.5;
-      
-      mouseX.set(x);
-      mouseY.set(y);
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        const { innerWidth, innerHeight } = window;
+        // Get percentage position normalized around 0 (-0.5 to 0.5)
+        const x = (e.clientX / innerWidth) - 0.5;
+        const y = (e.clientY / innerHeight) - 0.5;
+        
+        mouseX.set(x);
+        mouseY.set(y);
+        rafId = null;
+      });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, [active, mouseX, mouseY]);
 

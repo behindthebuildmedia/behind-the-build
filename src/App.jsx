@@ -28,7 +28,7 @@ function App() {
   const [submitted_booking_id, setSubmitted_booking_id] = useState(null);
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
-  // Monitor location changes (including query string changes)
+  // Monitor location changes
   useEffect(() => {
     const handleUrlChange = () => {
       const newPath = window.location.pathname;
@@ -36,10 +36,8 @@ function App() {
         setCurrentPath(newPath);
       }
     };
-    const interval = setInterval(handleUrlChange, 100);
     window.addEventListener('popstate', handleUrlChange);
     return () => {
-      clearInterval(interval);
       window.removeEventListener('popstate', handleUrlChange);
     };
   }, [currentPath]);
