@@ -68,6 +68,32 @@ function App() {
     };
   }, [isLoading]);
 
+  // Handle direct navigation to section routes on homepage (e.g. /work, /build-your-plan, /our-process, /contact)
+  useEffect(() => {
+    if (isLoading) return;
+    const targetMap = {
+      '/work': 'work',
+      '/build-your-plan': 'services',
+      '/services': 'services',
+      '/our-process': 'process',
+      '/process': 'process',
+      '/contact': 'footer'
+    };
+    const targetId = targetMap[currentPath];
+    if (targetId) {
+      const timer = setTimeout(() => {
+        const el = document.getElementById(targetId);
+        if (el) {
+          const headerOffset = 80;
+          const elementPosition = el.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+        }
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [currentPath, isLoading]);
+
   // Dynamic SEO and JSON-LD Structured Data Schema Handler
   useEffect(() => {
     if (isLoading) return;
