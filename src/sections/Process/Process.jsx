@@ -50,8 +50,8 @@ export default function Process() {
   ];
 
   return (
-    <section id="process" className="py-20 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 space-y-12">
+    <section id="process" className="py-14 sm:py-20 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 space-y-8 sm:space-y-12">
         
         {/* Section Header */}
         <div className="text-left space-y-3 max-w-xl">

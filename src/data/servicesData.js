@@ -29,7 +29,7 @@ export const servicesData = {
       },
       growth: {
         planName: "GROWTH",
-        price: "₹19,999",
+        price: "₹21,999",
         billing: "3 Months",
         features: [
           "Good editing",
@@ -46,7 +46,7 @@ export const servicesData = {
       },
       premium: {
         planName: "PREMIUM",
-        price: "₹31,999",
+        price: "₹35,999",
         billing: "5 Months",
         features: [
           "Premium editing",
@@ -109,7 +109,7 @@ export const servicesData = {
           "20 posts per month",
           "Advanced content creation",
           "Best hashtags",
-          "2 month content strategy"
+          "3 month content strategy"
         ],
         buttonText: "SELECT PLAN →",
         highlighted: true

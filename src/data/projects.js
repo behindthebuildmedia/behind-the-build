@@ -15,9 +15,10 @@ export const projects = [
     solution: 'Behind The Build handled end-to-end content production, including premium video editing, content optimization, and platform-specific storytelling to maximize audience retention and engagement.',
     servicesDelivered: [
       'Video Editing',
-      'Content Production',
-      'Social Media Content',
-      'Creative Strategy'
+      'Social Media Marketing',
+      'Design',
+      'Tech Event Coverage',
+      'Digital Marketing'
     ],
     duration: '3 Months',
     results: [
@@ -39,9 +40,10 @@ export const projects = [
     solution: 'Behind The Build developed a premium content strategy with cinematic editing, motion graphics, and platform-optimized content designed to educate, connect, and increase audience retention.',
     servicesDelivered: [
       'Video Editing',
-      'Motion Graphics',
-      'Social Media Content',
-      'Brand Storytelling'
+      'Social Media Marketing',
+      'Design',
+      'Tech Event Coverage',
+      'Digital Marketing'
     ],
     duration: '2 Months',
     results: [

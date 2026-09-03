@@ -35,7 +35,7 @@ const features = [
 
 export default function WhyChooseUs() {
   return (
-    <section id="why-choose-us" className="py-20 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
+    <section id="why-choose-us" className="py-14 sm:py-20 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
@@ -83,9 +83,9 @@ export default function WhyChooseUs() {
                   <div className="w-2.5 h-2.5 bg-[#C8041C] transition-transform duration-300 group-hover:scale-125" />
 
                   {/* Title & Description */}
-                  <h4 className="text-xs sm:text-sm font-black text-[#212121] font-sans uppercase tracking-wider mt-5">
+                  <h3 className="text-xs sm:text-sm font-black text-[#212121] font-sans uppercase tracking-wider mt-5">
                     {feature.title}
-                  </h4>
+                  </h3>
                   
                   <p className="text-xs text-[#212121]/60 leading-relaxed font-semibold mt-2.5">
                     {feature.desc}

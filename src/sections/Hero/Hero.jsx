@@ -33,12 +33,12 @@ export default function Hero() {
     }
   };
 
-  const handleScrollToBuilder = (e) => {
+  const handleStartProject = (e) => {
     e.preventDefault();
-    const builderSection = document.querySelector('#build-plan');
-    if (builderSection) {
+    const servicesSection = document.querySelector('#services');
+    if (servicesSection) {
       const headerOffset = 80;
-      const elementPosition = builderSection.getBoundingClientRect().top;
+      const elementPosition = servicesSection.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
       window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     }
@@ -104,7 +104,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen min-h-[100dvh] flex items-center pt-28 pb-16 overflow-hidden bg-white">
+    <section className="relative min-h-[90vh] sm:min-h-[100dvh] flex items-center pt-24 sm:pt-28 pb-12 sm:pb-16 overflow-hidden bg-white">
       
       {/* Background Video with motion parallax & premium light gradient mask */}
       <motion.div
@@ -118,16 +118,25 @@ export default function Hero() {
         }}
         className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none"
       >
-        <video
-          src={heroVideoUrl}
-          poster={heroWebp}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          className="w-full h-full object-cover opacity-[0.55]"
-        />
+        {!isTouch ? (
+          <video
+            src={heroVideoUrl}
+            poster={heroWebp}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-cover opacity-[0.55]"
+          />
+        ) : (
+          <img
+            src={heroWebp}
+            alt="Behind the Build visual"
+            fetchPriority="high"
+            className="w-full h-full object-cover opacity-[0.55]"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-tr from-white/80 via-white/60 to-white/30" />
       </motion.div>
 
@@ -190,8 +199,8 @@ export default function Hero() {
           >
             <MagneticButton>
               <a
-                href="#build-plan"
-                onClick={handleScrollToBuilder}
+                href="#services"
+                onClick={handleStartProject}
                 className="relative bg-brand-red text-white hover:bg-brand-red/90 text-sm font-bold uppercase tracking-wider px-8 py-4 flex items-center gap-2 transition-colors duration-300 focus-ring overflow-hidden group rounded-lg"
               >
                 START A PROJECT
@@ -220,40 +229,40 @@ export default function Hero() {
           {/* Stats Bar */}
           <motion.div
             variants={fadeUpVariants}
-            className="mt-12 pt-8 border-t border-brand-charcoal/5 flex flex-wrap items-center gap-6 sm:gap-8 w-full"
+            className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-brand-charcoal/5 grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-4 sm:gap-8 w-full"
           >
             {/* Projects Delivered */}
-            <div className="flex flex-col items-start min-w-[100px]">
-              <Briefcase className="w-5 h-5 text-brand-red mb-2" />
-              <span className="text-2xl sm:text-3xl font-bold tracking-tight text-brand-charcoal">50+</span>
-              <span className="text-xs text-brand-charcoal/50 mt-1">Projects Delivered</span>
+            <div className="flex flex-col items-start min-w-[80px] sm:min-w-[100px]">
+              <Briefcase className="w-4 h-4 sm:w-5 sm:h-5 text-brand-red mb-1.5 sm:mb-2" />
+              <span className="text-xl sm:text-3xl font-bold tracking-tight text-brand-charcoal">50+</span>
+              <span className="text-[11px] sm:text-xs text-brand-charcoal/50 mt-0.5 sm:mt-1">Projects Delivered</span>
             </div>
 
             <div className="hidden sm:block h-10 w-[1px] bg-brand-charcoal/10" />
 
             {/* Editing Hours */}
-            <div className="flex flex-col items-start min-w-[100px]">
-              <Clock className="w-5 h-5 text-brand-red mb-2" />
-              <span className="text-2xl sm:text-3xl font-bold tracking-tight text-brand-charcoal">150+</span>
-              <span className="text-xs text-brand-charcoal/50 mt-1">Editing Hours</span>
+            <div className="flex flex-col items-start min-w-[80px] sm:min-w-[100px]">
+              <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-brand-red mb-1.5 sm:mb-2" />
+              <span className="text-xl sm:text-3xl font-bold tracking-tight text-brand-charcoal">150+</span>
+              <span className="text-[11px] sm:text-xs text-brand-charcoal/50 mt-0.5 sm:mt-1">Editing Hours</span>
             </div>
 
             <div className="hidden md:block h-10 w-[1px] bg-brand-charcoal/10" />
 
             {/* Client Satisfaction */}
-            <div className="flex flex-col items-start min-w-[100px]">
-              <Smile className="w-5 h-5 text-brand-red mb-2" />
-              <span className="text-2xl sm:text-3xl font-bold tracking-tight text-brand-charcoal">98%</span>
-              <span className="text-xs text-brand-charcoal/50 mt-1">Client Satisfaction</span>
+            <div className="flex flex-col items-start min-w-[80px] sm:min-w-[100px]">
+              <Smile className="w-4 h-4 sm:w-5 sm:h-5 text-brand-red mb-1.5 sm:mb-2" />
+              <span className="text-xl sm:text-3xl font-bold tracking-tight text-brand-charcoal">98%</span>
+              <span className="text-[11px] sm:text-xs text-brand-charcoal/50 mt-0.5 sm:mt-1">Client Satisfaction</span>
             </div>
 
             <div className="hidden sm:block h-10 w-[1px] bg-brand-charcoal/10" />
 
             {/* Client Brands */}
-            <div className="flex flex-col items-start min-w-[100px]">
-              <Star className="w-5 h-5 text-brand-red mb-2" />
-              <span className="text-2xl sm:text-3xl font-bold tracking-tight text-brand-charcoal">5+</span>
-              <span className="text-xs text-brand-charcoal/50 mt-1">Client Brands</span>
+            <div className="flex flex-col items-start min-w-[80px] sm:min-w-[100px]">
+              <Star className="w-4 h-4 sm:w-5 sm:h-5 text-brand-red mb-1.5 sm:mb-2" />
+              <span className="text-xl sm:text-3xl font-bold tracking-tight text-brand-charcoal">5+</span>
+              <span className="text-[11px] sm:text-xs text-brand-charcoal/50 mt-0.5 sm:mt-1">Client Brands</span>
             </div>
           </motion.div>
         </motion.div>

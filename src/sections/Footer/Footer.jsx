@@ -60,9 +60,9 @@ export default function Footer() {
   return (
     <footer 
       id="footer" 
-      className="bg-brand-white text-brand-charcoal pt-20 pb-8 relative overflow-hidden z-10 text-left font-sans border-t border-[#E5E5E5]"
+      className="bg-brand-white text-brand-charcoal pt-14 sm:pt-20 pb-8 relative overflow-hidden z-10 text-left font-sans border-t border-[#E5E5E5]"
     >
-      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 space-y-12">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 space-y-8 sm:space-y-12">
         
         {/* SECTION 1: TOP BRAND + CONTACT AREA */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start w-full">
@@ -131,9 +131,9 @@ export default function Footer() {
           
           {/* Services Column */}
           <ScrollReveal delay={0.38} yOffset={25} className="space-y-6">
-            <h4 className="text-xs font-bold text-[#C8041C] tracking-widest uppercase font-sans">
+            <h3 className="text-xs font-bold text-[#C8041C] tracking-widest uppercase font-sans">
               SERVICES
-            </h4>
+            </h3>
             <ul className="space-y-3">
               {[
                 { label: 'Video Editing', path: '/services/video-editing' },
@@ -161,9 +161,9 @@ export default function Footer() {
 
           {/* Company Column */}
           <ScrollReveal delay={0.48} yOffset={25} className="space-y-6">
-            <h4 className="text-xs font-bold text-[#C8041C] tracking-widest uppercase font-sans">
+            <h3 className="text-xs font-bold text-[#C8041C] tracking-widest uppercase font-sans">
               COMPANY
-            </h4>
+            </h3>
             <ul className="space-y-3">
               {[
                 { label: 'About Us', path: '/about', isSpa: true },
@@ -194,9 +194,9 @@ export default function Footer() {
 
           {/* Social Column with Outline Icons */}
           <ScrollReveal delay={0.58} yOffset={25} className="space-y-6">
-            <h4 className="text-xs font-bold text-[#C8041C] tracking-widest uppercase font-sans">
+            <h3 className="text-xs font-bold text-[#C8041C] tracking-widest uppercase font-sans">
               SOCIAL
-            </h4>
+            </h3>
             <ul className="space-y-3">
               {[
                 { label: 'Instagram', href: 'https://www.instagram.com/behindthebuild_official/', icon: InstagramIcon },
@@ -207,7 +207,7 @@ export default function Footer() {
                 return (
                   <li key={idx}>
                     <a 
-                      href={item.href}
+                      href={item.href} 
                       target="_blank"
                       rel="noopener noreferrer"
                       className="relative group text-[15px] font-bold text-[#212121] hover:text-[#C8041C] transition-colors duration-300 font-sans inline-flex items-center gap-2.5 py-0.5"
@@ -224,9 +224,9 @@ export default function Footer() {
 
           {/* Legal Column */}
           <ScrollReveal delay={0.68} yOffset={25} className="space-y-6">
-            <h4 className="text-xs font-bold text-[#C8041C] tracking-widest uppercase font-sans">
+            <h3 className="text-xs font-bold text-[#C8041C] tracking-widest uppercase font-sans">
               LEGAL
-            </h4>
+            </h3>
             <ul className="space-y-3">
               {[
                 { label: 'Privacy Policy', path: '/privacy' },

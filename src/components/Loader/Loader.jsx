@@ -5,12 +5,12 @@ export default function Loader({ onComplete }) {
   const [step, setStep] = useState(1);
 
   useEffect(() => {
-    const t2 = setTimeout(() => setStep(2), 300);
-    const t3 = setTimeout(() => setStep(3), 600);
-    const t4 = setTimeout(() => setStep(4), 900);
+    const t2 = setTimeout(() => setStep(2), 180);
+    const t3 = setTimeout(() => setStep(3), 360);
+    const t4 = setTimeout(() => setStep(4), 540);
     const t5 = setTimeout(() => {
       onComplete();
-    }, 1300); // Total animation timeline around 1.3s (down from 2.4s)
+    }, 750);
 
     return () => {
       clearTimeout(t2);
@@ -47,7 +47,7 @@ export default function Loader({ onComplete }) {
       initial={{ opacity: 1 }}
       exit={{ 
         opacity: 0,
-        transition: { duration: 0.55, ease: 'easeInOut' }
+        transition: { duration: 0.35, ease: 'easeInOut' }
       }}
       className="fixed inset-0 bg-brand-white z-[9999] flex flex-col items-center justify-center select-none overflow-hidden"
     >

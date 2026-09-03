@@ -101,13 +101,11 @@ export default function MobileMenu({ isOpen, onClose, onNavClick, activeSection 
                             onClick={(e) => {
                               e.preventDefault();
                               onClose();
-                              setTimeout(() => {
-                                window.history.pushState(null, '', subItem.path);
-                                window.dispatchEvent(new Event('popstate'));
-                                window.scrollTo({ top: 0, behavior: 'instant' });
-                              }, 300);
+                              window.history.pushState(null, '', subItem.path);
+                              window.dispatchEvent(new Event('popstate'));
+                              window.scrollTo({ top: 0, behavior: 'instant' });
                             }}
-                            className="font-sans text-xl sm:text-2xl font-bold tracking-tight text-brand-charcoal/70 hover:text-brand-red block uppercase"
+                            className="font-sans text-base sm:text-xl font-bold tracking-tight text-brand-charcoal/70 hover:text-brand-red block uppercase"
                           >
                             {subItem.label}
                           </a>
@@ -121,17 +119,15 @@ export default function MobileMenu({ isOpen, onClose, onNavClick, activeSection 
                       onClick={(e) => {
                         e.preventDefault();
                         onClose();
-                        setTimeout(() => {
-                          if (link.isSpa) {
-                            window.history.pushState(null, '', link.href);
-                            window.dispatchEvent(new Event('popstate'));
-                            window.scrollTo({ top: 0, behavior: 'instant' });
-                          } else {
-                            onNavClick(link.href);
-                          }
-                        }, 400);
+                        if (link.isSpa) {
+                          window.history.pushState(null, '', link.href);
+                          window.dispatchEvent(new Event('popstate'));
+                          window.scrollTo({ top: 0, behavior: 'instant' });
+                        } else {
+                          onNavClick(link.href);
+                        }
                       }}
-                      className={`font-sans text-3xl sm:text-5xl font-bold tracking-tight transition-colors block py-1 uppercase ${
+                      className={`font-sans text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight transition-colors block py-1 uppercase ${
                         isActive ? 'text-brand-red' : 'hover:text-brand-red text-brand-charcoal'
                       }`}
                     >
@@ -153,11 +149,9 @@ export default function MobileMenu({ isOpen, onClose, onNavClick, activeSection 
               onClick={(e) => {
                 e.preventDefault();
                 onClose();
-                setTimeout(() => {
-                  window.history.pushState(null, '', '/booking');
-                  window.dispatchEvent(new Event('popstate'));
-                  window.scrollTo({ top: 0, behavior: 'instant' });
-                }, 300);
+                window.history.pushState(null, '', '/booking');
+                window.dispatchEvent(new Event('popstate'));
+                window.scrollTo({ top: 0, behavior: 'instant' });
               }}
               className="bg-brand-red text-white flex items-center gap-2 px-6 py-4 text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-brand-red/90 transition-colors w-full sm:w-auto justify-center focus-ring"
             >

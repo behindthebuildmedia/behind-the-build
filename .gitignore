@@ -25,3 +25,8 @@ dist-ssr
 .env
 .env.*
 !.env.example
+
+# Scratch and editor tooling
+.cursor/
+scratch/
+

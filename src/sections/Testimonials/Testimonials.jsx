@@ -30,8 +30,8 @@ const testimonialsData = [
 
 export default function Testimonials() {
   return (
-    <section id="testimonials" className="py-20 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 space-y-12">
+    <section id="testimonials" className="py-14 sm:py-20 bg-brand-white border-t border-brand-charcoal/5 relative overflow-hidden select-none font-sans">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10 space-y-8 sm:space-y-12">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-left">
@@ -85,9 +85,9 @@ export default function Testimonials() {
 
                 {/* Client Profile details */}
                 <div className="pt-6 mt-auto border-t border-[#E6E6E6]/60 flex flex-col space-y-1">
-                  <h4 className="text-xs font-black text-[#212121] uppercase tracking-wider leading-none">
+                  <h3 className="text-xs font-black text-[#212121] uppercase tracking-wider leading-none">
                     {item.name}
-                  </h4>
+                  </h3>
                   <p className="text-[9px] font-mono font-bold tracking-widest text-[#C8041C] uppercase leading-none pt-1">
                     {item.role}
                   </p>

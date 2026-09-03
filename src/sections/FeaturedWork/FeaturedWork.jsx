@@ -1,9 +1,66 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, X } from 'lucide-react';
 import { projects } from '../../data/projects';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
+
+// Lazy loading video card to prevent megabytes of video fetching on initial page load
+function FeaturedWorkVideoCard({ project, onOpenDetail }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '120px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div 
+      ref={containerRef}
+      onClick={() => onOpenDetail(project)}
+      className="relative aspect-[16/10] w-full overflow-hidden rounded-none border border-[#E6E6E6] bg-brand-lightgray cursor-pointer"
+    >
+      <div className="absolute inset-0 bg-brand-charcoal/5 group-hover:bg-transparent transition-colors duration-500 z-10" />
+      {isVisible ? (
+        <video
+          src={project.videoUrl}
+          poster={project.image}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:contrast-[1.08] group-hover:scale-[1.03] transition-all duration-500 ease-out"
+        />
+      ) : (
+        <img
+          src={project.image}
+          alt={project.name || 'Featured work'}
+          loading="lazy"
+          className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:contrast-[1.08] group-hover:scale-[1.03] transition-all duration-500 ease-out"
+        />
+      )}
+      <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
+        <span className="w-3 group-hover:w-8 h-[2.5px] bg-[#C8041C] transition-all duration-300" />
+        <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-white drop-shadow-md opacity-70 group-hover:opacity-100 transition-all duration-300">
+          {project.servicesDelivered[0]}
+        </span>
+      </div>
+    </div>
+  );
+}
 
 import campusInsightImage from '../../assets/projects/campus_insight.webp';
 import hackverseImage from '../../assets/projects/hackverse.webp';
@@ -220,7 +277,7 @@ const DETAIL_PROJECT_STORIES = {
       { title: 'Structured Formats', desc: 'Develop recurring series templates that build audience habits and high return rates.' },
       { title: 'Visual Retention', desc: 'Integrate precise pacing, typography maps, and code animation styles that hold attention.' }
     ],
-    servicesDeliveredList: ['VIDEO EDITING', 'CONTENT PRODUCTION', 'SOCIAL MEDIA CONTENT', 'CREATIVE STRATEGY', 'VISUAL STORYTELLING', 'MOTION GRAPHICS'],
+    servicesDeliveredList: ['VIDEO EDITING', 'SOCIAL MEDIA MARKETING', 'DESIGN', 'TECH EVENT COVERAGE', 'DIGITAL MARKETING'],
     impactText: 'We established Consistency.AI as a leading authority in online technical education, transforming theoretical lectures into viral programming narratives that students choose to watch.'
   },
   'delusionai': {
@@ -263,7 +320,7 @@ const DETAIL_PROJECT_STORIES = {
       { title: 'Engaging Visuals', desc: 'Create content that captures attention while maintaining empathy and trust.' },
       { title: 'Strong Retention', desc: 'Improve watch time and connection through pacing, structure, and emotional storytelling.' }
     ],
-    servicesDeliveredList: ['VIDEO EDITING', 'COLOR GRADING', 'SOUND DESIGN', 'CONTENT STRATEGY', 'VISUAL STORYTELLING', 'SOCIAL MEDIA CONTENT'],
+    servicesDeliveredList: ['VIDEO EDITING', 'SOCIAL MEDIA MARKETING', 'DESIGN', 'TECH EVENT COVERAGE', 'DIGITAL MARKETING'],
     impactText: 'Through cinematic visual narratives and careful editing pacing, we enabled DelusionAI to communicate complex emotional themes with deep visual authority, driving record audience engagement and community trust.'
   },
   'campus-insight': {
@@ -495,10 +552,10 @@ export default function FeaturedWork({ initialProjectId }) {
   }, [selectedProject]);
 
   return (
-    <section id="work" className="py-20 bg-brand-white relative overflow-hidden border-t border-brand-charcoal/5">
+    <section id="work" className="py-14 sm:py-20 bg-brand-white relative overflow-hidden border-t border-brand-charcoal/5">
       <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
          {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 text-left">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 sm:mb-12 text-left">
           <div className="space-y-4">
             <ScrollReveal yOffset={10} duration={0.45} delay={0}>
               <p className="text-xs font-bold uppercase tracking-widest text-[#C8041C]">
@@ -519,7 +576,7 @@ export default function FeaturedWork({ initialProjectId }) {
         </div>
 
         {/* Premium Asymmetric Editorial Project Rows */}
-        <div className="space-y-24 lg:space-y-32">
+        <div className="space-y-12 sm:space-y-20 lg:space-y-24">
           {projects.slice(0, 2).map((project, idx) => {
             const isLeftImage = idx % 2 === 0;
             const subtitleText = project.id === 'consistency-ai' ? 'AI Education Platform' : 'Mental Health & Wellness';
@@ -528,33 +585,19 @@ export default function FeaturedWork({ initialProjectId }) {
               ? "We helped Consistency.AI build a powerful digital presence through high-impact content and consistent storytelling that connects, educates, and grows."
               : "We created meaningful content and digital campaigns that build awareness, spark conversations, and strengthen the brand's online presence.";
             
-            const servicesList = project.id === 'consistency-ai' 
-              ? ['VIDEO EDITING', 'SOCIAL MEDIA'] 
-              : ['SOCIAL MEDIA', 'CONTENT CREATION'];
+            const servicesList = [
+              'VIDEO EDITING',
+              'SOCIAL MEDIA MARKETING',
+              'DESIGN',
+              'TECH EVENT COVERAGE',
+              'DIGITAL MARKETING'
+            ];
 
             const imageArea = (
-              <div 
-                onClick={() => handleOpenDetail(project)}
-                className="relative aspect-[16/10] w-full overflow-hidden rounded-none border border-[#E6E6E6] bg-brand-lightgray cursor-pointer"
-              >
-                <div className="absolute inset-0 bg-brand-charcoal/5 group-hover:bg-transparent transition-colors duration-500 z-10" />
-                <video
-                  src={project.videoUrl}
-                  poster={project.image}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="none"
-                  className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:contrast-[1.08] group-hover:scale-[1.03] transition-all duration-500 ease-out"
-                />
-                <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
-                  <span className="w-3 group-hover:w-8 h-[2.5px] bg-[#C8041C] transition-all duration-300" />
-                  <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-white drop-shadow-md opacity-70 group-hover:opacity-100 transition-all duration-300">
-                    {project.servicesDelivered[0]}
-                  </span>
-                </div>
-              </div>
+              <FeaturedWorkVideoCard
+                project={project}
+                onOpenDetail={handleOpenDetail}
+              />
             );
 
             const infoArea = (

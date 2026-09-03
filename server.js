@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import crypto from 'crypto';
 import { supabase } from './server/supabase.js';
-import { sendClientEmail, sendTeamEmail } from './server/emailService.js';
+import { sendClientEmail, sendTeamEmail, getEmailProviderInfo } from './server/emailService.js';
 
 dotenv.config();
 
@@ -457,12 +457,15 @@ app.post('/api/bookings/send-emails', async (req, res) => {
       sendTeamEmail(emailPayload, booking_id)
     ]);
 
-    console.log(`[Async Email Trigger] Finished. Client success: ${clientRes.success}, Team success: ${teamRes.success}`);
+    console.log(`[Async Email Trigger] Finished. Client: ${clientRes.success} (${clientRes.provider}), Team: ${teamRes.success} (${teamRes.provider})`);
 
     return res.status(200).json({
       success: true,
       clientEmail: clientRes.success,
-      teamEmail: teamRes.success
+      teamEmail: teamRes.success,
+      clientProvider: clientRes.provider || 'unknown',
+      teamProvider: teamRes.provider || 'unknown',
+      emailProvider: getEmailProviderInfo().primary,
     });
   } catch (error) {
     console.error(`[Async Email Trigger Exception] Error sending emails:`, error.message || error);
@@ -486,13 +489,14 @@ app.get('/api/system-status', async (req, res) => {
     // Ignore error, falls back to Disconnected
   }
 
-  const resendConfigured = process.env.RESEND_API_KEY ? true : false;
-  const gmailConfigured = process.env.EMAIL_USER || process.env.EMAIL_PASS ? true : false;
-  const emailProvider = resendConfigured ? 'Resend' : (gmailConfigured ? 'Gmail SMTP (fallback)' : 'Unconfigured');
+  const providerInfo = getEmailProviderInfo();
 
   return res.status(200).json({
     database: dbStatus,
-    email: emailProvider,
+    email: providerInfo.primary,
+    emailConfigured: providerInfo.configured,
+    emailSender: providerInfo.sender,
+    emailNote: providerInfo.note,
     supabase: dbStatus
   });
 });

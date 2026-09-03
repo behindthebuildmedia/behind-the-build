@@ -7,7 +7,7 @@ export default function FinalCTA() {
 
   const handleScrollToBuilder = (e) => {
     e.preventDefault();
-    window.history.pushState(null, '', '/start-a-project');
+    window.history.pushState(null, '', '/booking');
     window.dispatchEvent(new Event('popstate'));
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
@@ -41,7 +41,7 @@ export default function FinalCTA() {
   return (
     <section 
       id="connect"
-      className="relative py-20 md:py-24 flex items-center overflow-hidden bg-brand-white select-none border-t border-brand-charcoal/5"
+      className="relative py-14 sm:py-20 flex items-center overflow-hidden bg-brand-white select-none border-t border-brand-charcoal/5"
     >
       
       {/* Background Image with Parallax & White Gradient Overlay */}

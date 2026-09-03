@@ -24,7 +24,7 @@ const StartProjectFlow = lazy(() => import('./sections/StartProjectFlow/StartPro
 const BookingPage = lazy(() => import('./sections/BookingPage/BookingPage'));
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [submitted_booking_id, setSubmitted_booking_id] = useState(null);
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
@@ -107,7 +107,7 @@ function App() {
       path = "/confirmation";
     } else if (currentPath === '/start-a-project' || currentPath.startsWith('/start-a-project/')) {
       title = "Start a Project | Behind the Build";
-      desc = "Start a creative media project with Behind the Build. Choose from video editing, social media marketing, design, website design, event coverage, and digital marketing.";
+      desc = "Start a creative media project with Behind the Build. Choose from video editing, social media marketing, design, tech event coverage, and digital marketing.";
       path = currentPath;
     } else if (currentPath === '/project-submitted') {
       title = "Project Inquiry Received | Behind the Build";

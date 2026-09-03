@@ -463,31 +463,31 @@ export default function StartProjectFlow({ currentPath }) {
       num: '01',
       title: 'VIDEO EDITING',
       desc: 'Professional short-form editing for brands, founders, products and technology companies.',
-      path: '/start-a-project/video-editing'
+      path: '/services/video-editing'
     },
     {
       num: '02',
       title: 'SOCIAL MEDIA MARKETING',
       desc: 'Strategy, content and management designed to build a consistent digital presence.',
-      path: '/start-a-project/social-media-marketing'
+      path: '/services/social-media-marketing'
     },
     {
       num: '03',
       title: 'DESIGN',
       desc: 'Creative design systems that make your brand look consistent and recognizable.',
-      path: '/start-a-project/design'
+      path: '/services/design'
     },
     {
       num: '04',
       title: 'TECH EVENT COVERAGE',
       desc: 'Professional photo and video coverage for launches, conferences, campus and technology events.',
-      path: '/start-a-project/event-coverage'
+      path: '/services/tech-event-coverage'
     },
     {
       num: '05',
       title: 'DIGITAL MARKETING',
       desc: 'Strategic digital marketing designed to grow your visibility, reach and audience.',
-      path: '/start-a-project/digital-marketing'
+      path: '/services/digital-marketing'
     }
   ];
 

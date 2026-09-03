@@ -5,7 +5,7 @@ import { ArrowRight, ChevronDown } from 'lucide-react';
 export default function Careers() {
   const [activeJob, setActiveJob] = useState(null);
 
-  const mailtoSubject = encodeURIComponent("General Job Application — Behind The Build");
+  const mailtoSubject = encodeURIComponent("Behind The Build — General Job Application");
   const mailtoBody = encodeURIComponent(
     "Hello Behind The Build Team,\n\n" +
     "I would like to apply for an opportunity at Behind The Build.\n\n" +
@@ -77,8 +77,8 @@ export default function Careers() {
   };
 
   return (
-    <div className="bg-brand-white text-[#212121] pt-32 pb-16 min-h-screen font-sans text-left">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full space-y-12 md:space-y-14">
+    <div className="bg-brand-white text-[#212121] pt-24 sm:pt-32 pb-14 sm:pb-16 min-h-screen font-sans text-left">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full space-y-10 md:space-y-14">
         
         {/* HERO SECTION */}
         <section className="space-y-4 pt-2 md:pt-4 select-none">
@@ -89,7 +89,7 @@ export default function Careers() {
           </ScrollReveal>
           
           <ScrollReveal delay={0.1} yOffset={35}>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-[#212121] leading-none">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-[#212121] leading-none">
               BUILD WITH US.
             </h1>
           </ScrollReveal>
@@ -152,9 +152,9 @@ export default function Careers() {
                     <span className="text-[9px] font-mono font-bold text-[#C8041C] uppercase tracking-widest">
                       {job.department} — {job.type}
                     </span>
-                    <h4 className="text-lg font-black uppercase tracking-wide text-[#212121]">
+                    <h3 className="text-lg font-black uppercase tracking-wide text-[#212121]">
                       {job.title}
-                    </h4>
+                    </h3>
                   </div>
                   <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-start">
                     <span className="text-xs text-[#212121]/50 uppercase tracking-widest font-mono">

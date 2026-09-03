@@ -36,8 +36,8 @@ export default function AboutPage() {
   };
 
   return (
-    <div className="bg-brand-white text-[#212121] pt-32 pb-16 min-h-screen font-sans text-left">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full space-y-12 md:space-y-14">
+    <div className="bg-brand-white text-[#212121] pt-24 sm:pt-32 pb-14 sm:pb-16 min-h-screen font-sans text-left">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full space-y-10 md:space-y-14">
         
         {/* 1. ABOUT PAGE HERO */}
         <section className="space-y-4 pt-2 md:pt-4 select-none relative">
@@ -48,7 +48,7 @@ export default function AboutPage() {
           </ScrollReveal>
           
           <ScrollReveal delay={0.1} yOffset={35}>
-            <h1 className="text-5xl sm:text-6xl md:text-8xl font-black uppercase tracking-tight text-[#212121] leading-[0.95] max-w-4xl">
+            <h1 className="text-4xl sm:text-6xl md:text-8xl font-black uppercase tracking-tight text-[#212121] leading-[0.98] max-w-4xl">
               WE'RE BUILDING<br />WHAT'S NEXT.
             </h1>
           </ScrollReveal>
