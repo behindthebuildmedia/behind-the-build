@@ -152,9 +152,10 @@ function App() {
     } else if (currentPath === '/careers') {
       title = "Careers | Behind the Build";
       desc = "Join Behind the Build. We are looking for talented video editors, motion designers, content creators, and digital strategists to build with us.";
-    } else if (currentPath.startsWith('/services/')) {
-      const sKey = currentPath.split('/').pop();
-      const sTitle = sKey.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    } else if (currentPath.startsWith('/services')) {
+      const match = currentPath.match(/^\/services\/([a-zA-Z0-9_-]+)/);
+      const sKey = match ? match[1] : 'video-editing';
+      const sTitle = sKey.split('-').filter(Boolean).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
       title = `${sTitle} | Behind the Build`;
       desc = `Explore premium ${sTitle} packages by Behind the Build. Review our custom deliverables, starter and growth launch partnership rates.`;
     } else if (currentPath === '/booking' || currentPath.startsWith('/booking/') || currentPath === '/book' || currentPath.startsWith('/book/') || currentPath === '/booking-success') {
@@ -320,13 +321,18 @@ function App() {
           <Suspense fallback={<div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">LOADING ABOUT...</div>}>
             <AboutPage />
           </Suspense>
-        ) : currentPath.startsWith('/services/') ? (
+        ) : currentPath.startsWith('/services') ? (
           <Suspense fallback={<div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">LOADING SERVICE...</div>}>
-            {['video-editing', 'social-media-marketing', 'design', 'tech-event-coverage', 'tech-events-coverage', 'event-coverage', 'digital-marketing'].includes(currentPath.split('/').pop()) ? (
-              <ServicePage serviceKey={currentPath.split('/').pop()} />
-            ) : (
-              <NotFound onHomeRedirect={handleHomeRedirect} />
-            )}
+            {(() => {
+              const match = currentPath.match(/^\/services\/([a-zA-Z0-9_-]+)/);
+              const key = match ? match[1] : '';
+              const validKeys = ['video-editing', 'social-media-marketing', 'design', 'tech-event-coverage', 'tech-events-coverage', 'event-coverage', 'digital-marketing'];
+              return validKeys.includes(key) ? (
+                <ServicePage serviceKey={key} />
+              ) : (
+                <NotFound onHomeRedirect={handleHomeRedirect} />
+              );
+            })()}
           </Suspense>
         ) : currentPath === '/careers' ? (
           <Suspense fallback={<div className="min-h-screen bg-brand-white flex items-center justify-center font-mono text-xs text-brand-charcoal/50">LOADING CAREERS...</div>}>

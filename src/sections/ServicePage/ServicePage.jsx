@@ -2,25 +2,23 @@ import { useEffect, useState } from 'react';
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
 import { servicesData } from '../../data/servicesData';
 import { ArrowRight, ChevronDown } from 'lucide-react';
+import { trackServiceView, trackBookingStarted } from '../../utils/analytics';
 
-// Import service detail visuals
-import imgEditing from '../../assets/images/services/editing.webp';
-import imgSocial from '../../assets/images/services/social.webp';
-import imgCustom from '../../assets/images/services/custom.webp';
-import imgEvents from '../../assets/images/services/events.webp';
-import imgPhotography from '../../assets/images/services/photography.webp';
-import imgVideography from '../../assets/images/services/videography.webp';
-import imgPlanning from '../../assets/images/process/planning.webp';
+// Import service videos (bundled into the lazy-loaded ServicePage chunk)
+import videoEditingVid from '../../../videos/video editing serivce.mp4';
+import videoSocialVid from '../../../videos/social media serivce.mp4';
+import videoDesignVid from '../../../videos/design service.mp4';
+import videoEventVid from '../../../videos/event serivce.mp4';
+import videoDigitalVid from '../../../videos/digital marketing serivce.mp4';
 
-// Dynamic per-route service video loaders (ensures zero global video loading)
-const serviceVideoLoaders = {
-  'video-editing': () => import('../../../videos/video editing serivce.mp4'),
-  'social-media-marketing': () => import('../../../videos/social media serivce.mp4'),
-  'design': () => import('../../../videos/design service.mp4'),
-  'tech-events-coverage': () => import('../../../videos/event serivce.mp4'),
-  'tech-event-coverage': () => import('../../../videos/event serivce.mp4'),
-  'digital-marketing': () => import('../../../videos/digital marketing serivce.mp4'),
-  'event-coverage': () => import('../../../videos/event serivce.mp4'),
+const serviceVideos = {
+  'video-editing': videoEditingVid,
+  'social-media-marketing': videoSocialVid,
+  'design': videoDesignVid,
+  'tech-events-coverage': videoEventVid,
+  'tech-event-coverage': videoEventVid,
+  'digital-marketing': videoDigitalVid,
+  'event-coverage': videoEventVid,
 };
 
 const serviceImages = {
@@ -69,35 +67,18 @@ const highlightFeature = (feat) => {
 export default function ServicePage({ serviceKey }) {
   const serviceKeyClean = (serviceKey === 'tech-event-coverage' || serviceKey === 'tech-events-coverage' || serviceKey === 'event-coverage')
     ? 'tech-events-coverage'
-    : serviceKey;
-  const data = servicesData[serviceKeyClean] || servicesData['video-editing'];
+    : (serviceKey || 'social-media-marketing');
+  const data = servicesData[serviceKeyClean] || servicesData['social-media-marketing'] || servicesData['video-editing'];
   const [openFaq, setOpenFaq] = useState(null);
-  const [videoUrl, setVideoUrl] = useState(null);
+  const videoUrl = serviceVideos[serviceKeyClean] || null;
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = `${data.name} | Behind the Build`;
-    trackServiceView(data.name);
-  }, [data]);
-
-  useEffect(() => {
-    let isMounted = true;
-    const loader = serviceVideoLoaders[serviceKeyClean];
-    if (loader) {
-      loader()
-        .then((mod) => {
-          if (isMounted) setVideoUrl(mod.default);
-        })
-        .catch(() => {
-          if (isMounted) setVideoUrl(null);
-        });
-    } else {
-      setVideoUrl(null);
+    if (data && data.name) {
+      document.title = `${data.name} | Behind the Build`;
+      trackServiceView(data.name);
     }
-    return () => {
-      isMounted = false;
-    };
-  }, [serviceKeyClean]);
+  }, [data]);
 
   const handleSpaNav = (e, path) => {
     e.preventDefault();

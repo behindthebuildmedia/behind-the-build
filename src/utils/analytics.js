@@ -9,17 +9,22 @@ export const GA_MEASUREMENT_ID = 'G-B5B2VXY0BT';
  * Safely track page views across client-side SPA route transitions
  */
 export const trackPageView = (path, title) => {
-  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
-    const pagePath = path || window.location.pathname;
-    const pageTitle = title || document.title;
-    const pageLocation = `https://www.behindthebuild.in${pagePath}`;
+  try {
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+      const pagePath = path || window.location.pathname;
+      const pageTitle = title || document.title;
+      const pageLocation = `https://www.behindthebuild.in${pagePath}`;
 
-    window.gtag('event', 'page_view', {
-      page_title: pageTitle,
-      page_location: pageLocation,
-      page_path: pagePath,
-      send_to: GA_MEASUREMENT_ID,
-    });
+      window.gtag('event', 'page_view', {
+        page_title: pageTitle,
+        page_location: pageLocation,
+        page_path: pagePath,
+        send_to: GA_MEASUREMENT_ID,
+      });
+    }
+  } catch (err) {
+    // Analytics failures must never crash or block the application
+    console.warn('[Analytics] Page view tracking skipped:', err);
   }
 };
 
@@ -27,11 +32,15 @@ export const trackPageView = (path, title) => {
  * Generic custom event dispatcher
  */
 export const trackEvent = (eventName, eventParams = {}) => {
-  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
-    window.gtag('event', eventName, {
-      ...eventParams,
-      send_to: GA_MEASUREMENT_ID,
-    });
+  try {
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+      window.gtag('event', eventName, {
+        ...eventParams,
+        send_to: GA_MEASUREMENT_ID,
+      });
+    }
+  } catch (err) {
+    console.warn(`[Analytics] Event ${eventName} skipped:`, err);
   }
 };
 
