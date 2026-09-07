@@ -339,3 +339,8 @@ export const servicesData = {
     ]
   }
 };
+
+// Aliases for seamless route compatibility
+servicesData['tech-event-coverage'] = servicesData['tech-events-coverage'];
+servicesData['event-coverage'] = servicesData['tech-events-coverage'];
+

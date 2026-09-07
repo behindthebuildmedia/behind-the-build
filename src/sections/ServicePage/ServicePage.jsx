@@ -4,6 +4,15 @@ import { servicesData } from '../../data/servicesData';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { trackServiceView, trackBookingStarted } from '../../utils/analytics';
 
+// Import service detail visuals
+import imgEditing from '../../assets/images/services/editing.webp';
+import imgSocial from '../../assets/images/services/social.webp';
+import imgCustom from '../../assets/images/services/custom.webp';
+import imgEvents from '../../assets/images/services/events.webp';
+import imgPhotography from '../../assets/images/services/photography.webp';
+import imgVideography from '../../assets/images/services/videography.webp';
+import imgPlanning from '../../assets/images/process/planning.webp';
+
 // Import service videos (bundled into the lazy-loaded ServicePage chunk)
 import videoEditingVid from '../../../videos/video editing serivce.mp4';
 import videoSocialVid from '../../../videos/social media serivce.mp4';
