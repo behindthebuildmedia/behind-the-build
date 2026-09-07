@@ -6,6 +6,7 @@ import { useReducedMotion } from '../../hooks/useReducedMotion';
 import heroVideoUrl from '../../assets/videos/hero_video.mp4';
 import MagneticButton from '../../components/MagneticButton/MagneticButton';
 import heroWebp from '../../assets/hero.webp';
+import { trackStartProjectClick } from '../../utils/analytics';
 
 
 
@@ -35,6 +36,7 @@ export default function Hero() {
 
   const handleStartProject = (e) => {
     e.preventDefault();
+    trackStartProjectClick('hero_button');
     const servicesSection = document.querySelector('#services');
     if (servicesSection) {
       const headerOffset = 80;

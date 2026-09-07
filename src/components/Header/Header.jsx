@@ -4,6 +4,7 @@ import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Menu, ArrowRight } from 'lucide-react';
 import logoUrl from '../../assets/images/btb logo.webp';
 import MobileMenu from '../MobileMenu/MobileMenu';
+import { trackStartProjectClick, trackBookingStarted } from '../../utils/analytics';
 
 export default function Header({ onHomeRedirect }) {
   const shouldReduceMotion = useReducedMotion();
@@ -268,6 +269,8 @@ export default function Header({ onHomeRedirect }) {
             <button
               onClick={(e) => {
                 e.preventDefault();
+                trackStartProjectClick('navbar');
+                trackBookingStarted('navbar_button');
                 handleSpaClick(e, '/booking');
               }}
               className="hidden md:flex h-[48px] px-[28px] bg-brand-red text-brand-white text-xs font-mono font-bold uppercase tracking-widest items-center gap-2 rounded-full transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_8px_20px_rgba(200,4,28,0.25)] group"

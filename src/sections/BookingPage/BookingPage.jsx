@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
 import { ArrowRight, Loader } from 'lucide-react';
 import { servicesData } from '../../data/servicesData';
+import { trackBookingStarted, trackBookingSubmitted } from '../../utils/analytics';
 
 export default function BookingPage({ currentPath }) {
   const [formData, setFormData] = useState({
@@ -95,8 +96,12 @@ export default function BookingPage({ currentPath }) {
       document.title = 'Booking Confirmed | Behind the Build';
     } else if (isDirectBook) {
       document.title = 'Book a Plan | Behind the Build';
+      trackBookingStarted('direct_booking');
     } else if (activeServiceResolved && selectedPlanResolved) {
       document.title = `Book ${activeServiceResolved.name} - ${selectedPlanResolved.planName} | Behind the Build`;
+      trackBookingStarted(`${activeServiceResolved.name} - ${selectedPlanResolved.planName}`);
+    } else {
+      trackBookingStarted('general_booking');
     }
   }, [isSuccessPage, isDirectBook, activeServiceResolved, selectedPlanResolved]);
 
@@ -255,8 +260,15 @@ export default function BookingPage({ currentPath }) {
         throw new Error(data.error || data.message || 'Unable to submit your request. Please try again.');
       }
 
-      // Store success info
+      // Track successful non-PII booking submission in GA4
       const finalBookingId = data.booking_id || data.bookingId || 'BTB-2026-0001';
+      trackBookingSubmitted(
+        finalBookingId,
+        activeServiceResolved?.name,
+        selectedPlanResolved?.planName
+      );
+
+      // Store success info
       localStorage.setItem('success_booking_id', finalBookingId);
       localStorage.setItem('success_service', activeServiceResolved.name);
       localStorage.setItem('success_plan', selectedPlanResolved.planName);

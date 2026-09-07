@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowRight, ChevronDown } from 'lucide-react';
 import logoUrl from '../../assets/images/btb logo.webp';
+import { trackStartProjectClick, trackBookingStarted } from '../../utils/analytics';
 
 export default function MobileMenu({ isOpen, onClose, onNavClick, activeSection }) {
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
@@ -148,6 +149,8 @@ export default function MobileMenu({ isOpen, onClose, onNavClick, activeSection 
               href="/booking"
               onClick={(e) => {
                 e.preventDefault();
+                trackStartProjectClick('mobile_menu');
+                trackBookingStarted('mobile_menu_button');
                 onClose();
                 window.history.pushState(null, '', '/booking');
                 window.dispatchEvent(new Event('popstate'));

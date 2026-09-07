@@ -23,6 +23,7 @@ const AboutPage = lazy(() => import('./sections/AboutPage/AboutPage'));
 const StartProjectFlow = lazy(() => import('./sections/StartProjectFlow/StartProjectFlow'));
 const BookingPage = lazy(() => import('./sections/BookingPage/BookingPage'));
 const NotFound = lazy(() => import('./sections/NotFound/NotFound'));
+import { trackPageView, trackEmailClick, trackContactClick } from './utils/analytics';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -94,6 +95,41 @@ function App() {
       return () => clearTimeout(timer);
     }
   }, [currentPath, isLoading]);
+
+  // Global click tracking for mailto and contact CTAs
+  useEffect(() => {
+    const handleGlobalClick = (e) => {
+      const target = e.target.closest('a, button');
+      if (!target) return;
+
+      const href = target.getAttribute('href') || '';
+      if (href.startsWith('mailto:')) {
+        const email = href.replace('mailto:', '').split('?')[0];
+        trackEmailClick(email);
+      } else if (
+        href.includes('wa.me') || 
+        href.includes('whatsapp') ||
+        href.includes('instagram.com') ||
+        href.includes('linkedin.com') ||
+        href.includes('youtube.com') ||
+        href === '#connect' ||
+        href === '#footer' ||
+        target.dataset.analyticsContact === 'true'
+      ) {
+        let channel = 'contact_cta';
+        if (href.includes('wa.me') || href.includes('whatsapp')) channel = 'whatsapp';
+        else if (href.includes('instagram.com')) channel = 'instagram';
+        else if (href.includes('linkedin.com')) channel = 'linkedin';
+        else if (href.includes('youtube.com')) channel = 'youtube';
+        trackContactClick(channel);
+      }
+    };
+
+    document.addEventListener('click', handleGlobalClick, { passive: true });
+    return () => {
+      document.removeEventListener('click', handleGlobalClick);
+    };
+  }, []);
 
   // Dynamic SEO and JSON-LD Structured Data Schema Handler
   useEffect(() => {
@@ -179,6 +215,9 @@ function App() {
     if (hrefWithoutTrailingSlash !== pathWithoutTrailingSlash) {
       window.history.pushState(null, '', path);
     }
+
+    // 3. Track SPA page views in Google Analytics 4
+    trackPageView(path, title);
 
     // 3. Inject Structured Schema JSON-LD Script Blocks
     const injectJSONLD = (id, data) => {

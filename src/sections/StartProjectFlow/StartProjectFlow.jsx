@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import ScrollReveal from '../../components/ScrollReveal/ScrollReveal';
 import { ArrowRight, CheckCircle2, Loader } from 'lucide-react';
 import { servicesData } from '../../data/servicesData';
+import { trackBookingStarted, trackBookingSubmitted } from '../../utils/analytics';
 
 export default function StartProjectFlow({ currentPath }) {
   const [formData, setFormData] = useState({
@@ -33,8 +34,10 @@ export default function StartProjectFlow({ currentPath }) {
     window.scrollTo(0, 0);
     if (currentPath === '/start-a-project') {
       document.title = 'Start a Project | Behind the Build';
+      trackBookingStarted('start_a_project');
     } else if (activeService) {
       document.title = `Start a ${activeService.name} Project | Behind the Build`;
+      trackBookingStarted(`start_project_${activeService.name}`);
     } else if (currentPath === '/project-submitted') {
       document.title = 'Project Inquiry Received | Behind the Build';
     }
@@ -119,6 +122,10 @@ export default function StartProjectFlow({ currentPath }) {
       if (!response.ok) {
         throw new Error(data.error || data.message || 'Unable to submit your project request. Please try again.');
       }
+
+      // Track successful non-PII booking submission in GA4
+      const finalBookingId = data.booking_id || data.bookingId;
+      trackBookingSubmitted(finalBookingId, activeService?.name, formData.plan);
 
       // Store selection details for success screen
       localStorage.setItem('submitted_service', activeService.name);

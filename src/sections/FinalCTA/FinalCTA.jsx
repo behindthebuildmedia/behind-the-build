@@ -1,12 +1,15 @@
 import { motion } from 'framer-motion';
 import footerImg from '../../assets/images/footer.webp';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { trackStartProjectClick, trackBookingStarted } from '../../utils/analytics';
 
 export default function FinalCTA() {
   const shouldReduceMotion = useReducedMotion();
 
   const handleScrollToBuilder = (e) => {
     e.preventDefault();
+    trackStartProjectClick('final_cta_button');
+    trackBookingStarted('final_cta');
     window.history.pushState(null, '', '/booking');
     window.dispatchEvent(new Event('popstate'));
     window.scrollTo({ top: 0, behavior: 'instant' });

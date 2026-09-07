@@ -77,6 +77,7 @@ export default function ServicePage({ serviceKey }) {
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = `${data.name} | Behind the Build`;
+    trackServiceView(data.name);
   }, [data]);
 
   useEffect(() => {
@@ -107,6 +108,7 @@ export default function ServicePage({ serviceKey }) {
 
   const handleCtaClick = (e, planName = 'CUSTOM') => {
     e.preventDefault();
+    trackBookingStarted(`${data.name} - ${planName}`);
     const servicePath = serviceKeyClean === 'tech-events-coverage' ? 'tech-event-coverage' : serviceKeyClean;
     const planSlug = planName.toLowerCase();
 
