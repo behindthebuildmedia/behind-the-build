@@ -27,13 +27,13 @@ export default function Careers() {
   const openings = [
     {
       id: 'video-editor',
-      title: "Lead Video Editor",
+      title: "Video Editor",
       department: "Post-Production",
-      location: "Remote / Hybrid (India)",
-      type: "Full-Time",
+      location: "Hybrid (HYD)",
+      type: "Part-Time / Freelancer",
       desc: "We are looking for a creative, high-retention video editor who understands short-form pacing, dynamic typography, and sound design. If you can make videos impossible to ignore, we want you.",
       requirements: [
-        "2+ Years experience editing for high-reach creators or agencies",
+        "0 to 1 Years experience editing for high-reach creators or agencies",
         "Expert skills in Premiere Pro, After Effects, and DaVinci Resolve",
         "In-depth understanding of social media hooks and pacing analytics",
         "Strong portfolio of published high-retention vertical videos"
@@ -43,7 +43,7 @@ export default function Careers() {
       id: 'social-strategist',
       title: "Social Media Strategist",
       department: "Content & Strategy",
-      location: "Hyderabad, India (On-Site)",
+      location: "Hyderabad, India (Hybrid)",
       type: "Full-Time",
       desc: "Behind The Build is seeking a social strategist to lead script planning, organic growth campaigns, and creator client relationships. You will define the narrative strategy for brands and founders.",
       requirements: [
@@ -58,7 +58,7 @@ export default function Careers() {
       title: "Motion Designer",
       department: "Design & VFX",
       location: "Remote",
-      type: "Contract / Freelance",
+      type: "Freelance",
       desc: "We are looking for a motion designer to create custom animation overlays, typography templates, logo reveals, and cinematic event transitions for brand campaigns.",
       requirements: [
         "Expert knowledge of After Effects, Blender, or Cinema 4D",
@@ -79,7 +79,7 @@ export default function Careers() {
   return (
     <div className="bg-brand-white text-[#212121] pt-24 sm:pt-32 pb-14 sm:pb-16 min-h-screen font-sans text-left">
       <div className="max-w-6xl mx-auto px-6 md:px-12 w-full space-y-10 md:space-y-14">
-        
+
         {/* HERO SECTION */}
         <section className="space-y-4 pt-2 md:pt-4 select-none">
           <ScrollReveal delay={0} yOffset={10}>
@@ -87,13 +87,13 @@ export default function Careers() {
               JOIN THE TEAM
             </span>
           </ScrollReveal>
-          
+
           <ScrollReveal delay={0.1} yOffset={35}>
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-[#212121] leading-none">
               BUILD WITH US.
             </h1>
           </ScrollReveal>
-          
+
           <ScrollReveal delay={0.2} yOffset={25} className="max-w-2xl pt-2">
             <p className="text-sm sm:text-base md:text-lg text-[#212121]/60 leading-relaxed font-normal">
               We're looking for people who want to build, create and experiment.
@@ -160,20 +160,18 @@ export default function Careers() {
                     <span className="text-xs text-[#212121]/50 uppercase tracking-widest font-mono">
                       {job.location}
                     </span>
-                    <ChevronDown className={`w-4 h-4 text-[#212121]/60 transition-transform duration-300 ${
-                      activeJob === idx ? 'transform rotate-180' : ''
-                    }`} />
+                    <ChevronDown className={`w-4 h-4 text-[#212121]/60 transition-transform duration-300 ${activeJob === idx ? 'transform rotate-180' : ''
+                      }`} />
                   </div>
                 </button>
-                
-                <div className={`transition-all duration-300 overflow-hidden ${
-                  activeJob === idx ? 'max-h-[500px] border-t border-[#E6E6E6]' : 'max-h-0'
-                }`}>
+
+                <div className={`transition-all duration-300 overflow-hidden ${activeJob === idx ? 'max-h-[500px] border-t border-[#E6E6E6]' : 'max-h-0'
+                  }`}>
                   <div className="p-6 sm:p-8 space-y-6">
                     <p className="text-xs sm:text-sm text-[#212121]/70 leading-relaxed font-normal">
                       {job.desc}
                     </p>
-                    
+
                     <div className="space-y-3">
                       <span className="text-[10px] font-mono font-bold text-[#212121]/40 uppercase tracking-widest block">
                         REQUIREMENTS
