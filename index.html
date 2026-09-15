@@ -29,48 +29,13 @@
     <meta property="twitter:image" content="https://www.behindthebuild.in/favicon.png" />
 
     <!-- Google tag (gtag.js) -->
-    <script>
-      (function() {
-        if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
-          var origBeacon = navigator.sendBeacon;
-          navigator.sendBeacon = function(url, data) {
-            if (typeof url === 'string' && url.indexOf('tid=G-7F2KTPLXV6') !== -1) return true;
-            return origBeacon.apply(this, arguments);
-          };
-        }
-        if (typeof window !== 'undefined' && window.fetch) {
-          var origFetch = window.fetch;
-          window.fetch = function(input, init) {
-            var url = (typeof input === 'string') ? input : (input && input.url ? input.url : '');
-            if (typeof url === 'string' && url.indexOf('tid=G-7F2KTPLXV6') !== -1) {
-              return Promise.resolve(new Response('', { status: 204 }));
-            }
-            return origFetch.apply(this, arguments);
-          };
-        }
-        if (typeof window !== 'undefined' && window.XMLHttpRequest) {
-          var origOpen = window.XMLHttpRequest.prototype.open;
-          window.XMLHttpRequest.prototype.open = function(method, url) {
-            if (typeof url === 'string' && url.indexOf('tid=G-7F2KTPLXV6') !== -1) {
-              this._isBlockedGa = true;
-            }
-            return origOpen.apply(this, arguments);
-          };
-          var origSend = window.XMLHttpRequest.prototype.send;
-          window.XMLHttpRequest.prototype.send = function() {
-            if (this._isBlockedGa) return;
-            return origSend.apply(this, arguments);
-          };
-        }
-      })();
-    </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B5B2VXY0BT"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QV197W1VWR"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-B5B2VXY0BT', {
+      gtag('config', 'G-QV197W1VWR', {
         send_page_view: false
       });
     </script>

@@ -1,9 +1,9 @@
 /**
  * Google Analytics 4 (gtag.js) Integration Utility
- * Measurement ID: G-B5B2VXY0BT
+ * Measurement ID: G-QV197W1VWR
  */
 
-export const GA_MEASUREMENT_ID = 'G-B5B2VXY0BT';
+export const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID || 'G-QV197W1VWR';
 
 /**
  * Safely track page views across client-side SPA route transitions
